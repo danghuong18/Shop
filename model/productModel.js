@@ -6,7 +6,10 @@ const ProductSchema = mongoose.Schema({
     color: String,
     size: String,
     thumb: String,
-    productCode: String,
     createDate: Date,
     updateDate: Date
-});
+}, {collection: 'product'});
+
+const ProductModel = mongoose.model('product', ProductSchema);
+
+module.exports = ProductModel;
