@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-mongoose.connect(``,{
+mongoose.connect(`mongodb://localhost/ShopDatabase`,{
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
