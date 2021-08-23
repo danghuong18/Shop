@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../../components/cpanel/head.ejs'); %>
+    <title>Admin Cpanel</title>
+</head>
+<body>
+    <div class="wrapper">
+        <%- include('../../components/cpanel/header.ejs'); %>
+        <%- include('../../components/cpanel/sidebar.ejs'); %>
+        <section class="main-body">
+            <div class="main-body__container">
+                <div class="main-body__container__action">
+                    <div class="main-body__container__action--left">
+                        <a href="#" class="create-item">Tạo item</a>
+                        <a class="uncheck-item">Bỏ chọn</a>
+                    </div>
+                    <div class="main-body__container__action--right">
+                        <div class="sort">
+                            <select class="sort__task">
+                                <option value="">Sắp xếp theo</option>
+                                <option value="11">Ngày tạo trước</option>
+                                <option value="11">Ngày tạo sau</option>
+                                <option value="11">Danh mục</option>
+                                <option value="11">Thương Hiệu</option>
+                            </select>
+                        </div>
+                        <div class="action">
+                            <select class="action__task">
+                                <option value="">Hành động</option>
+                                <option value="11">Xoá</option>
+                                <option value="11">Đẩy lên đầu</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <ul class="main-body__container__list">
+                    <li class="main-body__container__item" id="item-1">
+                        <input type="checkbox" class="checkbox-item" value="1">
+                        <div class="body-item">
+                            <a href="#" class="body-item__title">
+                                iPhone 12 Pro Max
+                            </a>
+                            <div class="body-item__info">
+                                <span class="body-item__details">
+                                    <span class="body-item__details-category">
+                                        <span class="title">Danh mục:</span>
+                                        <span class="desc">Sức Khoẻ & Đời Sống</span>
+                                    </span>
+                                    <span class="body-item__details-brand">
+                                        <span class="title">Nhãn hiệu:</span>
+                                        <span class="desc">Apple</span>
+                                    </span>
+                                </span>
+                                <span class="body-item__details body-item__details-image">
+                                    Hình ảnh: Sức Khoẻ & Đời Sống
+                                </span>
+                            </div>
+                        </div>
+                        <div class="action-item">
+                            <span class="action-item__delete">Xoá</span>
+                            <span class="action-item__edit">Sửa</span>
+                        </div>
+                    </li>
+                    <li class="main-body__container__item" id="item-2">
+                        <input type="checkbox" class="checkbox-item" value="2">
+                        <div class="body-item">
+                            <a href="#" class="body-item__title">
+                                iPhone 12 Pro Max
+                            </a>
+                            <div class="body-item__info">
+                                <span class="body-item__details">
+                                    <span class="body-item__details-category">
+                                        <span class="title">Danh mục:</span>
+                                        <span class="desc">Sức Khoẻ & Đời Sống</span>
+                                    </span>
+                                    <span class="body-item__details-brand">
+                                        <span class="title">Nhãn hiệu:</span>
+                                        <span class="desc">Apple</span>
+                                    </span>
+                                </span>
+                                <span class="body-item__details body-item__details-image">
+                                    <ul class="list-image">
+                                        <!-- <li>
+                                            Hình ảnh:
+                                        </li> -->
+                                        <li class="item-image">
+                                            <img src="https://cf.shopee.vn/file/2474dcd7d8a770fbb862d9fac880e90b" alt="">
+                                        </li>
+                                        <li class="item-image">
+                                            <img src="https://cf.shopee.vn/file/8a70ea6682ecabaa85ccaaf63869da24" alt="">
+                                        </li>
+                                        <li class="item-image">
+                                            <img src="https://cf.shopee.vn/file/70dd75aa0497daa3aed12ded71bd6381" alt="">
+                                        </li>
+                                        <li class="item-image">
+                                            <img src="https://cf.shopee.vn/file/2474dcd7d8a770fbb862d9fac880e90b" alt="">
+                                        </li>
+                                        <li class="item-image">
+                                            <img src="https://cf.shopee.vn/file/2474dcd7d8a770fbb862d9fac880e90b" alt="">
+                                        </li>
+                                    </ul>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="action-item">
+                            <span class="action-item__delete">Xoá</span>
+                            <span class="action-item__edit">Sửa</span>
+                        </div>
+                    </li>
+                    <li class="main-body__container__item" id="item-3">
+                        <input type="checkbox" class="checkbox-item" value="3">
+                        <div class="body-item">
+                            <a href="#" class="body-item__title">
+                                iPhone 12 Pro Max
+                            </a>
+                            <div class="body-item__info">
+                                <span class="body-item__details">
+                                    <span class="body-item__details-category">
+                                        <span class="title">Danh mục:</span>
+                                        <span class="desc">Sức Khoẻ & Đời Sống</span>
+                                    </span>
+                                    <span class="body-item__details-brand">
+                                        <span class="title">Nhãn hiệu:</span>
+                                        <span class="desc">Apple</span>
+                                    </span>
+                                </span>
+                                <span class="body-item__details body-item__details-image">
+                                    Hình ảnh: Sức Khoẻ & Đời Sống
+                                </span>
+                            </div>
+                        </div>
+                        <div class="action-item">
+                            <span class="action-item__delete">Xoá</span>
+                            <span class="action-item__edit">Sửa</span>
+                        </div>
+                    </li>
+                    <li class="main-body__container__item" id="item-4">
+                        <input type="checkbox" class="checkbox-item" value="4">
+                        <div class="body-item">
+                            <a href="#" class="body-item__title">
+                                iPhone 12 Pro Max
+                            </a>
+                            <div class="body-item__info body-item__details-image">
+                                <span class="body-item__details">
+                                    <span class="body-item__details-category">
+                                        <span class="title">Danh mục:</span>
+                                        <span class="desc">Sức Khoẻ & Đời Sống</span>
+                                    </span>
+                                    <span class="body-item__details-brand">
+                                        <span class="title">Nhãn hiệu:</span>
+                                        <span class="desc">Apple</span>
+                                    </span>
+                                </span>
+                                <span class="body-item__details body-item__details-image">
+                                    Hình ảnh: Sức Khoẻ & Đời Sống
+                                </span>
+                            </div>
+                        </div>
+                        <div class="action-item">
+                            <span class="action-item__delete">Xoá</span>
+                            <span class="action-item__edit">Sửa</span>
+                        </div>
+                    </li>
+                    <li class="main-body__container__item" id="item-5">
+                        <input type="checkbox" class="checkbox-item" value="5">
+                        <div class="body-item">
+                            <a href="#" class="body-item__title">
+                                iPhone 12 Pro Max
+                            </a>
+                            <div class="body-item__info">
+                                <span class="body-item__details">
+                                    <span class="body-item__details-category">
+                                        <span class="title">Danh mục:</span>
+                                        <span class="desc">Sức Khoẻ & Đời Sống</span>
+                                    </span>
+                                    <span class="body-item__details-brand">
+                                        <span class="title">Nhãn hiệu:</span>
+                                        <span class="desc">Apple</span>
+                                    </span>
+                                </span>
+                                <span class="body-item__details body-item__details-image">
+                                    Hình ảnh: Sức Khoẻ & Đời Sống
+                                </span>
+                            </div>
+                        </div>
+                        <div class="action-item">
+                            <span class="action-item__delete">Xoá</span>
+                            <span class="action-item__edit">Sửa</span>
+                        </div>
+                    </li>
+                </ul>
+                <div class="pagination">
+                    <ul class="pagination__list">
+                        <li class="pagination__item active" id="page-1">1</li>
+                        <li class="pagination__item" id="page-2">2</li>
+                        <li class="pagination__item" id="page-3">3</li>
+                        <li class="pagination__item" id="page-4">4</li>
+                        <li class="pagination__item" id="page-5">5</li>
+                    </ul>
+                    <select class="pagination__selection">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                        <option value="40">40</option>
+                        <option value="50">50</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <div class="modal">
+            <div class="modal__container">
+                <div class="modal__container__content">
+                    <div class="modal-header">
+                        <span class="modal-title">Tiêu đề thôi mà</span>
+                        <span class="modal-close">x</span>
+                    </div>
+                    <div class="modal-body">
+                        Tôi chỉ test thôi ấy mà!
+                        Tôi chỉ test thôi ấy mà!
+                        Tôi chỉ test thôi ấy mà!
+                        Tôi chỉ test thôi ấy mà!
+                    </div>
+                    <div class="modal-footer">
+                        <span class="modal-button modal-button-close">Đóng</span>
+                        <span class="modal-button modal-button-confirm">Xác nhận</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-background">
+        </div>
+    </div>
+    <%- include('../../components/cpanel/js_footer.ejs'); %>
+</body>
+</html>
