@@ -45,7 +45,7 @@ function notification(prepend_class=null, status="success", action=null, delay=5
         let notif = `<div class="notification notification--${status}">${notif_text}</div>`;
         $(".notification").remove();
         $(prepend_class).prepend(notif);
-        $(".notification").delay(5000).fadeOut();
+        $(".notification").delay(3000).fadeOut();
     }
 }
 
@@ -145,14 +145,14 @@ $(".header__item-profile").on("clickout", function(){
     $(".header__item-profile .dropdown-list").css({"display": ""});
 });
 
-$("input.checkbox-item[type='checkbox']").on("click", function(){
-    let item_id = $(this).val();
-    if($("#item-" + item_id).hasClass("checked")){
-        $("#item-" + item_id).removeClass("checked");
-    }else{
-        $("#item-" + item_id).addClass("checked");
-    }
-});
+// $("input.checkbox-item[type='checkbox']").on("click", function(i){
+//     let item_id = $(this).val();
+//     if($("#item-" + item_id).hasClass("checked")){
+//         $("#item-" + item_id).removeClass("checked");
+//     }else{
+//         $("#item-" + item_id).addClass("checked");
+//     }
+// });
 
 $(".uncheck-item").on("click", function(){
     let item_checked = $(".checkbox-item");
@@ -165,19 +165,6 @@ $(".uncheck-item").on("click", function(){
             console.log($(this).val()); // This is your rel value
         }
      });
-});
-
-$(".action__task").on("change", function(){
-    let value = $(this).val();
-    if(value != null && value != ""){
-        let count = ($(".checkbox-item:checked")).length;
-        if(count > 0) {
-            console.log(value, count);
-            modal();
-        }
-    }
-
-    $(this).val("");
 });
 
 $(".pagination__item").on("click", function(){
@@ -196,19 +183,3 @@ $(".modal-close").on("click", function(){
 $(".modal-button-close").on("click", function(){
     modal(false);
 });
-
-// $(".modal").on("click", function(){
-//     $("body").removeClass("modal-open");
-//     $(".modal").removeClass("open");
-//     $(".modal-background").removeClass("open");
-// });
-
-// if($(".modal").hasClass("open")){
-//     $(".modal__container__content").on("click", function(){
-
-//     }, function(){
-//         $("body").removeClass("modal-open");
-//         $(".modal").removeClass("open");
-//         $(".modal-background").removeClass("open");
-//     });
-// }

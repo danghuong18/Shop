@@ -18,8 +18,12 @@ $fourth_color_opacity_20: #1fbba620;
 $fourth_color_opacity_40: #1fbba640;
 $fourth_color_opacity_60: #1fbba660;
 $fourth_color_opacity_80: #1fbba680;
-$white_color: #fff;
 $gray_color: #4c4743;
+$gray_color_opacity_20: #4c474320;
+$gray_color_opacity_40: #4c474340;
+$gray_color_opacity_60: #4c474360;
+$gray_color_opacity_80: #4c474380;
+$white_color: #fff;
 $shadow_color: #d8d8d8;
 
 $text_color: #7b7b7b;
@@ -623,6 +627,31 @@ body {
                             .item-image {
                                 &:hover {
                                     border: 2px solid $primary_color;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            &.no-item {
+                border-left: 2px solid $gray_color;
+                background-color: $gray_color_opacity_20;
+
+                .body-item {
+
+                    &__title {
+                        &:hover {
+                            color: $gray_color;
+                        }
+                    }
+    
+                    &__details {
+                        &-image {
+    
+                            .item-image {
+                                &:hover {
+                                    border: 2px solid $gray_color;
                                 }
                             }
                         }
