@@ -90,7 +90,7 @@ function add(){
             notification(".main-body__container", "warning", `Tạo danh mục "${category_name}"`);
         }else{
             notification(".main-body__container", "success", `Tạo danh mục "${category_name}"`);
-            reloadData();
+            reloadData(true);
         }
     });
     modal(false);
@@ -140,7 +140,7 @@ function delete_item(list_item=[]){
                 notification(".main-body__container", "warning", `Xoá danh mục "${notif}"`);
             }else{
                 notification(".main-body__container", "success", `Xoá danh mục "${notif}"`);
-                reloadData();
+                reloadData(true);
             }
         });
         modal(false);

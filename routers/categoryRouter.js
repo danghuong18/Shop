@@ -69,10 +69,8 @@ router.post("/edit", async (req, res)=>{
 
 router.post("/delete", async (req, res)=>{
     let list_item = req.body['list_item[]'];
-    console.log(list_item);
     try {
         let delete_item = await CategoryModel.deleteMany({_id: list_item});
-        console.log(delete_item);
         if(delete_item){
             res.json({message: "Succcessed", status: 200});
         }else{
