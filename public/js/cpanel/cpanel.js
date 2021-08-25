@@ -145,15 +145,6 @@ $(".header__item-profile").on("clickout", function(){
     $(".header__item-profile .dropdown-list").css({"display": ""});
 });
 
-// $("input.checkbox-item[type='checkbox']").on("click", function(i){
-//     let item_id = $(this).val();
-//     if($("#item-" + item_id).hasClass("checked")){
-//         $("#item-" + item_id).removeClass("checked");
-//     }else{
-//         $("#item-" + item_id).addClass("checked");
-//     }
-// });
-
 $(".uncheck-item").on("click", function(){
     let item_checked = $(".checkbox-item");
     item_checked.each(function(i)
@@ -165,15 +156,6 @@ $(".uncheck-item").on("click", function(){
             console.log($(this).val()); // This is your rel value
         }
      });
-});
-
-$(".pagination__item").on("click", function(){
-    let current_id = $(".pagination__item.active").prop("id");
-    let this_id =  $(this).prop("id");
-    if(current_id != this_id) {
-        $(".pagination__item").removeClass("active");
-        $(this).addClass("active");
-    }
 });
 
 $(".modal-close").on("click", function(){

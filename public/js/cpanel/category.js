@@ -1,6 +1,7 @@
-function getList(limit, page){
+function getList(limit, page, isLoadPagination = false){
+    let sort = $(".sort__task").val();
     $.ajax({
-        url: "/category?limit=" + limit + "&page=" + page,
+        url: "/category?limit=" + limit + "&page=" + page + "&sort=" + sort,
         type: "GET"
     }).then((data)=>{
         if(data.status == 200){
@@ -22,15 +23,38 @@ function getList(limit, page){
 
             let script = `
             <script>
-            $("input.checkbox-item[type='checkbox']").on("click", function(i){
-                let item_id = $(this).val();
-                if($("#item-" + item_id).hasClass("checked")){
-                    $("#item-" + item_id).removeClass("checked");
-                }else{
-                    $("#item-" + item_id).addClass("checked");
-                }
-            });
+                $("input.checkbox-item[type='checkbox']").on("click", function(i){
+                    let item_id = $(this).val();
+                    if($("#item-" + item_id).hasClass("checked")){
+                        $("#item-" + item_id).removeClass("checked");
+                    }else{
+                        $("#item-" + item_id).addClass("checked");
+                    }
+                });
             </script>`;
+
+            if(isLoadPagination){
+                let pagination =``;
+                console.log(data.pages);
+                for(x = 1; x <= data.pages; x++){
+                    pagination += `<li class="pagination__item ${x==1?"active":""}" id="${x}">${x}</li>`
+                }
+
+                let pagination_script = `
+                <script>
+                    $(".pagination__item").on("click", function(){
+                        let current_id = $(".pagination__item.active").prop("id");
+                        let this_id =  $(this).prop("id");
+                        if(current_id != this_id) {
+                            $(".pagination__item").removeClass("active");
+                            $(this).addClass("active");
+                            reloadData();
+                        }
+                    });
+                </script>`;
+                $(".pagination__list").html(pagination);
+                $(".pagination__list").append(pagination_script);
+            }
 
             $(".main-body__container__list").html(list)
             $(".main-body__container__list").append(script);
@@ -46,6 +70,13 @@ function getList(limit, page){
     })
 }
 
+function reloadData(isLoadPagination = false){
+    let current_page = ($(".pagination__item.active").attr("id") != undefined)? $(".pagination__item.active").attr("id") : 1;
+    
+    let limit = $(".pagination__selection").val();
+    getList(limit, current_page, isLoadPagination);
+}
+
 function add(){
     let category_name = $(".add-category").val();
     $.ajax({
@@ -59,7 +90,7 @@ function add(){
             notification(".main-body__container", "warning", `Tạo danh mục "${category_name}"`);
         }else{
             notification(".main-body__container", "success", `Tạo danh mục "${category_name}"`);
-            getList(10, 1);
+            reloadData();
         }
     });
     modal(false);
@@ -81,7 +112,7 @@ function edit(item_id=null){
                 notification(".main-body__container", "warning", `Sửa danh mục "${category_name}"`);
             }else{
                 notification(".main-body__container", "success", `Sửa danh mục "${category_name}"`);
-                getList(10, 1);
+                reloadData();
             }
         });
         modal(false);
@@ -109,7 +140,7 @@ function delete_item(list_item=[]){
                 notification(".main-body__container", "warning", `Xoá danh mục "${notif}"`);
             }else{
                 notification(".main-body__container", "success", `Xoá danh mục "${notif}"`);
-                getList(10, 1);
+                reloadData();
             }
         });
         modal(false);
@@ -132,31 +163,42 @@ function action(action="create", item_id=null){
 }
 
 $(document).ready(()=>{
-    getList(10, 1);
+    reloadData(true);
 });
 
 $(".action__task").on("change", function(){
-    let value = $(this).val();
-    if(value != null && value != "" && value != undefined){
+    let action = $(this).val();
+    if(action != null && action != "" && action != undefined){
         let item_checked = $(".checkbox-item:checked");
-        let list_item = [];
-        item_checked.each(function(i)
-        {
-            if($(this).is(":checked")){
-                let item = $(this).val();
-                list_item.push(item);
-                // $(this).prop("checked", false);
-                // $("#item-" + $(this).val()).removeClass("checked");
-    
-                // console.log($(this).val()); // This is your rel value
+        if(item_checked.length > 0) {
+            let list_item = [];
+            item_checked.each(function(i)
+            {
+                if($(this).is(":checked")){
+                    let item = $(this).val();
+                    list_item.push(item);
+                }
+            });
+
+            console.log(list_item);
+
+            if(action == "delete"){
+                let body = `Bạn muốn xoá danh mục đã chọn hay không?`;
+                modal(true, `Xoá danh mục`, body, `Xác nhận`, `delete_item(${JSON.stringify(list_item)})`);
             }
-        });
-
-        console.log(list_item);
-
-        let body = `Bạn muốn xoá danh mục đã chọn hay không?`;
-        modal(true, `Xoá danh mục`, body, `Xác nhận`, `delete_item(${JSON.stringify(list_item)})`);
+        }
     }
 
     $(this).val("");
+});
+
+$(".sort__task").on("change", function(){
+    let sort = $(this).val();
+    if(sort != null && sort != "" && sort != undefined){
+        reloadData();
+    }
+});
+
+$(".pagination__selection").on("change", function(){
+    reloadData(true);
 });
