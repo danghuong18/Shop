@@ -42,7 +42,7 @@ const storage = multer.diskStorage({
     }
 });
 
-const upload = multer({storage: storage}).single("brandlogo");
+const upload = multer({storage: storage});
 
 router.get("/", async (req, res)=> {
     let sort = req.query.sort;
@@ -80,7 +80,7 @@ router.get("/", async (req, res)=> {
 });
 
 router.post("/create", async (req, res)=>{
-    upload(req, res, async (err)=>{
+    upload.single("brandlogo")(req, res, async (err)=>{
         if (err) {
             if(err == "ErrorType"){
                 res.json({message: "File upload not support", status: 406});

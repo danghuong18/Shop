@@ -448,6 +448,22 @@ body {
                 }
             }
 
+            textarea {
+                width: 100% !important;
+                font-family: "Roboto";
+                font-size: 1.6rem;
+                height: 3.5rem;
+                border: 0;
+                outline: 0;
+                border-radius: 0;
+                color: $color_input;
+                border-bottom: 1px solid $border_input;
+
+                &:focus {
+                    border-bottom: 2px solid $primary_color;
+                }
+            }
+
             select {
                 width: 100%;
                 font-size: 1.6rem;
@@ -465,6 +481,37 @@ body {
 
             select[multiple], select[size] {
                 height: auto;
+            }
+
+            .product-details-item {
+                margin-bottom: 1rem;
+                animation: opacity_animation 0.2s;
+                @include flex(center, space-between);
+
+                input {
+                    width: calc(45% - 15px);
+                }
+
+                .minus-button {
+                    width: 3.5rem;
+                    background-color: $gray_color;
+                }
+            }
+
+            .plus-button,
+            .minus-button {
+                height: 3.5rem;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: $white_color;
+                font-size: 1.6rem;
+                background-color: $fourth_color;
+
+                &:hover {
+                    opacity: 0.5;
+                }
             }
         }
 

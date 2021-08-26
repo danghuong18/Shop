@@ -169,7 +169,7 @@ function action(action="create", item_id=null){
                         </div>
                         <div class="form-group">
                             <label>Logo thương hiệu</label>
-                            <input type="file" name="brandlogo" class="logo-brand">
+                            <input type="file" name="brandlogo" class="logo-brand" accept="image/gif, image/jpeg, image/png">
                         </div>
                     </form>`;
         modal(true, `Tạo thương hiệu`, body, `Tạo`, `add()`);
@@ -186,7 +186,7 @@ function action(action="create", item_id=null){
                         </div>
                         <div class="form-group">
                             <label>Logo thương hiệu (Để trống nếu không muốn thay logo)</label>
-                            <input type="file" name="brandlogo" class="logo-brand">
+                            <input type="file" name="brandlogo" class="logo-brand" accept="image/gif, image/jpeg, image/png">
                         </div>
                     </form>`;
         modal(true, `Sửa thương hiệu`, body, `Sửa`, `edit('${item_id}')`);

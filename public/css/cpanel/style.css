@@ -362,6 +362,20 @@ body {
 .main-body__container .form-group input:focus {
   border-bottom: 2px solid #fe5e3a;
 }
+.main-body__container .form-group textarea {
+  width: 100% !important;
+  font-family: "Roboto";
+  font-size: 1.6rem;
+  height: 3.5rem;
+  border: 0;
+  outline: 0;
+  border-radius: 0;
+  color: #424242;
+  border-bottom: 1px solid #757575;
+}
+.main-body__container .form-group textarea:focus {
+  border-bottom: 2px solid #fe5e3a;
+}
 .main-body__container .form-group select {
   width: 100%;
   font-size: 1.6rem;
@@ -377,6 +391,37 @@ body {
 }
 .main-body__container .form-group select[multiple], .main-body__container .form-group select[size] {
   height: auto;
+}
+.main-body__container .form-group .product-details-item {
+  margin-bottom: 1rem;
+  animation: opacity_animation 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  flex-direction: row;
+}
+.main-body__container .form-group .product-details-item input {
+  width: calc(45% - 15px);
+}
+.main-body__container .form-group .product-details-item .minus-button {
+  width: 3.5rem;
+  background-color: #4c4743;
+}
+.main-body__container .form-group .plus-button,
+.main-body__container .form-group .minus-button {
+  height: 3.5rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.6rem;
+  background-color: #1fbba6;
+}
+.main-body__container .form-group .plus-button:hover,
+.main-body__container .form-group .minus-button:hover {
+  opacity: 0.5;
 }
 .main-body__container .submit-button {
   width: 50%;

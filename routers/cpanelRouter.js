@@ -1,5 +1,7 @@
 const router = require("express").Router();
 const UserModel = require("../model/userModel");
+const CategoryModel = require("../model/categoryModel");
+const BrandModel = require("../model/brandModel");
 const BlackListModel = require("../model/blackListModel");
 const { checkLogin } = require("../middleWare/checkAuth");
 const bcrypt = require("bcrypt");
@@ -16,15 +18,37 @@ router.get("/user", (req, res)=>{
 });
 
 router.get("/category", (req, res)=>{
-    res.render("pages/cpanel/category");
+    res.render("pages/cpanel/category", {
+        name: "Danh mục"
+    });
 });
 
 router.get("/brand", (req, res)=>{
-    res.render("pages/cpanel/brand");
+    res.render("pages/cpanel/brand", {
+        name: "Thương hiệu"
+    });
 });
 
 router.get("/product", (req, res)=>{
-    res.render("pages/cpanel/product");
+    res.render("pages/cpanel/product", {
+        name: "Danh sách sản phẩm"
+    });
+});
+
+router.get("/product/create", async (req, res)=>{
+    let categories = await CategoryModel.find({}).sort({categoryName: 1});
+    let brands = await BrandModel.find({}).sort({brandName: 1});
+    res.render("pages/cpanel/create-product", {
+        name: "Tạo sản phẩm",
+        categories: categories,
+        brands: brands
+    });
+});
+
+router.get("/product/edit/:id", (req, res)=>{
+    res.render("pages/cpanel/edit-product", {
+        name: "Sửa sản phẩm"
+    });
 });
 
 router.get("/classify-product", (req, res)=>{
@@ -38,30 +62,5 @@ router.get("/order", (req, res)=>{
 router.get("/login", (req, res)=>{
     res.render("pages/cpanel/login");
 });
-
-router.post("/create", (req, res)=>{
-
-});
-
-// router.post("/", async (req, res) => {
-//   try {
-//     if (req.body.username && req.body.password) {
-//       const checkUsername = await UserModel.findOne({
-//         username: req.body.username,
-//       });
-//       if (checkUsername) {
-//         res.json({ status: 400, mess: "username da ton tai" });
-//       } else {
-//         req.body.password = await bcrypt.hash(req.body.password, 10);
-//         await UserModel.create(req.body);
-//         res.json({ status: 200, mess: "tao tai khoan ok" });
-//       }
-//     } else {
-//       res.json({ status: 400, mess: "bad request" });
-//     }
-//   } catch (error) {
-//     res.json({ status: 500, mess: "loi server", error });
-//   }
-// });
 
 module.exports = router;

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <%- include('../../components/cpanel/head.ejs'); %>
-    <title>Admin Cpanel</title>
+    <title><%= name %> | Admin Cpanel</title>
 </head>
 <body>
     <div class="wrapper">
@@ -12,17 +12,17 @@
             <div class="main-body__container">
                 <div class="main-body__container__action">
                     <div class="main-body__container__action--left">
-                        <a href="#" class="create-item">Tạo item</a>
+                        <a href="/cpanel/product/create" class="create-item">Tạo item</a>
                         <a class="uncheck-item">Bỏ chọn</a>
                     </div>
                     <div class="main-body__container__action--right">
                         <div class="sort">
                             <select class="sort__task">
                                 <option value="">Sắp xếp theo</option>
-                                <option value="11">Ngày tạo trước</option>
-                                <option value="11">Ngày tạo sau</option>
-                                <option value="11">Danh mục</option>
-                                <option value="11">Thương Hiệu</option>
+                                <option value="11">Tên [A-Z]</option>
+                                <option value="11">Tên [Z-A]</option>
+                                <option value="11">Mới nhất</option>
+                                <option value="11">Cũ nhất</option>
                             </select>
                         </div>
                         <div class="action">
