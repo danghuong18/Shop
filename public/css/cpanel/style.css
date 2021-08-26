@@ -421,6 +421,32 @@ body {
 }
 .main-body__container__item .body-item__title.one-line {
   margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  flex-direction: row;
+}
+.main-body__container__item .body-item__title.one-line span {
+  width: 5rem;
+  height: 5rem;
+  overflow: hidden;
+  border: 1px solid #d8d8d8;
+  margin-right: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  flex-direction: row;
+}
+.main-body__container__item .body-item__title.one-line span img {
+  width: 100%;
+}
+.main-body__container__item .body-item__title.one-line span label {
+  cursor: pointer;
+}
+.main-body__container__item .body-item__title.one-line span:hover {
+  border: 2px solid #76c80e;
 }
 .main-body__container__item .body-item__title:hover {
   color: #76c80e;
@@ -500,6 +526,9 @@ body {
 .main-body__container__item.checked {
   border-left: 2px solid #fe5e3a;
   background-color: #fe5e3a20;
+}
+.main-body__container__item.checked .body-item__title.one-line span:hover {
+  border: 2px solid #fe5e3a;
 }
 .main-body__container__item.checked .body-item__title:hover {
   color: #fe5e3a;
@@ -793,7 +822,16 @@ body {
   font-size: 1.6rem;
   padding: 1rem;
 }
-.modal__container__content .modal-body input {
+.modal__container__content .modal-body .form-group {
+  margin-bottom: 1.5rem;
+}
+.modal__container__content .modal-body .form-group label {
+  display: block;
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.modal__container__content .modal-body .form-group input {
   width: 100%;
   font-size: 1.6rem;
   height: 3.5rem;
@@ -803,8 +841,24 @@ body {
   color: #424242;
   border-bottom: 1px solid #757575;
 }
-.modal__container__content .modal-body input:focus {
+.modal__container__content .modal-body .form-group input:focus {
   border-bottom: 2px solid #fe5e3a;
+}
+.modal__container__content .modal-body .form-group select {
+  width: 100%;
+  font-size: 1.6rem;
+  height: 3.5rem;
+  border: 0;
+  outline: 0;
+  border-radius: 0;
+  color: #424242;
+  border-bottom: 1px solid #757575;
+}
+.modal__container__content .modal-body .form-group select:focus-within {
+  border-bottom: 2px solid #fe5e3a;
+}
+.modal__container__content .modal-body .form-group select[multiple], .modal__container__content .modal-body .form-group select[size] {
+  height: auto;
 }
 .modal__container__content .modal-footer {
   display: flex;

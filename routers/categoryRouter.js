@@ -20,13 +20,13 @@ router.get("/", async (req, res)=> {
     }
 
     try {
-        let products = await CategoryModel.find({}).skip(skip).limit(limit).sort(sortby);
-        let all_products = await CategoryModel.find({});
-        if(all_products.length > 0){
-            pages = Math.ceil(all_products.length/limit);
+        let categories = await CategoryModel.find({}).skip(skip).limit(limit).sort(sortby);
+        let all_categories = await CategoryModel.find({});
+        if(all_categories.length > 0){
+            pages = Math.ceil(all_categories.length/limit);
         }
-        if(products.length > 0){
-            res.json({message: "Succcessed", status: 200, data: products, pages: pages});
+        if(categories.length > 0){
+            res.json({message: "Succcessed", status: 200, data: categories, pages: pages});
         }else{
             res.json({message: "There are no categories to display.", status: 400});
         }

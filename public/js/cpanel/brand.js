@@ -1,7 +1,7 @@
 function getList(limit, page, isLoadPagination = false){
     let sort = $(".sort__task").val();
     $.ajax({
-        url: "/category?limit=" + limit + "&page=" + page + "&sort=" + sort,
+        url: "/brand?limit=" + limit + "&page=" + page + "&sort=" + sort,
         type: "GET"
     }).then((data)=>{
         if(data.status == 200){
@@ -12,7 +12,10 @@ function getList(limit, page, isLoadPagination = false){
                 <li class="main-body__container__item" id="item-${data.data[x]._id}">
                 <input type="checkbox" class="checkbox-item" value="${data.data[x]._id}">
                 <div class="body-item">
-                    <a href="#" class="body-item__title one-line">${data.data[x].categoryName}</a>
+                    <a href="#" class="body-item__title one-line">
+                        <span><img src="${data.data[x].logo}" alt="Logo ${data.data[x].brandName}"></span>
+                        <label>${data.data[x].brandName}</label>
+                    </a>
                 </div>
                 <div class="action-item">
                     <span class="action-item__delete" onclick="action('delete', '${data.data[x]._id}')">Xoá</span>
@@ -61,7 +64,7 @@ function getList(limit, page, isLoadPagination = false){
         }else if (data.status == 400){
             let list = `
             <li class="main-body__container__item no-item">
-                Không có danh mục nào để hiển thị ở đây cả!
+                Không có thương hiệu nào để hiển thị ở đây cả!
             </li>`;
             $(".main-body__container__list").html(list);
         }else{
@@ -78,19 +81,25 @@ function reloadData(isLoadPagination = false){
 }
 
 function add(){
-    let category_name = $(".add-category").val();
+    let brand_name = $(".add-brand").val();
+    var createForm = $("#create-brand");
+    var formData = new FormData(createForm[0]);
     $.ajax({
-        url: "/category/create",
+        url: "/brand/create",
         type: "POST",
-        data: {
-            title: category_name
-        }
+        processData: false,
+        contentType: false,
+        data: formData
     }).then((data)=>{
-        if(data.status != 200){
-            notification(".main-body__container", "warning", `Tạo danh mục "${category_name}"`);
-        }else{
-            notification(".main-body__container", "success", `Tạo danh mục "${category_name}"`);
+        if(data.status == 200){
+            notification(".main-body__container", "success", `Tạo thương hiệu "${brand_name}"`);
             reloadData(true);
+        }else if(data.status == 406){
+            notification(".main-body__container", "warning", `Lỗi format file upload, tạo thương hiệu "${brand_name}"`);
+        }else if(data.status == 500){
+            notification(".main-body__container", "error", `Tạo thương hiệu "${brand_name}"`);
+        }else{
+            notification(".main-body__container", "warning", `Tạo thương hiệu "${brand_name}"`);
         }
     });
     modal(false);
@@ -98,21 +107,25 @@ function add(){
 
 function edit(item_id=null){
     if(item_id != null && item_id != undefined){
-        let category_name = $(`#item-${item_id} .body-item__title`)[0].innerText;
-        let edit_category_name = $(".edit-category").val();
+        let brand_name = $(`#item-${item_id} .body-item__title`)[0].innerText;
+        // let edit_brand_name = $(".edit-brand").val();
+        // let brand_name = $(".add-brand").val();
+        var createForm = $("#create-brand");
+        var formData = new FormData(createForm[0]);
         $.ajax({
-            url: "/category/edit",
+            url: "/brand/edit",
             type: "POST",
-            data: {
-                id: item_id,
-                title: edit_category_name
-            }
+            processData: false,
+            contentType: false,
+            data: formData
         }).then((data)=>{
-            if(data.status != 200){
-                notification(".main-body__container", "warning", `Sửa danh mục "${category_name}"`);
-            }else{
-                notification(".main-body__container", "success", `Sửa danh mục "${category_name}"`);
+            if(data.status == 200){
+                notification(".main-body__container", "success", `Sửa thương hiệu "${brand_name}"`);
                 reloadData();
+            }else if(data.status == 406){
+                notification(".main-body__container", "warning", `Lỗi format file upload, sửa thương hiệu "${brand_name}"`);
+            }else{
+                notification(".main-body__container", "warning", `Sửa thương hiệu "${brand_name}"`);
             }
         });
         modal(false);
@@ -130,16 +143,16 @@ function delete_item(list_item=[]){
             notif = `đã chọn`;
         }
         $.ajax({
-            url: "/category/delete",
+            url: "/brand/delete",
             type: "POST",
             data: {
                 list_item: list_item
             }
         }).then((data)=>{
             if(data.status != 200){
-                notification(".main-body__container", "warning", `Xoá danh mục "${notif}"`);
+                notification(".main-body__container", "warning", `Xoá thương hiệu "${notif}"`);
             }else{
-                notification(".main-body__container", "success", `Xoá danh mục "${notif}"`);
+                notification(".main-body__container", "success", `Xoá thương hiệu "${notif}"`);
                 reloadData(true);
             }
         });
@@ -149,20 +162,38 @@ function delete_item(list_item=[]){
 
 function action(action="create", item_id=null){
     if(action == "create"){
-        let body = `<div class="form-group">
-                        <input type="text" name="title" class="add-category" placeholder="Nhập vào tên danh mục">
-                    </div>`;
-        modal(true, `Tạo danh mục`, body, `Tạo`, `add()`);
+        let body = `<form action="#" id="create-brand" method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label>Tên thương hiệu</label>
+                            <input type="text" name="title" class="add-brand" placeholder="Nhập vào tên thương hiệu">
+                        </div>
+                        <div class="form-group">
+                            <label>Logo thương hiệu</label>
+                            <input type="file" name="brandlogo" class="logo-brand">
+                        </div>
+                    </form>`;
+        modal(true, `Tạo thương hiệu`, body, `Tạo`, `add()`);
     }else if(action == "edit"){
-        let category_name = $(`#item-${item_id} .body-item__title`)[0].innerText;
-        let body = `<div class="form-group">
-                        <input type="text" name="title" class="edit-category" placeholder="Nhập vào tên danh mục" value="${category_name}">
-                    </div>`;
-        modal(true, `Sửa danh mục`, body, `Sửa`, `edit('${item_id}')`);
+        let brand_name = $(`#item-${item_id} .body-item__title`)[0].innerText;
+        let body = `<form action="#" id="create-brand" method="post" enctype="multipart/form-data">
+                        <div class="form-group" style="display: none">
+                            <label>ID</label>
+                            <input type="text" name="id" class="id-brand" placeholder="ID thương hiệu" value="${item_id}">
+                        </div>
+                        <div class="form-group">
+                            <label>Tên thương hiệu</label>
+                            <input type="text" name="title" class="edit-brand" placeholder="Nhập vào tên thương hiệu" value="${brand_name}">
+                        </div>
+                        <div class="form-group">
+                            <label>Logo thương hiệu (Để trống nếu không muốn thay logo)</label>
+                            <input type="file" name="brandlogo" class="logo-brand">
+                        </div>
+                    </form>`;
+        modal(true, `Sửa thương hiệu`, body, `Sửa`, `edit('${item_id}')`);
     }else if(action == "delete"){
-        let category_name = $(`#item-${item_id} .body-item__title`)[0].innerText;
-        let body = `Bạn muốn xoá danh mục "${category_name}" hay không?`;
-        modal(true, `Xoá danh mục`, body, `Xác nhận`, `delete_item(${JSON.stringify([item_id])})`);
+        let brand_name = $(`#item-${item_id} .body-item__title`)[0].innerText;
+        let body = `Bạn muốn xoá thương hiệu "${brand_name}" hay không?`;
+        modal(true, `Xoá thương hiệu`, body, `Xác nhận`, `delete_item(${JSON.stringify([item_id])})`);
     }
 }
 
@@ -187,8 +218,8 @@ $(".action__task").on("change", function(){
             console.log(list_item);
 
             if(action == "delete"){
-                let body = `Bạn muốn xoá danh mục đã chọn hay không?`;
-                modal(true, `Xoá danh mục`, body, `Xác nhận`, `delete_item(${JSON.stringify(list_item)})`);
+                let body = `Bạn muốn xoá thương hiệu đã chọn hay không?`;
+                modal(true, `Xoá thương hiệu`, body, `Xác nhận`, `delete_item(${JSON.stringify(list_item)})`);
             }
         }
     }

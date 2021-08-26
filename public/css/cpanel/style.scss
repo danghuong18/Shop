@@ -507,6 +507,28 @@ body {
                     margin-bottom: 1rem;
                     &.one-line {
                         margin-bottom: 0;
+                        @include flex(center, center);
+
+                        span {
+                            width: 5rem;
+                            height: 5rem;
+                            overflow: hidden;
+                            border: 1px solid $shadow_color;
+                            margin-right: 0.5rem;
+                            @include flex(center, center);
+
+                            img {
+                                width: 100%;
+                            }
+
+                            label {
+                                cursor: pointer;
+                            }
+
+                            &:hover {
+                                border: 2px solid $third_color;
+                            }
+                        }
                     }
                     
                     &:hover {
@@ -616,6 +638,13 @@ body {
                 .body-item {
 
                     &__title {
+                        &.one-line {
+                            span {
+                                &:hover {
+                                    border: 2px solid $primary_color;
+                                }
+                            }
+                        }
                         &:hover {
                             color: $primary_color;
                         }
@@ -939,19 +968,48 @@ body {
                 position: relative;
                 font-size: 1.6rem;
                 padding: 1rem;
-
-                input {
-                    width: 100%;
-                    font-size: 1.6rem;
-                    height: 3.5rem;
-                    border: 0;
-                    outline: 0;
-                    border-radius: 0;
-                    color: $color_input;
-                    border-bottom: 1px solid $border_input;
-
-                    &:focus {
-                        border-bottom: 2px solid $primary_color;
+                
+                .form-group {
+                    margin-bottom: 1.5rem;
+                    label {
+                        display: block;
+                        font-size: 1.6rem;
+                        font-weight: 600;
+                        margin-bottom: 0.5rem;
+                    }
+        
+                    input {
+                        width: 100%;
+                        font-size: 1.6rem;
+                        height: 3.5rem;
+                        border: 0;
+                        outline: 0;
+                        border-radius: 0;
+                        color: $color_input;
+                        border-bottom: 1px solid $border_input;
+        
+                        &:focus {
+                            border-bottom: 2px solid $primary_color;
+                        }
+                    }
+        
+                    select {
+                        width: 100%;
+                        font-size: 1.6rem;
+                        height: 3.5rem;
+                        border: 0;
+                        outline: 0;
+                        border-radius: 0;
+                        color: $color_input;
+                        border-bottom: 1px solid $border_input;
+        
+                        &:focus-within {
+                            border-bottom: 2px solid $primary_color;
+                        }
+                    }
+        
+                    select[multiple], select[size] {
+                        height: auto;
                     }
                 }
             }
