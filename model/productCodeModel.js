@@ -1,36 +1,30 @@
-const mongoose = require("./dbConnect");
+const mongoose = require('./dbConnect');
 
-const ProductCodeSchema = mongoose.Schema(
-  {
+const ProductCodeSchema = mongoose.Schema({
     detail: [
-      {
-        title: String,
-        content: String,
-      },
-    ],
+        {
+            title: String,
+            content: String
+        }],
     description: String,
     productName: String,
-    listImg: [{ type: String }],
-    productID: [
-      {
+    listImg: [{type: String}],
+    productID: [{
         type: String,
-        ref: "product",
-      },
-    ],
-    categoryID: {
-      type: String,
-      ref: "category",
-    },
+        ref: 'product'
+    }],
+    categoryID: [{
+        type: String,
+        ref: 'category'
+    }],
     brand: {
-      type: String,
-      ref: "brand",
+        type: String,
+        ref: 'brand'
     },
     createDate: Date,
-    updateDate: Date,
-  },
-  { collection: "productCode" }
-);
+    updateDate: Date
+}, {collection: 'productCode'});
 
-const ProductCodeModel = mongoose.model("productCode", ProductCodeSchema);
+const ProductCodeModel = mongoose.model('productCode', ProductCodeSchema);
 
 module.exports = ProductCodeModel;

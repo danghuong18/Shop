@@ -1,27 +1,22 @@
-const mongoose = require("./dbConnect");
+const mongoose = require('./dbConnect');
 
-const OrderSchema = mongoose.Schema(
-  {
-    listProduct: [
-      {
+const OrderSchema = mongoose.Schema({
+    listProduct: [{
         productID: {
-          type: String,
-          ref: "product",
+            type: String,
+            ref: 'product'
         },
-        quantity: Number,
-      },
-    ],
+        quantity: Number
+    }],
     userID: {
-      type: String,
-      ref: "user",
+        type: String,
+        ref: 'user'
     },
     address: String,
     phone: String,
-    createDate: Date,
-  },
-  { collection: "order" }
-);
+    createDate: Date
+}, {collection: 'order'});
 
-const OrderModel = mongoose.model("order", OrderSchema);
+const OrderModel = mongoose.model('order', OrderSchema);
 
 module.exports = OrderModel;

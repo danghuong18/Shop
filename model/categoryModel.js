@@ -1,12 +1,11 @@
-const mongoose = require("./dbConnect");
+const mongoose = require('./dbConnect');
 
-const CategorySchema = mongoose.Schema(
-  {
+const CategorySchema = mongoose.Schema({
     categoryName: String,
-  },
-  { collection: "category" }
-);
+    createDate: Date,
+    updateDate: Date
+}, {collection: 'category'});
 
-const CategoryModel = mongoose.model("category", CategorySchema);
+const CategoryModel = mongoose.model('category', CategorySchema);
 
 module.exports = CategoryModel;

@@ -5,8 +5,8 @@ const ROLES = ["user", "admin"];
 
 const UserSchema = mongoose.Schema(
   {
-    username: String,
-    password: String,
+    username: { type: String, require: true },
+    password: { type: String, require: true },
     fullName: String,
     email: String,
     phone: String,
