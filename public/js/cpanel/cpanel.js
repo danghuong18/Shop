@@ -44,7 +44,8 @@ function notification(prepend_class=null, status="success", action=null, delay=5
 
         let notif = `<div class="notification notification--${status}">${notif_text}</div>`;
         $(".notification").remove();
-        $(prepend_class).prepend(notif);
+        // let current_notif = $(prepend_class).prepend(notif);
+        // current_notif.delay(4000).fadeOut();
         $(".notification").delay(4000).fadeOut();
     }
 }

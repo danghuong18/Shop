@@ -8,7 +8,7 @@ async function GetListFile(list_id = []){
     list_file = []
     try {
         let brands = await BrandModel.find({_id: list_id});
-        if(brands){
+        if(brands.length > 0){
             for(x in brands){
                 list_file.push(brands[x].logo);
             }
@@ -45,12 +45,13 @@ const storage = multer.diskStorage({
 const upload = multer({storage: storage});
 
 router.get("/", async (req, res)=> {
-    let sort = req.query.sort;
-    let limit = req.query.limit*1;
-    let skip = (req.query.page - 1)*limit;
-    let pages = 1;
-    let sortby = {};
-    if(sort != "" && sort != undefined){
+    try {
+        let sort = req.query.sort;
+        let limit = req.query.limit*1;
+        let skip = (req.query.page - 1)*limit;
+        let pages = 1;
+        let sortby = {};
+    
         if(sort == "name-az"){
             sortby = {brandName: 1};
         }else if(sort == "name-za"){
@@ -60,9 +61,7 @@ router.get("/", async (req, res)=> {
         }else if(sort == "date-asc"){
             sortby = {createDate: 1};
         }
-    }
 
-    try {
         let brands = await BrandModel.find({}).skip(skip).limit(limit).sort(sortby);
         let all_brands = await BrandModel.find({});
         if(all_brands.length > 0){
@@ -71,7 +70,7 @@ router.get("/", async (req, res)=> {
         if(brands.length > 0){
             res.json({message: "Succcessed", status: 200, data: brands, pages: pages});
         }else{
-            res.json({message: "There are no brands to display.", status: 400});
+            res.json({message: "Không có thương hiệu nào để hiển thị cả.", status: 400});
         }
 
     } catch(error){
@@ -83,27 +82,29 @@ router.post("/create", async (req, res)=>{
     upload.single("brandlogo")(req, res, async (err)=>{
         if (err) {
             if(err == "ErrorType"){
-                res.json({message: "File upload not support", status: 406});
+                res.json({message: "Hình ảnh tải lên không hỗ trợ, phải là file *.png, *.jpg, *.gif.", status: 406});
             }else{
-                res.json({message: "Error when upload file logo's brand", status: 400});
+                res.json({message: "Lỗi trong quá trình upload hình ảnh.", status: 400});
             }
         }else{
             if(req.file){
-                let title = req.body.title;
-                let createDate = Date();
                 let logo = "/public/upload/" + req.file.filename;
                 try {
+                    let title = req.body.title;
+                    let createDate = Date();
                     let create = await BrandModel.create({brandName: title, logo: logo, createDate: createDate, updateDate: createDate});
                     if(create){
-                        res.json({message: "Succcessed", status: 200});
+                        res.json({message: "Tạo thương hiệu thành công!", status: 200});
                     }else{
-                        res.json({message: "Can't create brand", status: 400});
+                        DeleteFile([logo]);
+                        res.json({message: "Không thể tạo thương hiệu.", status: 400});
                     }
                 } catch (error) {
+                    DeleteFile([logo]);
                     res.json({message: "Server error!", status: 500, error});
                 }
             }else{
-                res.json({message: "No file upload!", status: 500});
+                res.json({message: "Lỗi upload hình, vui lòng thử lại.", status: 500});
             }
         }
       });
@@ -111,63 +112,66 @@ router.post("/create", async (req, res)=>{
 });
 
 router.post("/edit", async (req, res)=>{
-    upload(req, res, async (err)=>{
+    upload.single("brandlogo")(req, res, async (err)=>{
         if (err) {
             if(err == "ErrorType"){
-                res.json({message: "File upload not support", status: 406});
+                res.json({message: "Hình ảnh tải lên không hỗ trợ, phải là file *.png, *.jpg, *.gif.", status: 406});
             }else{
-                res.json({message: "Error when upload file logo's brand", status: 400});
+                res.json({message: "Lỗi trong quá trình upload hình ảnh.", status: 400});
             }
         }else{
-            let updateDate = Date();
-            let id = req.body.id;
-            let title = req.body.title;
-            let list_file = GetListFile([id]);
+            let logo = "";
+
             if(req.file) {
-                let logo = "/public/upload/" + req.file.filename;
-                try {
-                    let edit = await BrandModel.updateOne({_id: id}, {$set: { brandName: title, logo: logo, updateDate: updateDate}});
-                    if(edit){
-                        DeleteFile(list_file);
-                        res.json({message: "Succcessed", status: 200});
-                    }else{
-                        res.json({message: "Can't edit brand", status: 400});
-                    }
-                } catch (error) {
-                    res.json({message: "Server error!", status: 500, error});
-                }
-            } else {
-                try {
-                    let edit = await BrandModel.updateOne({_id: id}, {$set: { brandName: title, updateDate: updateDate}});
-                    if(edit){
-                        res.json({message: "Succcessed", status: 200});
-                    }else{
-                        res.json({message: "Can't edit brand", status: 400});
-                    }
-                } catch (error) {
-                    res.json({message: "Server error!", status: 500, error});
-                }
+                logo = "/public/upload/" + req.file.filename;
             }
 
+            try {
+
+                let updateDate = Date();
+                let id = req.body.id;
+                let title = req.body.title;
+                let list_file = await GetListFile([id]);
+                let set_data = {};
+
+                if(req.file) {
+                    set_data = { brandName: title, logo: logo, updateDate: updateDate};
+                }else{
+                    set_data = { brandName: title, updateDate: updateDate};
+                }
+
+                let edit = await BrandModel.updateOne({_id: id}, {$set: set_data});
+                if(edit.ok){
+                    DeleteFile(list_file); //Delete image has replaced
+                    res.json({message: "Sửa thương hiệu thành công!", status: 200});
+                }else{
+                    if(req.file) {
+                        DeleteFile([logo]); //Delete image has uploaded
+                    }
+                    res.json({message: "Không thể sửa thương hiệu.", status: 400});
+                }
+            } catch (error) {
+                if(req.file) {
+                    DeleteFile([logo]); //Delete image has uploaded
+                }
+                res.json({message: "Server error!", status: 500, error});
+            }
         }
       });
 });
 
 router.post("/delete", async (req, res)=>{
-    let list_item = req.body['list_item[]'];
-    let list_file = GetListFile(list_item);
 
     try {
+        let list_item = req.body['list_item[]'];
+        let list_file = await GetListFile(list_item);
+
         let delete_item = await BrandModel.deleteMany({_id: list_item});
-        if(delete_item){
-            if(delete_item.deletedCount > 0){
-                DeleteFile(list_file);
-                res.json({message: "Succcessed", status: 200});
-            }else{
-                res.json({message: "Can't delete brand", status: 400});
-            }
+        if(delete_item.deletedCount > 0){
+            DeleteFile(list_file);
+            res.json({message: "Xoá thương hiệu thành công!", status: 200});
         }else{
-            res.json({message: "Can't delete brand", status: 400});
+            res.json({message: "Không thể xoá thương hiệu.", status: 400});
         }
     } catch (error) {
         res.json({message: "Server error!", status: 500, error});

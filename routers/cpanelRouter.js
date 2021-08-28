@@ -6,6 +6,7 @@ const BlackListModel = require("../model/blackListModel");
 const { checkLogin } = require("../middleWare/checkAuth");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const ProductCodeModel = require("../model/productCodeModel");
 
 // app.set("view engine", "ejs");
 
@@ -39,16 +40,38 @@ router.get("/product/create", async (req, res)=>{
     let categories = await CategoryModel.find({}).sort({categoryName: 1});
     let brands = await BrandModel.find({}).sort({brandName: 1});
     res.render("pages/cpanel/create-product", {
+        isEdit: false,
         name: "Tạo sản phẩm",
         categories: categories,
         brands: brands
     });
 });
 
-router.get("/product/edit/:id", (req, res)=>{
-    res.render("pages/cpanel/edit-product", {
-        name: "Sửa sản phẩm"
-    });
+router.get("/product/:id", async (req, res)=>{
+    try {
+        let product = await ProductCodeModel.findOne({_id: req.params.id}).populate("productID");
+        
+        if(product){
+            let categories = await CategoryModel.find({}).sort({categoryName: 1});
+            let brands = await BrandModel.find({}).sort({brandName: 1});
+            res.render("pages/cpanel/create-product", {
+                isEdit: true,
+                name: "Sửa sản phẩm",
+                categories: categories,
+                brands: brands,
+                product: product
+            });
+        }else{
+            res.render("pages/cpanel/not-found", {
+                name: "Không tìm thấy trang"
+            });
+        }
+        
+    } catch (error) {
+        res.render("pages/cpanel/not-found", {
+            name: "Không tìm thấy trang"
+        });
+    }
 });
 
 router.get("/classify-product", (req, res)=>{
@@ -61,6 +84,12 @@ router.get("/order", (req, res)=>{
 
 router.get("/login", (req, res)=>{
     res.render("pages/cpanel/login");
+});
+
+router.get("/:id", (req, res)=>{
+    res.render("pages/cpanel/not-found", {
+        name: "Không tìm thấy trang"
+    });
 });
 
 module.exports = router;

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <%- include('../../components/cpanel/head.ejs'); %>
-    <title><%= name %> | Admin Cpanel</title>
+    <title><%= name %> <%= isEdit? product.productName : '' %> | Admin Cpanel</title>
 </head>
 <body>
     <div class="wrapper">
@@ -10,25 +10,43 @@
         <%- include('../../components/cpanel/sidebar.ejs'); %>
         <section class="main-body">
             <div class="main-body__container">
-                <form action="#" id="create-product" method="post" enctype="multipart/form-data">
+                <form action="#" id="<%= isEdit? 'edit-product' : 'create-product' %>" method="post" enctype="multipart/form-data">
                     <div class="main-body__container__panel">
                         <div class="split">
+                            <% if(isEdit) { %>
+                                <div class="form-group" style="display: none">
+                                    <label>
+                                        Product ID
+                                    </label>
+                                    <input type="text" name="product_id" class="product-id" value="<%= product._id %>" readonly>
+                                </div>
+                            <% } %>
                             <div class="form-group">
                                 <label>
                                     Tên sản phẩm
                                 </label>
-                                <input type="text" name="title" class="product-name" placeholder="Nhập vào tên sản phẩm" required>
+                                <input type="text" name="title" class="product-name"  value="<%= isEdit? product.productName : '' %>" placeholder="Nhập vào tên sản phẩm" required>
                             </div>
                             <div class="form-group">
                                 <label>
                                     Chi tiết sản phẩm
                                 </label>
                                 <ul class="product-details">
-                                    <li class="product-details-item" id="detail-1">
-                                        <input type="text" name="detail-title" class="product-details-item-title" placeholder="Tiêu đề">
-                                        <input type="text" name="detail-content" class="product-details-item-content" placeholder="Nội dung">
-                                        <a href="#" class="minus-button" onclick="RemoveDetail(1)">-</a>
-                                    </li>
+                                    <% if(isEdit) { 
+                                        for(x in product.detail) { %>
+                                            <li class="product-details-item" id="detail-<%= x %>">
+                                                <input type="text" name="detail-title" class="product-details-item-title" value="<%= product.detail[x].title %>"  placeholder="Tiêu đề">
+                                                <input type="text" name="detail-content" class="product-details-item-content" value="<%= product.detail[x].content %>"  placeholder="Nội dung">
+                                                <a href="#" class="minus-button" onclick="RemoveDetail(<%= x %>)">-</a>
+                                            </li>
+                                    <% }
+                                    } else { %>
+                                        <li class="product-details-item" id="detail-1">
+                                            <input type="text" name="detail-title" class="product-details-item-title" placeholder="Tiêu đề">
+                                            <input type="text" name="detail-content" class="product-details-item-content" placeholder="Nội dung">
+                                            <a href="#" class="minus-button" onclick="RemoveDetail(1)">-</a>
+                                        </li>
+                                    <% } %>
                                 </ul>
                                 <a href="#" class="plus-button">+</a>
                             </div>
@@ -37,6 +55,19 @@
                                     Hình sản phẩm
                                 </label>
                                 <input type="file" name="product-image" class="product-image"  accept="image/gif, image/jpeg, image/png" multiple required>
+
+                                <% if(isEdit) { %>
+                                    <% if(product.listImg.length > 0) { %>
+                                        <ul class="product-images">
+                                        <% for(x in product.listImg) { %>
+                                            <li class="product-images-item" id="image-<%= x %>">
+                                                <img src="<%= product.listImg[x] %>">
+                                                <a title="Xoá ảnh này"><span class="delete-image-button" id="<%= x %>">X</span></a>
+                                            </li>
+                                        <% } %>
+                                        </ul>
+                                    <% } %>
+                                <% } %>
                             </div>
                         </div>
                         <div class="split">
@@ -46,7 +77,7 @@
                                 </label>
                                 <select name="category" class="product-category" required multiple>
                                     <% categories.forEach(function(category) {%>
-                                        <option value="<%= category._id %>"><%= category.categoryName %></option>
+                                        <option value="<%= category._id %>" <%= isEdit? (product.categoryID.includes(category._id) ? 'selected': '') : '' %>><%= category.categoryName %></option>
                                     <% }); %>
                                 </select>
                             </div>
@@ -56,7 +87,7 @@
                                 </label>
                                 <select name="brand" required class="product-brand" required>
                                     <% brands.forEach(function(brand) {%>
-                                        <option value="<%= brand._id %>"><%= brand.brandName %></option>
+                                        <option value="<%= brand._id %>" <%= isEdit? (product.brand.includes(brand._id) ? 'selected': '') : '' %>><%= brand.brandName %></option>
                                     <% }); %>
                                 </select>
                             </div>
@@ -64,27 +95,114 @@
                                 <label>
                                     Mô tả sản phẩm
                                 </label>
-                                <textarea name="description" class="product-description" cols="20" rows="2" placeholder="Nhập vào mô tả sản phẩm" required></textarea>
+                                <textarea name="description" class="product-description" cols="20" rows="5" placeholder="Nhập vào mô tả sản phẩm" required><%= isEdit? product.description : '' %></textarea>
                             </div>
                         </div>
                     </div>
-                    <a href="#" class="submit-button" onclick="add()">Đăng Sản Phẩm</a>
+                    <a href="#" class="submit-button" onclick="<% if(isEdit) { %>edit('<%= product._id %>')<% }else { %>add()<% } %>"><%= isEdit? 'Lưu Sản Phẩm' : 'Đăng Sản Phẩm' %></a>
                 </form>
             </div>
+
+            <% if(isEdit) { %>
+                <div class="main-body__container">
+                    <div class="main-body__container__action">
+                        <div class="main-body__container__action--left">
+                            <a class="create-item" onclick="action()">Tạo item</a>
+                            <a class="uncheck-item">Bỏ chọn</a>
+                        </div>
+                        <div class="main-body__container__action--right">
+                            <div class="sort">
+                                <select class="sort__task">
+                                    <option value="">Sắp xếp theo</option>
+                                    <option value="price-desc">Giá [Cao - Thấp]</option>
+                                    <option value="price-asc">Giá [Thấp - Cao]</option>
+                                    <option value="quantity-desc">Số Lượng [Cao - Thấp]</option>
+                                    <option value="quantity-asc">Số Lượng [Thấp - Cao]</option>
+                                    <option value="date-desc">Mới nhất</option>
+                                    <option value="date-asc">Cũ nhất</option>
+                                </select>
+                            </div>
+                            <div class="action">
+                                <select class="action__task">
+                                    <option value="">Hành động</option>
+                                    <option value="delete">Xoá</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="main-body__container__list">
+                        <% if(product.productID.length > 0) { %>
+                            <% for(x in product.productID) { %>
+                                <li class="main-body__container__item" id="item-<%= product.productID[x]._id %>">
+                                    <input type="checkbox" class="checkbox-item" value="<%= product.productID[x]._id %>">
+                                    <div class="body-item inline">
+                                        <span class="item-image">
+                                            <img src="<%= product.productID[x].thumb %>">
+                                        </span>
+                                        <div class="body-item__info">
+                                            <span class="body-item__details">
+                                                <% if(product.productID[x].quantity != undefined && product.productID[x].quantity != "") { %>
+                                                    <span class="body-item__details-amount">
+                                                        <span class="title">Số lượng:</span>
+                                                        <span class="desc"><%= product.productID[x].quantity %></span>
+                                                    </span>
+                                                <% } %>
+    
+                                                <% if(product.productID[x].color != undefined && product.productID[x].color != "") { %>
+                                                    <span class="body-item__details-color">
+                                                        <span class="title">Màu sắc:</span>
+                                                        <span class="desc"><%= product.productID[x].color %></span>
+                                                    </span>
+                                                <% } %>
+    
+                                                <% if(product.productID[x].size != undefined && product.productID[x].size != "") { %>
+                                                    <span class="body-item__details-size">
+                                                        <span class="title">Size:</span>
+                                                        <span class="desc"><%= product.productID[x].size %></span>
+                                                    </span>
+                                                <% } %>
+                                            </span>
+                                            <span class="body-item__details">
+                                                <span class="item-price"><%= (product.productID[x].price).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'}) %></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="action-item">
+                                        <span class="action-item__delete" onclick="action('delete', '<%= product.productID[x]._id %>')">Xoá</span>
+                                        <span class="action-item__edit" onclick="action('edit', '<%= product.productID[x]._id %>')">Sửa</span>
+                                    </div>
+                                </li>
+                            <% } %>
+                        <% } else { %>
+
+                        <% } %>
+                    </ul>
+                    <div class="pagination">
+                        <ul class="pagination__list">
+                            <li class="pagination__item active" id="1">1</li>
+                        </ul>
+                        <select class="pagination__selection">
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                            <option value="40">40</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+                </div>
+            <% } %>
         </section>
 
         <div class="modal">
             <div class="modal__container">
                 <div class="modal__container__content">
                     <div class="modal-header">
-                        <span class="modal-title">Tiêu đề thôi mà</span>
+                        <span class="modal-title">Tiêu đề</span>
                         <span class="modal-close">x</span>
                     </div>
                     <div class="modal-body">
-                        Tôi chỉ test thôi ấy mà!
-                        Tôi chỉ test thôi ấy mà!
-                        Tôi chỉ test thôi ấy mà!
-                        Tôi chỉ test thôi ấy mà!
+                        Nội dung
                     </div>
                     <div class="modal-footer">
                         <span class="modal-button modal-button-close">Đóng</span>
@@ -97,6 +215,6 @@
         </div>
     </div>
     <%- include('../../components/cpanel/js_footer.ejs'); %>
-    <script src="../../public/js/cpanel/product.js"></script>
+    <script src="/public/js/cpanel/product.js"></script>
 </body>
 </html>

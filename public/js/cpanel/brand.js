@@ -178,7 +178,7 @@ function action(action="create", item_id=null){
         let body = `<form action="#" id="create-brand" method="post" enctype="multipart/form-data">
                         <div class="form-group" style="display: none">
                             <label>ID</label>
-                            <input type="text" name="id" class="id-brand" placeholder="ID thương hiệu" value="${item_id}">
+                            <input type="text" name="id" value="${item_id}" readonly>
                         </div>
                         <div class="form-group">
                             <label>Tên thương hiệu</label>
