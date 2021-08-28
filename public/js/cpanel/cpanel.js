@@ -31,22 +31,26 @@ function modal(isOpen=true, title=null, body=null, button=null, buttonfunc=null)
     }
 }
 
-function notification(prepend_class=null, status="success", action=null, delay=5000){
+function notification(prepend_class=null, status=200, action=null, delay=5000){
     if(prepend_class!=null && status!=null && action!=null ){
-        let notif_text = "";
-        if(status=="success"){
-            notif_text = action + " thành công!"
-        }else if(status=="warning") {
-            notif_text = action + " chưa thành công!"
-        }else if(status=="error") {
-            notif_text = action + " xảy ra lỗi!"
+        let notif_class = "";
+        if(status == 200) {
+            notif_class = "success";
+        }else if(status == 500){
+            notif_class = "error";
+        }else {
+            notif_class = "warning";
         }
 
-        let notif = `<div class="notification notification--${status}">${notif_text}</div>`;
-        $(".notification").remove();
-        // let current_notif = $(prepend_class).prepend(notif);
-        // current_notif.delay(4000).fadeOut();
-        $(".notification").delay(4000).fadeOut();
+        let id = Date.now();
+        let notif = `<div class="notification notification--${notif_class}" id="notif-${id}">${action}</div>`;
+
+        $(prepend_class).prepend(notif);
+        $("#notif-" + id).delay(delay).fadeOut();
+
+        setTimeout(function(){
+            $("#notif-" + id).remove();
+        }, delay + 1000);
     }
 }
 

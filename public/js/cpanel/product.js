@@ -6,7 +6,6 @@ function RemoveDetail(id){
 }
 
 function add(){
-    let product_name = $(".product-name").val();
     var createForm = $("#create-product");
     var formData = new FormData(createForm[0]);
     
@@ -18,15 +17,13 @@ function add(){
         data: formData
     }).then((data)=>{
         if(data.status == 200){
-            notification(".main-body__container", "success", `Tạo sản phẩm "${product_name}"`);
-            window.location.href = "/cpanel/product/" + data.data;
+            notification("#form-body", data.status, data.message);
+            setTimeout(function(){
+                window.location.href = "/cpanel/product/" + data.data;
+            }, 3000);
 
-        }else if(data.status == 406){
-            notification(".main-body__container", "warning", `Lỗi format file upload, tạo sản phẩm "${product_name}"`);
-        }else if(data.status == 500){
-            notification(".main-body__container", "error", `Tạo sản phẩm "${product_name}"`);
         }else{
-            notification(".main-body__container", "warning", `Tạo sản phẩm "${product_name}"`);
+            notification("#form-body", data.status, data.message);
         }
     });
 }
@@ -44,12 +41,9 @@ function edit() {
     }).then((data)=>{
         console.log(data);
         if(data.status == 200){
-            // notification(".main-body__container", "success", `Sửa sản phẩm`);
-            // window.location.href = "/cpanel/product/" + data.data;
-        }else if(data.status == 500){
-            notification(".main-body__container", "error", `Server error!`);
+            notification("#form-body", data.status, data.message);
         }else{
-            notification(".main-body__container", "warning", `Sửa sản phẩm`);
+            notification("#form-body", data.status, data.message);
         }
     });
 }
@@ -65,13 +59,10 @@ function delete_product() {
                 product_id: product_id
             }
         }).then((data)=>{
-            console.log(data);
-            if(data.status == 200) {
-
-            } else if(data.status == 500){
-
+            if(data.status == 200){
+                notification("#list-body", data.status, data.message);
             }else{
-
+                notification("#list-body", data.status, data.message);
             }
         });
     }
@@ -89,14 +80,10 @@ function add_item() {
     }).then((data)=>{
         console.log(data);
         if(data.status == 200){
-            notification(".main-body__container", "success", `Tạo thương hiệu "${brand_name}"`);
-            reloadData(true);
-        }else if(data.status == 406){
-            notification(".main-body__container", "warning", `Lỗi format file upload, tạo thương hiệu "${brand_name}"`);
-        }else if(data.status == 500){
-            notification(".main-body__container", "error", `Tạo thương hiệu "${brand_name}"`);
+            notification("#list-body", data.status, data.message);
+            modal(false);
         }else{
-            notification(".main-body__container", "warning", `Tạo thương hiệu "${brand_name}"`);
+            notification(".modal-body", data.status, data.message);
         }
     });
 }
@@ -111,17 +98,13 @@ function edit_item(){
         contentType: false,
         data: formData
     }).then((data)=>{
-        console.log(data);
-        // if(data.status == 200){
-        //     notification(".main-body__container", "success", `Sửa thương hiệu "${brand_name}"`);
-        //     reloadData();
-        // }else if(data.status == 406){
-        //     notification(".main-body__container", "warning", `Lỗi format file upload, sửa thương hiệu "${brand_name}"`);
-        // }else{
-        //     notification(".main-body__container", "warning", `Sửa thương hiệu "${brand_name}"`);
-        // }
+        if(data.status == 200){
+            notification("#list-body", data.status, data.message);
+            modal(false);
+        }else{
+            notification(".modal-body", data.status, data.message);
+        }
     });
-    modal(false);
 }
 
 function delete_item(list_item=[]){
@@ -136,16 +119,14 @@ function delete_item(list_item=[]){
                 list_item: list_item
             }
         }).then((data)=>{
-            console.log(data);
-            if(data.status == 200) {
-
-            } else if(data.status == 500){
-
+            if(data.status == 200){
+                notification("#list-body", data.status, data.message);
             }else{
-
+                notification("#list-body", data.status, data.message);
             }
         });
     }
+    modal(false);
 }
 
 function delete_image(id){
@@ -161,13 +142,10 @@ function delete_image(id){
                 image_url: image_url
             }
         }).then((data)=>{
-            console.log(data);
             if(data.status == 200){
-    
-            }else if(data.status == 500){
-    
-            } else {
-    
+                notification("#form-body", data.status, data.message);
+            }else{
+                notification("#form-body", data.status, data.message);
             }
         });
     }

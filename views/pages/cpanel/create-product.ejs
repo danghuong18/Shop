@@ -9,7 +9,7 @@
         <%- include('../../components/cpanel/header.ejs'); %>
         <%- include('../../components/cpanel/sidebar.ejs'); %>
         <section class="main-body">
-            <div class="main-body__container">
+            <div class="main-body__container" id="form-body">
                 <form action="#" id="<%= isEdit? 'edit-product' : 'create-product' %>" method="post" enctype="multipart/form-data">
                     <div class="main-body__container__panel">
                         <div class="split">
@@ -104,7 +104,7 @@
             </div>
 
             <% if(isEdit) { %>
-                <div class="main-body__container">
+                <div class="main-body__container" id="list-body">
                     <div class="main-body__container__action">
                         <div class="main-body__container__action--left">
                             <a class="create-item" onclick="action()">Tạo item</a>

@@ -86,19 +86,18 @@ function add(){
             title: category_name
         }
     }).then((data)=>{
-        if(data.status != 200){
-            notification(".main-body__container", "warning", `Tạo danh mục "${category_name}"`);
-        }else{
-            notification(".main-body__container", "success", `Tạo danh mục "${category_name}"`);
+        if(data.status == 200){
+            notification(".main-body__container", data.status, data.message);
             reloadData(true);
+            modal(false);
+        }else{
+            notification(".modal-body", data.status, data.message);
         }
     });
-    modal(false);
 }
 
 function edit(item_id=null){
     if(item_id != null && item_id != undefined){
-        let category_name = $(`#item-${item_id} .body-item__title`)[0].innerText;
         let edit_category_name = $(".edit-category").val();
         $.ajax({
             url: "/category/edit",
@@ -108,14 +107,14 @@ function edit(item_id=null){
                 title: edit_category_name
             }
         }).then((data)=>{
-            if(data.status != 200){
-                notification(".main-body__container", "warning", `Sửa danh mục "${category_name}"`);
-            }else{
-                notification(".main-body__container", "success", `Sửa danh mục "${category_name}"`);
+            if(data.status == 200){
+                notification(".main-body__container", data.status, data.message);
                 reloadData();
+                modal(false);
+            }else{
+                notification(".modal-body", data.status, data.message);
             }
         });
-        modal(false);
     }
 }
 
@@ -136,11 +135,11 @@ function delete_item(list_item=[]){
                 list_item: list_item
             }
         }).then((data)=>{
-            if(data.status != 200){
-                notification(".main-body__container", "warning", `Xoá danh mục "${notif}"`);
-            }else{
-                notification(".main-body__container", "success", `Xoá danh mục "${notif}"`);
+            if(data.status == 200){
+                notification(".main-body__container", data.status, data.message);
                 reloadData(true);
+            }else{
+                notification(".main-body__container", data.status, data.message);
             }
         });
         modal(false);

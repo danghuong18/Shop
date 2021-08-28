@@ -81,7 +81,6 @@ function reloadData(isLoadPagination = false){
 }
 
 function add(){
-    let brand_name = $(".add-brand").val();
     var createForm = $("#create-brand");
     var formData = new FormData(createForm[0]);
     $.ajax({
@@ -92,25 +91,18 @@ function add(){
         data: formData
     }).then((data)=>{
         if(data.status == 200){
-            notification(".main-body__container", "success", `Tạo thương hiệu "${brand_name}"`);
+            notification(".main-body__container", data.status, status.message);
             reloadData(true);
-        }else if(data.status == 406){
-            notification(".main-body__container", "warning", `Lỗi format file upload, tạo thương hiệu "${brand_name}"`);
-        }else if(data.status == 500){
-            notification(".main-body__container", "error", `Tạo thương hiệu "${brand_name}"`);
+            modal(false);
         }else{
-            notification(".main-body__container", "warning", `Tạo thương hiệu "${brand_name}"`);
+            notification(".modal-body", data.status, status.message);
         }
     });
-    modal(false);
 }
 
 function edit(item_id=null){
     if(item_id != null && item_id != undefined){
-        let brand_name = $(`#item-${item_id} .body-item__title`)[0].innerText;
-        // let edit_brand_name = $(".edit-brand").val();
-        // let brand_name = $(".add-brand").val();
-        var createForm = $("#create-brand");
+        var createForm = $("#edit-brand");
         var formData = new FormData(createForm[0]);
         $.ajax({
             url: "/brand/edit",
@@ -120,15 +112,13 @@ function edit(item_id=null){
             data: formData
         }).then((data)=>{
             if(data.status == 200){
-                notification(".main-body__container", "success", `Sửa thương hiệu "${brand_name}"`);
+                notification(".main-body__container", data.status, data.message);
                 reloadData();
-            }else if(data.status == 406){
-                notification(".main-body__container", "warning", `Lỗi format file upload, sửa thương hiệu "${brand_name}"`);
+                modal(false);
             }else{
-                notification(".main-body__container", "warning", `Sửa thương hiệu "${brand_name}"`);
+                notification(".modal-body", data.status, data.message);
             }
         });
-        modal(false);
     }
 }
 
@@ -149,11 +139,11 @@ function delete_item(list_item=[]){
                 list_item: list_item
             }
         }).then((data)=>{
-            if(data.status != 200){
-                notification(".main-body__container", "warning", `Xoá thương hiệu "${notif}"`);
-            }else{
-                notification(".main-body__container", "success", `Xoá thương hiệu "${notif}"`);
+            if(data.status == 200){
+                notification(".main-body__container", data.status, data.message);
                 reloadData(true);
+            }else{
+                notification(".main-body__container", data.status, data.message);
             }
         });
         modal(false);
@@ -175,7 +165,7 @@ function action(action="create", item_id=null){
         modal(true, `Tạo thương hiệu`, body, `Tạo`, `add()`);
     }else if(action == "edit"){
         let brand_name = $(`#item-${item_id} .body-item__title`)[0].innerText;
-        let body = `<form action="#" id="create-brand" method="post" enctype="multipart/form-data">
+        let body = `<form action="#" id="edit-brand" method="post" enctype="multipart/form-data">
                         <div class="form-group" style="display: none">
                             <label>ID</label>
                             <input type="text" name="id" value="${item_id}" readonly>
