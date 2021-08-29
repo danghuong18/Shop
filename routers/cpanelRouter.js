@@ -39,7 +39,7 @@ router.get("/product", (req, res)=>{
 router.get("/product/create", async (req, res)=>{
     let categories = await CategoryModel.find({}).sort({categoryName: 1});
     let brands = await BrandModel.find({}).sort({brandName: 1});
-    res.render("pages/cpanel/create-product", {
+    res.render("pages/cpanel/ce-product", {
         isEdit: false,
         name: "Tạo sản phẩm",
         categories: categories,
@@ -54,7 +54,7 @@ router.get("/product/:id", async (req, res)=>{
         if(product){
             let categories = await CategoryModel.find({}).sort({categoryName: 1});
             let brands = await BrandModel.find({}).sort({brandName: 1});
-            res.render("pages/cpanel/create-product", {
+            res.render("pages/cpanel/ce-product", {
                 isEdit: true,
                 name: "Sửa sản phẩm",
                 categories: categories,

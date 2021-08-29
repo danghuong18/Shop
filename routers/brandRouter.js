@@ -92,12 +92,19 @@ router.post("/create", async (req, res)=>{
                 try {
                     let title = req.body.title;
                     let createDate = Date();
-                    let create = await BrandModel.create({brandName: title, logo: logo, createDate: createDate, updateDate: createDate});
-                    if(create){
-                        res.json({message: "Tạo thương hiệu thành công!", status: 200});
-                    }else{
+
+                    let check_exist =  await BrandModel.findOne({brandName: title});
+                    if(check_exist){
                         DeleteFile([logo]);
-                        res.json({message: "Không thể tạo thương hiệu.", status: 400});
+                        res.json({message: "Thương hiệu đã tồn tại, vui lòng đặt lại tên khác.", status: 400});
+                    }else{
+                        let create = await BrandModel.create({brandName: title, logo: logo, createDate: createDate, updateDate: createDate});
+                        if(create){
+                            res.json({message: "Tạo thương hiệu thành công!", status: 200});
+                        }else{
+                            DeleteFile([logo]);
+                            res.json({message: "Không thể tạo thương hiệu.", status: 400});
+                        }
                     }
                 } catch (error) {
                     DeleteFile([logo]);
@@ -134,21 +141,49 @@ router.post("/edit", async (req, res)=>{
                 let list_file = await GetListFile([id]);
                 let set_data = {};
 
-                if(req.file) {
-                    set_data = { brandName: title, logo: logo, updateDate: updateDate};
-                }else{
-                    set_data = { brandName: title, updateDate: updateDate};
-                }
+                let check_exist = await BrandModel.findOne({brandName: title});
 
-                let edit = await BrandModel.updateOne({_id: id}, {$set: set_data});
-                if(edit.ok){
-                    DeleteFile(list_file); //Delete image has replaced
-                    res.json({message: "Sửa thương hiệu thành công!", status: 200});
-                }else{
+                if(check_exist){
                     if(req.file) {
                         DeleteFile([logo]); //Delete image has uploaded
                     }
-                    res.json({message: "Không thể sửa thương hiệu.", status: 400});
+                    if(check_exist._id != id){
+                        res.json({message: "Thương hiệu đã tồn tại, vui lòng đặt lại tên khác.", status: 400});
+                    }else{
+                        if(req.file) {
+                            set_data = {logo: logo, updateDate: updateDate};
+                            let edit = await BrandModel.updateOne({_id: id}, {$set: set_data});
+                            if(edit.ok){
+                                DeleteFile(list_file); //Delete image has replaced
+                                res.json({message: "Sửa thương hiệu thành công!", status: 200});
+                            }else{
+                                DeleteFile([logo]); //Delete image has uploaded
+                                res.json({message: "Không thể sửa thương hiệu.", status: 400});
+                            }
+                        }else{
+                            res.json({message: "Tên danh mục trùng với tên ban đầu.", status: 400});
+                        }
+                    }
+
+                }else{
+                    if(req.file) {
+                        set_data = { brandName: title, logo: logo, updateDate: updateDate};
+                    }else{
+                        set_data = { brandName: title, updateDate: updateDate};
+                    }
+    
+                    let edit = await BrandModel.updateOne({_id: id}, {$set: set_data});
+                    if(edit.ok){
+                        if(req.file) {
+                            DeleteFile(list_file); //Delete image has replaced
+                        }
+                        res.json({message: "Sửa thương hiệu thành công!", status: 200});
+                    }else{
+                        if(req.file) {
+                            DeleteFile([logo]); //Delete image has uploaded
+                        }
+                        res.json({message: "Không thể sửa thương hiệu.", status: 400});
+                    }
                 }
             } catch (error) {
                 if(req.file) {

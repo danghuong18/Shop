@@ -409,6 +409,7 @@ body {
 }
 .main-body__container .form-group .plus-button,
 .main-body__container .form-group .minus-button {
+  cursor: pointer;
   height: 3.5rem;
   font-weight: 600;
   display: flex;
@@ -474,6 +475,7 @@ body {
   background-color: #fe5e3a;
 }
 .main-body__container .submit-button {
+  cursor: pointer;
   width: 50%;
   padding: 10px;
   display: flex;
@@ -565,8 +567,13 @@ body {
   flex-direction: row;
 }
 .main-body__container__item .body-item__details-image .item-image {
-  width: 3rem;
-  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  width: 5rem;
+  height: 5rem;
   overflow: hidden;
   border: 1px solid #d8d8d8;
   margin-right: 0.5rem;

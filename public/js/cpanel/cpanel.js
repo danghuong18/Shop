@@ -170,3 +170,26 @@ $(".modal-close").on("click", function(){
 $(".modal-button-close").on("click", function(){
     modal(false);
 });
+
+$(document).ready(()=>{
+    let sidebar_item = $(".sidebar__item");
+    let dropdown_item = $(".header__item-bars .dropdown-item");
+    var current_url = window.location.href;
+    sidebar_item.each(function(i)
+    {
+        let url = $(this.getElementsByTagName("a")[0]).attr("href");
+        if(current_url.includes(url)){
+            sidebar_item.removeClass("active");
+            $(this).addClass("active");
+        }
+     });
+
+     dropdown_item.each(function(i)
+     {
+         let url = $(this.getElementsByTagName("a")[0]).attr("href");
+         if(current_url.includes(url)){
+            dropdown_item.removeClass("active");
+             $(this).addClass("active");
+         }
+      });
+});

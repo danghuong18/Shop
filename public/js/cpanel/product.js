@@ -1,251 +1,186 @@
-function RemoveDetail(id){
-    $("#detail-" + id).delay(200).fadeOut();
-    setTimeout(function(){
-        $("#detail-" + id).remove();
-    }, 1000);
-}
-
-function add(){
-    var createForm = $("#create-product");
-    var formData = new FormData(createForm[0]);
-    
+function getList(limit, page, isLoadPagination = false){
+    let sort = $(".sort__task").val();
     $.ajax({
-        url: "/product/create",
-        type: "POST",
-        processData: false,
-        contentType: false,
-        data: formData
+        url: "/product?limit=" + limit + "&page=" + page + "&sort=" + sort,
+        type: "GET"
     }).then((data)=>{
         if(data.status == 200){
-            notification("#form-body", data.status, data.message);
-            setTimeout(function(){
-                window.location.href = "/cpanel/product/" + data.data;
-            }, 3000);
+            let list = ``
 
+            for(x in data.data){
+                let category = ``
+                let list_image = ``
+
+                if(data.data[x].categoryID){
+                    for(i in data.data[x].categoryID){
+                        category += data.data[x].categoryID[i].categoryName + ((data.data[x].categoryID.length - i != 1)? ", ": "");
+                    }
+                }
+
+                if(data.data[x].listImg){
+                    for(i in data.data[x].listImg){
+                        list_image += `<li class="item-image">
+                                            <img src="${data.data[x].listImg[i]}">
+                                        </li>`;
+                    }
+                }
+
+                list += `
+                <li class="main-body__container__item" id="item-${data.data[x]._id}">
+                    <input type="checkbox" class="checkbox-item" value="${data.data[x]._id}">
+                    <div class="body-item">
+                        <a href="/cpanel/product/${data.data[x]._id}" class="body-item__title">
+                            ${data.data[x].productName}
+                        </a>
+                        <div class="body-item__info">
+                            <span class="body-item__details">
+                                <span class="body-item__details-category">
+                                    <span class="title">Danh mục:</span>
+                                    <span class="desc">${category}</span>
+                                </span>
+                                <span class="body-item__details-brand">
+                                    <span class="title">Nhãn hiệu:</span>
+                                    <span class="desc">${data.data[x].brand.brandName}</span>
+                                </span>
+                            </span>
+                            <span class="body-item__details body-item__details-image">
+                                <ul class="list-image">
+                                    ${list_image}
+                                </ul>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="action-item">
+                        <span class="action-item__delete" onclick="action('delete','${data.data[x]._id}')">Xoá</span>
+                        <span class="action-item__edit" onclick="edit('${data.data[x]._id}')">Sửa</span>
+                    </div>
+                </li>`
+            }
+
+            let script = `
+            <script>
+                $("input.checkbox-item[type='checkbox']").on("click", function(i){
+                    let item_id = $(this).val();
+                    if($("#item-" + item_id).hasClass("checked")){
+                        $("#item-" + item_id).removeClass("checked");
+                    }else{
+                        $("#item-" + item_id).addClass("checked");
+                    }
+                });
+            </script>`;
+
+            if(isLoadPagination){
+                let pagination =``;
+                let current_page = ($(".pagination__item.active").attr("id") != undefined)? $(".pagination__item.active").attr("id") : 1;
+                for(x = 1; x <= data.pages; x++){
+                    pagination += `<li class="pagination__item ${x==current_page?"active":""}" id="${x}">${x}</li>`
+                }
+
+                let pagination_script = `
+                <script>
+                    $(".pagination__item").on("click", function(){
+                        let current_id = $(".pagination__item.active").prop("id");
+                        let this_id =  $(this).prop("id");
+                        if(current_id != this_id) {
+                            $(".pagination__item").removeClass("active");
+                            $(this).addClass("active");
+                            reloadData();
+                        }
+                    });
+                </script>`;
+                $(".pagination__list").html(pagination);
+                $(".pagination__list").append(pagination_script);
+            }
+
+            $(".main-body__container__list").html(list)
+            $(".main-body__container__list").append(script);
+        }else if (data.status == 400){
+            let list = `
+            <li class="main-body__container__item no-item">
+                Không có sản phẩm nào để hiển thị ở đây cả!
+            </li>`;
+            $(".main-body__container__list").html(list);
         }else{
-            notification("#form-body", data.status, data.message);
+            console.log(data);
         }
-    });
+    })
 }
 
-function edit() {
-    var createForm = $("#edit-product");
-    var formData = new FormData(createForm[0]);
+function reloadData(isLoadPagination = false){
+    let current_page = ($(".pagination__item.active").attr("id") != undefined)? $(".pagination__item.active").attr("id") : 1;
     
-    $.ajax({
-        url: "/product/edit",
-        type: "POST",
-        processData: false,
-        contentType: false,
-        data: formData
-    }).then((data)=>{
-        console.log(data);
-        if(data.status == 200){
-            notification("#form-body", data.status, data.message);
-        }else{
-            notification("#form-body", data.status, data.message);
-        }
-    });
+    let limit = $(".pagination__selection").val();
+    getList(limit, current_page, isLoadPagination);
 }
 
-function delete_product() {
-    let product_id = ($(".product-id").val() != undefined) ? $(".product-id").val() : "";
+function edit(id) {
+    if(id != undefined && id != ""){
+        window.location.href = "/cpanel/product/" + id;
+    }
+}
 
-    if(product_id != "") {
+function delete_product(list_item = []) {
+    if(list_item && list_item != undefined && list_item != "") {
         $.ajax({
             url: "/product/delete",
             type: "POST",
             data: {
-                product_id: product_id
+                list_product: list_item
             }
         }).then((data)=>{
             if(data.status == 200){
-                notification("#list-body", data.status, data.message);
+                notification(".main-body__container", data.status, data.message);
+                reloadData(true);
+                modal(false);
             }else{
-                notification("#list-body", data.status, data.message);
-            }
-        });
-    }
-}
-
-function add_item() {
-    var createForm = $("#create-product-item");
-    var formData = new FormData(createForm[0]);
-    $.ajax({
-        url: "/product/create-product-item",
-        type: "POST",
-        processData: false,
-        contentType: false,
-        data: formData
-    }).then((data)=>{
-        console.log(data);
-        if(data.status == 200){
-            notification("#list-body", data.status, data.message);
-            modal(false);
-        }else{
-            notification(".modal-body", data.status, data.message);
-        }
-    });
-}
-
-function edit_item(){
-    var createForm = $("#edit-product-item");
-    var formData = new FormData(createForm[0]);
-    $.ajax({
-        url: "/product/edit-product-item",
-        type: "POST",
-        processData: false,
-        contentType: false,
-        data: formData
-    }).then((data)=>{
-        if(data.status == 200){
-            notification("#list-body", data.status, data.message);
-            modal(false);
-        }else{
-            notification(".modal-body", data.status, data.message);
-        }
-    });
-}
-
-function delete_item(list_item=[]){
-    let product_id = ($(".product-id").val() != undefined) ? $(".product-id").val() : "";
-
-    if(product_id != "") {
-        $.ajax({
-            url: "/product/delete-product-item",
-            type: "POST",
-            data: {
-                product_id: product_id,
-                list_item: list_item
-            }
-        }).then((data)=>{
-            if(data.status == 200){
-                notification("#list-body", data.status, data.message);
-            }else{
-                notification("#list-body", data.status, data.message);
-            }
-        });
-    }
-    modal(false);
-}
-
-function delete_image(id){
-    let product_id = ($(".product-id").val() != undefined) ? $(".product-id").val() : "";
-    let image_url = $("#image-" + id + " img").attr("src");
-
-    if(product_id != "" && image_url ) {
-        $.ajax({
-            url: "/product/delete-image",
-            type: "POST",
-            data: {
-                product_id: product_id,
-                image_url: image_url
-            }
-        }).then((data)=>{
-            if(data.status == 200){
-                notification("#form-body", data.status, data.message);
-            }else{
-                notification("#form-body", data.status, data.message);
+                notification(".main-body__container", data.status, data.message);
             }
         });
     }
 }
 
 function action(action="create", item_id=null){
-    let product_id = ($(".product-id").val() != undefined) ? $(".product-id").val() : "";
-    if(action == "create"){
-        let body = `<form action="#" id="create-product-item" method="post" enctype="multipart/form-data">
-                        <div class="form-group" style="display: none">
-                            <label>Product ID</label>
-                            <input type="text" name="product_id" value="${product_id}" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label>Màu sắc sản phẩm</label>
-                            <input type="text" name="color" class="color-product-item" placeholder="Nhập vào màu sắc sản phẩm">
-                        </div>
-                        <div class="form-group">
-                            <label>Size sản phẩm (Quần áo: S M L XL, Giày dép: 38, 39, 40...)</label>
-                            <input type="text" name="size" class="size-product-item" placeholder="Nhập vào size sản phẩm">
-                        </div>
-                        <div class="form-group">
-                            <label>Giá sản phẩm (VNĐ)</label>
-                            <input type="number" name="price" min="0" step="10000" oninput="this.value = 
-                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="price-product-item" placeholder="Nhập vào giá sản phẩm">
-                        </div>
-                        <div class="form-group">
-                            <label>Số lượng</label>
-                            <input type="number" name="quantity" min="0" step="5" oninput="this.value = 
-                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="quantity-product-item" placeholder="Nhập vào số lượng sản phẩm">
-                        </div>
-                        <div class="form-group">
-                            <label>Hình sản phẩm</label>
-                            <input type="file" name="thumbnail-product-item" class="thumbnail-product-item" accept="image/gif, image/jpeg, image/png">
-                        </div>
-                    </form>`;
-        modal(true, `Tạo item sản phẩm`, body, `Tạo`, `add_item()`);
-    }else if(action == "edit"){
-        $.ajax({
-            url: "/product/item/" + item_id,
-            type: "GET"
-        }).then((data)=>{
-            if(data.status == 200){
-                let body = `<form action="#" id="edit-product-item" method="post" enctype="multipart/form-data">
-                                <div class="form-group" style="display: none">
-                                    <label>Item ID</label>
-                                    <input type="text" name="item_id" value="${item_id}" readonly>
-                                </div>
-                                <div class="form-group">
-                                    <label>Màu sắc sản phẩm</label>
-                                    <input type="text" name="color" class="color-product-item" value="${data.data.color}" placeholder="Nhập vào màu sắc sản phẩm">
-                                </div>
-                                <div class="form-group">
-                                    <label>Size sản phẩm (Quần áo: S M L XL, Giày dép: 38, 39, 40...)</label>
-                                    <input type="text" name="size" class="size-product-item" value="${data.data.size}" placeholder="Nhập vào size sản phẩm">
-                                </div>
-                                <div class="form-group">
-                                    <label>Giá sản phẩm (VNĐ)</label>
-                                    <input type="number" name="price" min="0" step="10000" oninput="this.value = 
-                                    !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="price-product-item" value="${data.data.price}" placeholder="Nhập vào giá sản phẩm">
-                                </div>
-                                <div class="form-group">
-                                    <label>Số lượng</label>
-                                    <input type="number" name="quantity" min="0" step="5" oninput="this.value = 
-                                    !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="quantity-product-item" value="${data.data.quantity}" placeholder="Nhập vào số lượng sản phẩm">
-                                </div>
-                                <div class="form-group">
-                                    <label>Hình sản phẩm (Để trống nếu không muốn thay đổi)</label>
-                                    <input type="file" name="thumbnail-product-item" class="thumbnail-product-item" accept="image/gif, image/jpeg, image/png">
-                                </div>
-                            </form>`;
-                modal(true, `Sửa item sản phẩm`, body, `Sửa`, `edit_item()`);
-            }
-        });
-
-    }else if(action == "delete"){
-        let body = `Bạn muốn xoá item sản phẩm này không?`;
-        modal(true, `Xoá item sản phẩm`, body, `Xác nhận`, `delete_item(${JSON.stringify([item_id])})`);
+    if(action == "delete"){
+        let body = `Nếu xoá thì những item thuộc sản phẩm và hình ảnh sẽ bị xoá, bạn muốn xoá sản phẩm này không?`;
+        modal(true, `Xoá sản phẩm`, body, `Xác nhận`, `delete_product(${JSON.stringify([item_id])})`);
     }
 }
 
-$(".plus-button").on("click", function(){
-    let count = $(".product-details-item").length;
-    let body = `<li class="product-details-item" id="detail-${count + 1}">
-                    <input type="text" name="detail-title" class="product-details-item-title" placeholder="Tiêu đề">
-                    <input type="text" name="detail-content" class="product-details-item-content" placeholder="Nội dung">
-                    <a href="#" class="minus-button" onclick="RemoveDetail(${count + 1})">-</a>
-                </li>`;
-
-    $(".product-details").append(body);
+$(document).ready(()=>{
+    reloadData(true);
 });
 
-$(".delete-image-button").on("click", function(){
-    let id = $(this).attr("id");
+$(".action__task").on("change", function(){
+    let action = $(this).val();
+    if(action != null && action != "" && action != undefined){
+        let item_checked = $(".checkbox-item:checked");
+        if(item_checked.length > 0) {
+            let list_item = [];
+            item_checked.each(function(i)
+            {
+                if($(this).is(":checked")){
+                    let item = $(this).val();
+                    list_item.push(item);
+                }
+            });
 
-    $("#image-" + id).delay(200).fadeOut();
+            if(action == "delete"){
+                let body = `Nếu xoá thì những item thuộc sản phẩm và hình ảnh sẽ bị xoá, bạn muốn xoá item sản phẩm đã chọn hay không?`;
+                modal(true, `Xoá sản phẩm`, body, `Xác nhận`, `delete_product(${JSON.stringify(list_item)})`);
+            }
+        }
+    }
 
-    setTimeout(function(){
-        $("#image-" + id).remove();
-    }, 1000);
+    $(this).val("");
+});
 
-    delete_image(id);
+$(".sort__task").on("change", function(){
+    let sort = $(this).val();
+    if(sort != null && sort != "" && sort != undefined){
+        reloadData();
+    }
+});
+
+$(".pagination__selection").on("change", function(){
+    reloadData(true);
 });

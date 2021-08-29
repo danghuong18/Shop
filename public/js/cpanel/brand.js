@@ -83,29 +83,13 @@ function reloadData(isLoadPagination = false){
 function add(){
     var createForm = $("#create-brand");
     var formData = new FormData(createForm[0]);
-    $.ajax({
-        url: "/brand/create",
-        type: "POST",
-        processData: false,
-        contentType: false,
-        data: formData
-    }).then((data)=>{
-        if(data.status == 200){
-            notification(".main-body__container", data.status, status.message);
-            reloadData(true);
-            modal(false);
-        }else{
-            notification(".modal-body", data.status, status.message);
-        }
-    });
-}
-
-function edit(item_id=null){
-    if(item_id != null && item_id != undefined){
-        var createForm = $("#edit-brand");
-        var formData = new FormData(createForm[0]);
+    let brand_name = $(".add-brand").val();
+    if(brand_name.length < 2 || brand_name == undefined || brand_name == ""){
+        let message = "Tên thương hiệu không được để trống hoặc nhỏ hơn 2 ký tự"
+        notification(".modal-body", 400, message);
+    }else{
         $.ajax({
-            url: "/brand/edit",
+            url: "/brand/create",
             type: "POST",
             processData: false,
             contentType: false,
@@ -113,12 +97,41 @@ function edit(item_id=null){
         }).then((data)=>{
             if(data.status == 200){
                 notification(".main-body__container", data.status, data.message);
-                reloadData();
+                reloadData(true);
                 modal(false);
             }else{
                 notification(".modal-body", data.status, data.message);
             }
         });
+    }
+}
+
+function edit(item_id=null){
+    if(item_id != null && item_id != undefined){
+        var createForm = $("#edit-brand");
+        var formData = new FormData(createForm[0]);
+
+        let brand_name = $(".edit-brand").val();
+        if(brand_name < 2 || brand_name == undefined || brand_name == ""){
+            let message = "Tên thương hiệu không được để trống hoặc nhỏ hơn 2 ký tự"
+            notification(".modal-body", 400, message);
+        }else{
+            $.ajax({
+                url: "/brand/edit",
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: formData
+            }).then((data)=>{
+                if(data.status == 200){
+                    notification(".main-body__container", data.status, data.message);
+                    reloadData();
+                    modal(false);
+                }else{
+                    notification(".modal-body", data.status, data.message);
+                }
+            });
+        }
     }
 }
 

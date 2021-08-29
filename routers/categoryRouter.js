@@ -40,11 +40,17 @@ router.post("/create", async (req, res)=>{
         let title = req.body.title;
         let createDate = Date();
 
-        let create = await CategoryModel.create({categoryName: title, createDate: createDate, updateDate: createDate});
-        if(create){
-            res.json({message: "Tạo danh mục thành công!", status: 200});
+        let check_exist =  await CategoryModel.findOne({categoryName: title});
+
+        if(check_exist){
+            res.json({message: "Danh mục đã tồn tại, vui lòng đặt lại tên khác.", status: 400});
         }else{
-            res.json({message: "Không thể tạo danh mục.", status: 400});
+            let create = await CategoryModel.create({categoryName: title, createDate: createDate, updateDate: createDate});
+            if(create){
+                res.json({message: "Tạo danh mục thành công!", status: 200});
+            }else{
+                res.json({message: "Không thể tạo danh mục.", status: 400});
+            }
         }
     } catch (error) {
         res.json({message: "Server error!", status: 500, error});
@@ -57,12 +63,23 @@ router.post("/edit", async (req, res)=>{
         let title = req.body.title;
         let updateDate = Date();
 
-        let edit = await CategoryModel.updateOne({_id: id}, {$set: { categoryName: title, updateDate: updateDate}});
-        if(edit.ok){
-            res.json({message: "Sửa danh mục thành công!", status: 200});
+        let check_exist =  await CategoryModel.findOne({categoryName: title});
+        if(check_exist){
+            if(id != check_exist._id){
+                res.json({message: "Danh mục đã tồn tại, vui lòng đặt lại tên khác.", status: 400});
+            }
+            else{
+                res.json({message: "Tên danh mục trùng với tên ban đầu.", status: 400});
+            }
         }else{
-            res.json({message: "Không thể sửa danh mục.", status: 400});
+            let edit = await CategoryModel.updateOne({_id: id}, {$set: { categoryName: title, updateDate: updateDate}});
+            if(edit.ok){
+                res.json({message: "Sửa danh mục thành công!", status: 200});
+            }else{
+                res.json({message: "Không thể sửa danh mục.", status: 400});
+            }
         }
+
     } catch (error) {
         res.json({message: "Server error!", status: 500, error});
     }

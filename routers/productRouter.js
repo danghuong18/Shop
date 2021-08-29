@@ -54,24 +54,24 @@ router.get("/", async (req, res)=>{
         let sortby = {};
     
         if(sort == "name-az"){
-            sortby = {title: 1};
+            sortby = {productName: 1};
         }else if(sort == "name-za"){
-            sortby = {title: -1};
+            sortby = {productName: -1};
         }else if(sort == "date-desc"){
             sortby = {createDate: -1};
         }else if(sort == "date-asc"){
             sortby = {createDate: 1};
         }
 
-        let brands = await ProductCodeModel.find({}).skip(skip).limit(limit).sort(sortby);
-        let all_brands = await ProductCodeModel.find({});
-        if(all_brands.length > 0){
-            pages = Math.ceil(all_brands.length/limit);
+        let products = await ProductCodeModel.find({}).populate("categoryID", "categoryName").populate("brand", "brandName").skip(skip).limit(limit).sort(sortby);
+        let all_products = await ProductCodeModel.find({});
+        if(all_products.length > 0){
+            pages = Math.ceil(all_products.length/limit);
         }
-        if(brands.length > 0){
-            res.json({message: "Succcessed", status: 200, data: brands, pages: pages});
+        if(products.length > 0){
+            res.json({message: "Succcessed", status: 200, data: products, pages: pages});
         }else{
-            res.json({message: "Không có thương hiệu nào để hiển thị cả.", status: 400});
+            res.json({message: "Không có sản phẩm nào để hiển thị cả.", status: 400});
         }
 
     } catch(error){
@@ -80,7 +80,47 @@ router.get("/", async (req, res)=>{
 });
 
 router.get("/item", async (req, res)=>{
+    try {
+        let id = req.query.product_id;
+        let sort = req.query.sort;
+        let limit = req.query.limit*1;
+        let skip = (req.query.page - 1)*limit;
+        let pages = 1;
+        let sortby = {};
+    
+        if(sort == "price-desc"){
+            sortby = {price: -1};
+        }else if(sort == "price-asc"){
+            sortby = {price: 1};
+        }else if(sort == "quantity-desc"){
+            sortby = {quantity: -1};
+        }else if(sort == "quantity-asc"){
+            sortby = {quantity: 1};
+        }else if(sort == "date-desc"){
+            sortby = {createDate: -1};
+        }else if(sort == "date-asc"){
+            sortby = {createDate: 1};
+        }
+        let product = await ProductCodeModel.findOne({_id: id});
 
+        if(product){
+            let items = await ProductModel.find({_id: product.productID}).skip(skip).limit(limit).sort(sortby);
+            let all_items = await ProductModel.find({_id: product.productID});
+            if(all_items.length > 0){
+                pages = Math.ceil(all_items.length/limit);
+            }
+            if(items.length > 0){
+                res.json({message: "Successed", status: 200, data: items, pages: pages});
+            }else{
+                res.json({message: "Không tìm thấy item sản phẩm nào cả.", status: 400});
+            }
+        }else{
+            res.json({message: "Không tìm thấy sản phẩm này.", status: 400});
+        }
+
+    } catch (error) {
+        res.json({message: "Server error!", status: 500, error});
+    }
 });
 
 router.get("/item/:id", async (req, res)=>{
@@ -291,7 +331,6 @@ router.post("/edit", (req, res)=>{
             let brand = req.body.brand;
             let description = req.body.description;
             let updateDate = Date();
-            console.log(product_id);
 
             try {
                 let edit = await ProductCodeModel.findOneAndUpdate({_id: product_id}, 
@@ -384,8 +423,8 @@ router.post("/delete", async (req, res)=>{
                 total_list_thumb.push(...list_thumb);
             }
 
-            let delete_products = await ProductCodeModel.deleteOne({_id: list_product});
-            console.log(delete_products);
+            let delete_products = await ProductCodeModel.deleteMany({_id: list_product});
+
             if(delete_products.deletedCount > 0) {
                 DeleteFile(total_list_image);
                 DeleteFile(total_list_thumb);
@@ -411,7 +450,6 @@ router.post("/delete-product-item", async (req, res)=>{
         let update_product = await ProductCodeModel.updateOne({_id: product_id}, {$pull: {productID: {$in: list_item}}});
         if(update_product.ok){
             let delete_item = await ProductModel.deleteMany({_id: list_item});
-            console.log(delete_item);
             if(delete_item.deletedCount > 0){
                 DeleteFile(list_file);
                 res.json({message: "Xoá item sản phẩm thành công!", status: 200});

@@ -79,42 +79,53 @@ function reloadData(isLoadPagination = false){
 
 function add(){
     let category_name = $(".add-category").val();
-    $.ajax({
-        url: "/category/create",
-        type: "POST",
-        data: {
-            title: category_name
-        }
-    }).then((data)=>{
-        if(data.status == 200){
-            notification(".main-body__container", data.status, data.message);
-            reloadData(true);
-            modal(false);
-        }else{
-            notification(".modal-body", data.status, data.message);
-        }
-    });
-}
-
-function edit(item_id=null){
-    if(item_id != null && item_id != undefined){
-        let edit_category_name = $(".edit-category").val();
+    if(category_name.length < 2 || category_name == undefined || category_name == ""){
+        let message = "Tên danh mục không được để trống hoặc nhỏ hơn 2 ký tự"
+        notification(".modal-body", 400, message);
+    }else{
         $.ajax({
-            url: "/category/edit",
+            url: "/category/create",
             type: "POST",
             data: {
-                id: item_id,
-                title: edit_category_name
+                title: category_name
             }
         }).then((data)=>{
             if(data.status == 200){
                 notification(".main-body__container", data.status, data.message);
-                reloadData();
+                reloadData(true);
                 modal(false);
             }else{
                 notification(".modal-body", data.status, data.message);
             }
         });
+    }
+}
+
+function edit(item_id=null){
+    if(item_id != null && item_id != undefined){
+        let edit_category_name = $(".edit-category").val();
+
+        if(edit_category_name.length < 2 || edit_category_name == undefined || edit_category_name == ""){
+            let message = "Tên danh mục không được để trống hoặc nhỏ hơn 2 ký tự"
+            notification(".modal-body", 400, message);
+        }else{
+            $.ajax({
+                url: "/category/edit",
+                type: "POST",
+                data: {
+                    id: item_id,
+                    title: edit_category_name
+                }
+            }).then((data)=>{
+                if(data.status == 200){
+                    notification(".main-body__container", data.status, data.message);
+                    reloadData();
+                    modal(false);
+                }else{
+                    notification(".modal-body", data.status, data.message);
+                }
+            });
+        }
     }
 }
 

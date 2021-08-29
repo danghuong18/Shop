@@ -499,6 +499,7 @@ body {
 
             .plus-button,
             .minus-button {
+                cursor: pointer;
                 height: 3.5rem;
                 font-weight: 600;
                 display: flex;
@@ -560,6 +561,7 @@ body {
         }
 
         .submit-button {
+            cursor: pointer;
             width: 50%;
             // margin-top: 1.5rem;
             padding: 10px;
@@ -640,8 +642,9 @@ body {
                         }
 
                         .item-image {
-                            width: 3rem;
-                            height: 3rem;
+                            @include flex(center, center);
+                            width: 5rem;
+                            height: 5rem;
                             overflow: hidden;
                             border: 1px solid $shadow_color;
                             margin-right: 0.5rem;
