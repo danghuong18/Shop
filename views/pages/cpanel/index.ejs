@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../../components/cpanel/head.ejs'); %>
+    <title>Admin Cpanel</title>
+</head>
+<body>
+    <div class="wrapper">
+        <%- include('../../components/cpanel/header.ejs'); %>
+        <%- include('../../components/cpanel/sidebar.ejs'); %>
+        <section class="main-body">
+            <div class="main-body__statistic">
+                <ul class="main-body__statistic__list">
+                    <li class="main-body__statistic__item">
+                        <div class="icon"><i class="fas fa-money-bill-wave"></i></div>
+                        <div class="info">
+                            <div class="heading">$4590</div>
+                            <span class="desc">Last month sales</span>
+                        </div>
+                    </li>
+                    <li class="main-body__statistic__item main-body__statistic__item--new">
+                        <div class="icon"><i class="fas fa-users"></i></div>
+                        <div class="info">
+                            <div class="heading">$4590</div>
+                            <span class="desc">Last month sales</span>
+                        </div>
+                    </li>
+                    <li class="main-body__statistic__item main-body__statistic__item--total">
+                        <div class="icon"><i class="fas fa-shopping-bag"></i></div>
+                        <div class="info">
+                            <div class="heading">$4590</div>
+                            <span class="desc">Last month sales</span>
+                        </div>
+                    </li>
+                    <li class="main-body__statistic__item  main-body__statistic__item--visitor">
+                        <div class="icon"><i class="far fa-eye"></i></div>
+                        <div class="info">
+                            <div class="heading">$4590</div>
+                            <span class="desc">Last month sales</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <div class="modal">
+            <div class="modal__container">
+                <div class="modal__container__content">
+                    <div class="modal-header">
+                        <span class="modal-title">Tiêu đề thôi mà</span>
+                        <span class="modal-close">x</span>
+                    </div>
+                    <div class="modal-body">
+                        Tôi chỉ test thôi ấy mà!
+                        Tôi chỉ test thôi ấy mà!
+                        Tôi chỉ test thôi ấy mà!
+                        Tôi chỉ test thôi ấy mà!
+                    </div>
+                    <div class="modal-footer">
+                        <span class="modal-button modal-button-close">Đóng</span>
+                        <span class="modal-button modal-button-confirm">Xác nhận</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-background">
+        </div>
+    </div>
+    <%- include('../../components/cpanel/js_footer.ejs'); %>
+</body>
+</html>

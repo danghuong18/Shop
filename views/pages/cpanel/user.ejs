@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../../components/cpanel/head.ejs'); %>
+    <title><%= name %> | Admin Cpanel</title>
+</head>
+<body>
+    <div class="wrapper">
+        <%- include('../../components/cpanel/header.ejs'); %>
+        <%- include('../../components/cpanel/sidebar.ejs'); %>
+        <section class="main-body">
+            <div class="main-body__container">
+                <div class="main-body__container__action">
+                    <div class="main-body__container__action--left">
+                        <a class="uncheck-item">Bỏ chọn</a>
+                    </div>
+                    <div class="main-body__container__action--right">
+                        <div class="sort">
+                            <select class="sort__task">
+                                <option value="">Sắp xếp theo</option>
+                                <option value="name-az">Tên [A-Z]</option>
+                                <option value="name-za">Tên [Z-A]</option>
+                                <option value="username-az">Username [A-Z]</option>
+                                <option value="username-za">Username [Z-A]</option>
+                                <option value="date-desc">Đăng ký mới nhất</option>
+                                <option value="date-asc">Đăng ký cũ nhất</option>
+                            </select>
+                        </div>
+                        <div class="action">
+                            <select class="action__task">
+                                <option value="">Hành động</option>
+                                <option value="delete">Xoá</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <ul class="main-body__container__list">
+                    <li class="main-body__container__item no-item">
+                        Không có user nào để hiển thị ở đây cả!
+                    </li>
+                </ul>
+                <div class="pagination">
+                    <ul class="pagination__list">
+                        <li class="pagination__item active" id="1">1</li>
+                    </ul>
+                    <select class="pagination__selection">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                        <option value="40">40</option>
+                        <option value="50">50</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <div class="modal">
+            <div class="modal__container">
+                <div class="modal__container__content">
+                    <div class="modal-header">
+                        <span class="modal-title">Tiêu đề</span>
+                        <span class="modal-close">x</span>
+                    </div>
+                    <div class="modal-body">
+                        Nội dung
+                    </div>
+                    <div class="modal-footer">
+                        <span class="modal-button modal-button-close">Đóng</span>
+                        <span class="modal-button modal-button-confirm">Xác nhận</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-background">
+        </div>
+    </div>
+    <%- include('../../components/cpanel/js_footer.ejs'); %>
+    <script src="/public/js/cpanel/user.js"></script>
+</body>
+</html>
