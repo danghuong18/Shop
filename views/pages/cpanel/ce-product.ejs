@@ -144,53 +144,9 @@
                         </div>
                     </div>
                     <ul class="main-body__container__list">
-                        <% if(product.productID.length > 0) { %>
-                            <% for(x in product.productID) { %>
-                                <li class="main-body__container__item" id="item-<%= product.productID[x]._id %>">
-                                    <input type="checkbox" class="checkbox-item" value="<%= product.productID[x]._id %>">
-                                    <div class="body-item inline">
-                                        <span class="item-image">
-                                            <img src="<%= product.productID[x].thumb %>">
-                                        </span>
-                                        <div class="body-item__info">
-                                            <span class="body-item__details">
-                                                <% if(product.productID[x].quantity != undefined && product.productID[x].quantity != "") { %>
-                                                    <span class="body-item__details-amount">
-                                                        <span class="title">Số lượng:</span>
-                                                        <span class="desc"><%= product.productID[x].quantity %></span>
-                                                    </span>
-                                                <% } %>
-    
-                                                <% if(product.productID[x].color != undefined && product.productID[x].color != "") { %>
-                                                    <span class="body-item__details-color">
-                                                        <span class="title">Màu sắc:</span>
-                                                        <span class="desc"><%= product.productID[x].color %></span>
-                                                    </span>
-                                                <% } %>
-    
-                                                <% if(product.productID[x].size != undefined && product.productID[x].size != "") { %>
-                                                    <span class="body-item__details-size">
-                                                        <span class="title">Size:</span>
-                                                        <span class="desc"><%= product.productID[x].size %></span>
-                                                    </span>
-                                                <% } %>
-                                            </span>
-                                            <span class="body-item__details">
-                                                <span class="item-price"><%= (product.productID[x].price).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'}) %></span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="action-item">
-                                        <span class="action-item__delete" onclick="action('delete', '<%= product.productID[x]._id %>')">Xoá</span>
-                                        <span class="action-item__edit" onclick="action('edit', '<%= product.productID[x]._id %>')">Sửa</span>
-                                    </div>
-                                </li>
-                            <% } %>
-                        <% } else { %>
-                            <li class="main-body__container__item no-item">
-                                Không có item sản phẩm nào để hiển thị ở đây cả!
-                            </li>
-                        <% } %>
+                        <li class="main-body__container__item no-item">
+                            Không có item sản phẩm nào để hiển thị ở đây cả!
+                        </li>
                     </ul>
                     <div class="pagination">
                         <ul class="pagination__list">

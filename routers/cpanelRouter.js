@@ -1,55 +1,71 @@
 const router = require("express").Router();
-const UserModel = require("../model/userModel");
+// const UserModel = require("../model/userModel");
 const CategoryModel = require("../model/categoryModel");
 const BrandModel = require("../model/brandModel");
-const BlackListModel = require("../model/blackListModel");
-const { checkLogin } = require("../middleWare/checkAuth");
+// const BlackListModel = require("../model/blackListModel");
+const { checkLogin, checkAdminLogin } = require("../middleWare/checkAuth");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const ProductCodeModel = require("../model/productCodeModel");
 
 // app.set("view engine", "ejs");
 
-router.get("/", (req, res)=>{
-    res.render("pages/cpanel/index");
+router.get("/", checkAdminLogin, (req, res)=>{
+    res.render("pages/cpanel/index", {
+        login_info: req.login_info
+    });
 });
 
-router.get("/user", (req, res)=>{
-    res.render("pages/cpanel/user");
+router.get("/user", checkAdminLogin, (req, res)=>{
+    res.render("pages/cpanel/user", {
+        name: "Danh sách thành viên",
+        login_info: req.login_info
+    });
 });
 
-router.get("/category", (req, res)=>{
+router.get("/user/edit", checkAdminLogin, (req, res)=>{
+    res.render("pages/cpanel/user", {
+        name: "Danh sách thành viên",
+        login_info: req.login_info
+    });
+});
+
+router.get("/category", checkAdminLogin, (req, res)=>{
     res.render("pages/cpanel/category", {
-        name: "Danh mục"
+        name: "Danh mục",
+        login_info: req.login_info
     });
 });
 
-router.get("/brand", (req, res)=>{
+router.get("/brand", checkAdminLogin, (req, res)=>{
     res.render("pages/cpanel/brand", {
-        name: "Thương hiệu"
+        name: "Thương hiệu",
+        login_info: req.login_info
     });
 });
 
-router.get("/product", (req, res)=>{
+router.get("/product", checkAdminLogin, (req, res)=>{
     res.render("pages/cpanel/product", {
-        name: "Danh sách sản phẩm"
+        name: "Danh sách sản phẩm",
+        login_info: req.login_info
     });
 });
 
-router.get("/product/create", async (req, res)=>{
+router.get("/product/create", checkAdminLogin, async (req, res)=>{
     let categories = await CategoryModel.find({}).sort({categoryName: 1});
     let brands = await BrandModel.find({}).sort({brandName: 1});
     res.render("pages/cpanel/ce-product", {
         isEdit: false,
         name: "Tạo sản phẩm",
+        login_info: req.login_info,
         categories: categories,
         brands: brands
     });
 });
 
-router.get("/product/:id", async (req, res)=>{
+router.get("/product/:id", checkAdminLogin, async (req, res)=>{
     try {
-        let product = await ProductCodeModel.findOne({_id: req.params.id}).populate("productID");
+        let product = await ProductCodeModel.findOne({_id: req.params.id});
         
         if(product){
             let categories = await CategoryModel.find({}).sort({categoryName: 1});
@@ -57,6 +73,7 @@ router.get("/product/:id", async (req, res)=>{
             res.render("pages/cpanel/ce-product", {
                 isEdit: true,
                 name: "Sửa sản phẩm",
+                login_info: req.login_info,
                 categories: categories,
                 brands: brands,
                 product: product
@@ -74,19 +91,14 @@ router.get("/product/:id", async (req, res)=>{
     }
 });
 
-router.get("/classify-product", (req, res)=>{
-    res.render("pages/cpanel/classify-product");
+router.get("/order", checkAdminLogin, (req, res)=>{
+    res.render("pages/cpanel/order", {
+        name: "Quản lý đơn hàng",
+        login_info: req.login_info
+    });
 });
 
-router.get("/order", (req, res)=>{
-    res.render("pages/cpanel/order");
-});
-
-router.get("/login", (req, res)=>{
-    res.render("pages/cpanel/login");
-});
-
-router.get("/:id", (req, res)=>{
+router.use((req, res)=>{
     res.render("pages/cpanel/not-found", {
         name: "Không tìm thấy trang"
     });

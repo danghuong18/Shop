@@ -490,7 +490,7 @@ body {
 }
 .main-body__container__item {
   font-size: 1.6rem;
-  border-left: 2px solid #76c80e;
+  border-left: 5px solid #76c80e;
   background-color: #76c80e20;
   padding: 1rem;
   margin-bottom: 1rem;
@@ -544,6 +544,43 @@ body {
 }
 .main-body__container__item .body-item__title.one-line span:hover {
   border: 2px solid #76c80e;
+}
+.main-body__container__item .body-item__title.user-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  flex-direction: row;
+}
+.main-body__container__item .body-item__title.user-item .item-avatar {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  border: 1px solid #d8d8d8;
+  margin-right: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  flex-direction: row;
+}
+.main-body__container__item .body-item__title.user-item .item-avatar img {
+  width: 100%;
+}
+.main-body__container__item .body-item__title.user-item .item-avatar:hover {
+  border: 2px solid #76c80e;
+}
+.main-body__container__item .body-item__title.user-item .item-username {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+.main-body__container__item .body-item__title.user-item .item-username label {
+  width: 100%;
+  cursor: pointer;
 }
 .main-body__container__item .body-item__title:hover {
   color: #76c80e;
@@ -658,11 +695,22 @@ body {
   border-bottom-left-radius: 0.5rem;
   cursor: pointer;
 }
+.main-body__container__item .role-item {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: #76c80e;
+  color: #fff;
+  font-weight: 600;
+  padding: 0.5rem;
+  border-top-left-radius: 0.5rem;
+  opacity: 0.3;
+}
 .main-body__container__item:hover .action-item {
   display: block;
 }
 .main-body__container__item.checked {
-  border-left: 2px solid #fe5e3a;
+  border-color: #fe5e3a;
   background-color: #fe5e3a20;
 }
 .main-body__container__item.checked .body-item__title.one-line span:hover {
@@ -679,6 +727,9 @@ body {
 }
 .main-body__container__item.checked .body-item.inline .item-image:hover {
   border: 2px solid #fe5e3a;
+}
+.main-body__container__item.checked .role-item {
+  background: #fe5e3a;
 }
 .main-body__container__item.no-item {
   border-left: 2px solid #4c4743;
@@ -860,6 +911,7 @@ body {
   border-bottom: 2px solid #fe5e3a;
 }
 .login__form .button {
+  cursor: pointer;
   width: 100%;
   margin-top: 1.5rem;
   padding: 10px;
@@ -879,6 +931,7 @@ body {
   padding: 1rem;
   margin-bottom: 10px;
   color: #fff;
+  animation: opacity_animation 0.5s;
 }
 .notification--success {
   background-color: #76c80e80;
@@ -894,6 +947,7 @@ body {
 }
 
 .notice-login {
+  cursor: pointer;
   max-width: 500px;
   padding: 1rem;
   display: block;

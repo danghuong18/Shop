@@ -54,8 +54,27 @@ function notification(prepend_class=null, status=200, action=null, delay=5000){
     }
 }
 
+function delete_cookie(name) {
+    document.cookie = name + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+}
+
 $(window).on("resize", function(){
     dropdown();
+});
+
+$(".log-out").on("click", function(){
+    $.ajax({
+        url: "/user/logout",
+        type: "POST",
+    }).then((data)=>{
+        if(data.status == 200){
+            delete_cookie("cookie");
+            delete_cookie("cpanel");
+            location.reload();
+        }else{
+            console.log(data.message);
+        }
+    });
 });
 
 $(".header__item-bars").on("click", function(){

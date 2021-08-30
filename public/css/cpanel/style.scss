@@ -579,7 +579,7 @@ body {
 
         &__item {
             font-size: 1.6rem;
-            border-left: 2px solid $third_color;
+            border-left: 5px solid $third_color;
             background-color: $third_color_opacity_20;
             padding: 1rem;
             margin-bottom: 1rem;
@@ -620,6 +620,36 @@ body {
 
                             &:hover {
                                 border: 2px solid $third_color;
+                            }
+                        }
+                    }
+
+                    &.user-item {
+                        @include flex(center, center);
+
+                        .item-avatar {
+                            width: 5rem;
+                            height: 5rem;
+                            border-radius: 0.5rem;
+                            overflow: hidden;
+                            border: 1px solid $shadow_color;
+                            margin-right: 0.5rem;
+                            @include flex(center, center);
+
+                            img {
+                                width: 100%;
+                            }
+
+                            &:hover {
+                                border: 2px solid $third_color;
+                            }
+                        }
+
+                        .item-username {
+                            @include flex(center, center, wrap);
+                            label {
+                                width: 100%;
+                                cursor: pointer;
                             }
                         }
                     }
@@ -741,8 +771,18 @@ body {
                     cursor: pointer;
                 }
             }
-            // border-left: 2px solid $primary_color;
-            // border-radius: 10px;
+
+            .role-item {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                background-color: $third_color;
+                color: $white_color;
+                font-weight: 600;
+                padding: 0.5rem;
+                border-top-left-radius: 0.5rem;
+                opacity: 0.3;
+            }
 
             &:hover {
                 .action-item {
@@ -751,7 +791,7 @@ body {
             }
 
             &.checked {
-                border-left: 2px solid $primary_color;
+                border-color: $primary_color;
                 background-color: $primary_color_opacity_20;
 
                 .body-item {
@@ -791,6 +831,10 @@ body {
                             }
                         }
                     }
+                }
+
+                .role-item {
+                    background: $primary_color;
                 }
             }
 
@@ -989,6 +1033,7 @@ body {
         }
 
         .button {
+            cursor: pointer;
             width: 100%;
             margin-top: 1.5rem;
             padding: 10px;
@@ -1011,6 +1056,7 @@ body {
     padding: 1rem;
     margin-bottom: 10px;
     color: $white_color;
+    animation: opacity_animation 0.5s;
     &--success {
         background-color: $third_color_opacity_80;
         border: 1px solid $third_color;
@@ -1028,6 +1074,7 @@ body {
 }
 
 .notice-login {
+    cursor: pointer;
     max-width: 500px;
     padding: 1rem;
     display: block;
