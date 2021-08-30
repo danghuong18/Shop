@@ -152,10 +152,10 @@ router.post("/edit", checkLogin, async (req, res)=>{
                     let check_exist = await BrandModel.findOne({brandName: title});
     
                     if(check_exist){
-                        if(req.file) {
-                            DeleteFile([logo]); //Delete image has uploaded
-                        }
                         if(check_exist._id != id){
+                            if(req.file) {
+                                DeleteFile([logo]); //Delete image has uploaded
+                            }
                             res.json({message: "Thương hiệu đã tồn tại, vui lòng đặt lại tên khác.", status: 400});
                         }else{
                             if(req.file) {
