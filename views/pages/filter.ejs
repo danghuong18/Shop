@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <div>
+    <h2>Thương hiệu</h2>
+    <div>
+
+      <% brandList.map(ele=> { %>
+
+        <div>
+          <% if(!brand){ %>
+            <input type="checkbox" name="" id="" class="brand" value="<%= ele._id %>">
+            <%= ele.brandName %>
+              <% }else if ( brand.indexOf(ele._id)===-1 ) { %>
+                <input type="checkbox" name="" id="" class="brand" value="<%= ele._id %>">
+                <%= ele.brandName %>
+                  <% } else if (brand.indexOf(ele._id) !==-1 ){ %>
+                    <input type="checkbox" name="" id="" class="brand" value="<%= ele._id %>" checked>
+                    <%= ele.brandName %>
+                      <% } %>
+        </div>
+        <% }) %>
+
+
+    </div>
+  </div>
+  <div>
+    <input type="text" name="" id="min" placeholder="Từ">
+    <input type="text" name="" id="max" placeholder="Đến">
+    <div>
+      <button>Áp dụng</button>
+    </div>
+  </div>
+
+  <div class="listData">
+    <% data.map(ele=> { %>
+
+      <div>Name: <%= ele.productName %>
+      </div>
+      <div>price: <%= ele.productID[0].price %>
+      </div>
+      <% }) %>
+  </div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="/public/js/filter.js"></script>
+
+</html>

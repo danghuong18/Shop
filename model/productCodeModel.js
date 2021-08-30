@@ -9,10 +9,10 @@ const ProductCodeSchema = mongoose.Schema({
     description: String,
     productName: String,
     listImg: [{type: String}],
-    productID: {
+    productID: [{
         type: String,
         ref: 'product'
-    },
+    }],
     categoryID: {
         type: String,
         ref: 'category'
