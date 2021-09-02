@@ -1,97 +1,336 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ShopProject</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"
-    />
-    <link rel="stylesheet" href="../../public/css/item-view.css" />
-    <link rel="stylesheet" href="../../public/css/base.css" />
-    <link rel="stylesheet" href="../../public/css/grid.css" />
-    <link
-      rel="stylesheet"
-      href="../../public/fonts/fontawesome/css/all.min.css"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <div class="id"><%=id%></div>
-    <header><%- include('../components/header'); %></header>
-    <main>
-      <div class="app">
-        <div class="background">
-          <div class="main">
-            <div class="item-category"></div>
-            <div class="item-overview">
-              <div class="owl-one owl-carousel owl-theme"></div>
-              <div class="item-overview-no-img">
-                <div class="item-title"></div>
-                <div class="item-price">
-                  <span class="lowestprice"></span
-                  ><span class="spaceprice"> - </span>
-                  <span class="highestprice"></span>
-                </div>
-                <div class="item-select-prop">
-                  <div class="item-select-prop-margin item-color">
-                    <span>Màu sắc</span>
-                  </div>
-                  <div class="item-select-prop-margin item-size">
-                    <span>Kích cỡ</span>
-                  </div>
-                  <div class="item-select-prop-margin item-quantity-frame">
-                    <span>Số lượng</span>
-                    <input type="number" class="item-quantity" />
-                  </div>
-                </div>
-                <div class="item-action">
-                  <button class="item-add-to-cart item-select-prop-margin">
-                    Thêm vào giỏ hàng
-                  </button>
-                  <button class="item-buy-now">Mua ngay</button>
-                </div>
-              </div>
+<!-- header -->
+<link rel="stylesheet" href="../../public/css/header.css" />
+<header class="header">
+  <div class="grid wide">
+    <!-- header navbar -->
+    <nav class="header__navbar hide-on-mobile-tablet">
+      <!-- header navbar left -->
+      <ul class="header__navbar-list">
+        <li
+          class="
+            header__navbar-item
+            header__navbar-item-has-qr
+            header__navbar-item--separate
+          "
+        >
+          Vào cửa hàng trên ứng dụng C-Shop
+          <div class="header__qr">
+            <img
+              src="../../public/img/qrcode.png"
+              alt="QR code"
+              class="header__qr-img"
+            />
+            <div class="header__qr-apps">
+              <a class="header__qr-link">
+                <img
+                  src="../../public/img/ch_play.png"
+                  alt="CH Play"
+                  class="header__qr-download-img"
+                />
+              </a>
+              <a class="header__qr-link">
+                <img
+                  src="../../public/img/apstore.png"
+                  alt="Apstore"
+                  class="header__qr-download-img"
+                />
+              </a>
             </div>
-            <div class="item-detail-decs">
-              <div class="item-detail">
-                <div class="detail-decs-title">CHI TIẾT SẢN PHẨM</div>
-              </div>
-              <div class="item-decs">
-                <div class="detail-decs-title">MÔ TẢ SẢN PHẨM</div>
-                <p class="item-decs-p"></p>
-              </div>
-            </div>
-            <div class="related-item">
-              <div class="carousel-header">SẢN PHẨM CÙNG LOẠI</div>
-              <div class="owl-two owl-carousel owl-theme"></div>
-            </div>
+          </div>
+        </li>
+        <li class="header__navbar-item">
+          <span class="header__navbar-item-no-pointer">Kết nối</span>
+          <a href="#" class="header__navbar-icon-link">
+            <i class="header__navbar-icon fab fa-facebook"></i>
+          </a>
+          <a href="#" class="header__navbar-icon-link">
+            <i class="header__navbar-icon fab fa-instagram"></i>
+          </a>
+        </li>
+      </ul>
+      <!--rnd header navbar left -->
+
+      <!-- header navbar right -->
+      <ul class="header__navbar-list">
+        <li class="header__navbar-item header__navbar-item-has-notity">
+          <a href="#" class="header__navbar-item-link">
+            <i class="header__navbar-icon far fa-bell"></i>
+            Thông báo
+          </a>
+        </li>
+        <li class="header__navbar-item">
+          <a href="#" class="header__navbar-item-link">
+            <i class="header__navbar-icon far fa-question-circle"></i>
+            Trợ giúp
+          </a>
+        </li>
+
+        <!-- <li class="header__navbar-item header__navbar-item--strong header__navbar-item--separate">Đăng ký</li>
+                        <li class="header__navbar-item header__navbar-item--strong">Đăng nhập</li> -->
+
+        <li class="header__navbar-item header__navbar-user">
+          <img
+            src="../../public/img/avata.jpg"
+            class="header__navbar-user-img"
+          />
+          <span class="header__navbar-user-name">Quang Chiến</span>
+
+          <ul class="header__navbar-user-menu">
+            <li class="header__navbar-user-item">
+              <a href="#">Tài khoản của tôi</a>
+            </li>
+            <li class="header__navbar-user-item">
+              <a href="#">Địa chỉ của tôi</a>
+            </li>
+            <li class="header__navbar-user-item">
+              <a href="#">Đơn mua</a>
+            </li>
+            <li
+              class="
+                header__navbar-user-item header__navbar-user-item--separate
+              "
+            >
+              <a href="#">Đăng xuất</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <!--end header navbar right -->
+    </nav>
+
+    <!-- end header-navbar -->
+
+    <!-- header-search -->
+    <div class="header-with-search">
+      <label for="header-bars-input" class="header__bars-btn">
+        <i class="fas fa-bars header__bars-icon"></i>
+      </label>
+
+      <input
+        type="checkbox"
+        class="header__bars-input"
+        id="header-bars-input"
+      />
+      <div class="header__mobile">
+        <!-- <div class="header__mobile-search-wrap">
+                            <div class="header__mobile-search">
+                                <input type="text" class="header__mobile-search-btn" placeholder="Tìm kiếm sản phẩm...">
+                                <button class="header__search-moblie-btn">
+                                    <i class="fas fa-search header__search-mobile-btn-icon"></i>
+                                </button>
+                            </div>
+                        </div> -->
+        <ul class="header__mobile-list">
+          <li class="header__mobile-item">
+            <a href="" class="header__mobile-link">Trang chủ</a>
+          </li>
+
+          <li class="header__mobile-item">
+            <a href="" class="header__mobile-link">Giỏ hàng</a>
+          </li>
+
+          <li class="header__mobile-item">
+            <a href="" class="header__mobile-link">Đăng ký</a>
+          </li>
+
+          <li class="header__mobile-item">
+            <a href="" class="header__mobile-link">Đăng nhập</a>
+          </li>
+        </ul>
+        <label for="header-bars-input">
+          <i class="fas fa-times header__mobile-close"></i>
+        </label>
+      </div>
+
+      <label for="header-bars-input" class="modal">
+        <div class="modal__overlay"></div>
+      </label>
+      <!-- logo -->
+      <div class="header__logo">
+        <a href="#" class="header__logo-link">
+          <img
+            class="header__logo-img"
+            src="../../public/img/logo.png"
+            alt=""
+          />
+        </a>
+      </div>
+
+      <!-- end logo -->
+
+      <!-- search -->
+      <div class="header__search hide-on-mobile">
+        <div class="header__search-input-wrap">
+          <input
+            type="text"
+            class="header__search-input"
+            placeholder="Tìm kiếm sản phẩm tại đây"
+          />
+
+          <div class="header__search-history">
+            <h3 class="header__search-history-heading">Lịch sử tìm kiếm</h3>
+            <ul class="header__search-history-list">
+              <li class="header__search-history-item">
+                <a href="#">Mũ bảo hiểm</a>
+              </li>
+              <li class="header__search-history-item">
+                <a href="#">Gang tay phượt</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="header__search-select">
+          <span class="header__search-select-label"> Trong shop </span>
+          <i class="fas fa-chevron-down header__search-select-icon"></i>
+
+          <ul class="header__search-option">
+            <li
+              class="
+                header__search-option-item header__search-option-item--active
+              "
+            >
+              <span>Trong shop</span>
+              <i class="fas fa-check"></i>
+            </li>
+
+            <li class="header__search-option-item">
+              <span>Ngoài shop</span>
+              <i class="fas fa-check"></i>
+            </li>
+          </ul>
+        </div>
+
+        <button class="header__search-btn">
+          <i class="fas fa-search header__search-btn-icon"></i>
+        </button>
+      </div>
+      <!--end search -->
+
+      <!-- cart -->
+      <div class="header__cart">
+        <div class="header__cart-wrap">
+          <span class="header__cart-notice"> 3 </span>
+          <a href="/user/cart"
+            ><i class="fas fa-shopping-cart header__cart-icon"></i
+          ></a>
+          <div class="header__cart-list">
+            <!-- no cart: header__cart-list--no-cart -->
+            <img
+              src="../../public/img/no_cart.png"
+              alt=""
+              class="header__cart-no-cart-img"
+            />
+            <p class="header__cart-no-cart-msg">Chưa có sản phẩm</p>
+
+            <h4 class="header__cart-heading">Sản phẩn đã thêm</h4>
+            <ul class="header__cart-list-item">
+              <li class="header__cart-item">
+                <img
+                  src="../../public/img/prd_img_1.jpg"
+                  class="header__cart-img"
+                />
+                <div class="header__cart-item-info">
+                  <div class="header__cart-item-head">
+                    <h5 class="header__cart-item-name">
+                      Mũ bảo hiểm fullface yohe
+                    </h5>
+                    <div class="header__cart-item-price-wrap">
+                      <span class="header__cart-item-price">2.500.000</span>
+                      <span class="header__cart-item-multiply">x</span>
+                      <span class="header__cart-item-qnt">3</span>
+                    </div>
+                  </div>
+                  <div class="header__cart-item-body">
+                    <span class="header__cart-item-description">
+                      Phân loại:
+                      <span class="header__cart-item-classify"
+                        >Mũ bảo hiểm</span
+                      >
+                    </span>
+                    <span class="header__cart-item-remove">Xóa</span>
+                  </div>
+                </div>
+              </li>
+              <li class="header__cart-item">
+                <img
+                  src="../../public/img/prd_img_7.jpg"
+                  class="header__cart-img"
+                />
+                <div class="header__cart-item-info">
+                  <div class="header__cart-item-head">
+                    <h5 class="header__cart-item-name">
+                      Găng tay cho những người đi phượt đường xa
+                    </h5>
+                    <div class="header__cart-item-price-wrap">
+                      <span class="header__cart-item-price">2.000.000</span>
+                      <span class="header__cart-item-multiply">x</span>
+                      <span class="header__cart-item-qnt">2</span>
+                    </div>
+                  </div>
+                  <div class="header__cart-item-body">
+                    <span class="header__cart-item-description">
+                      Phân loại:
+                      <span class="header__cart-item-classify">Găng tay</span>
+                    </span>
+                    <span class="header__cart-item-remove">Xóa</span>
+                  </div>
+                </div>
+              </li>
+              <li class="header__cart-item">
+                <img
+                  src="../../public/img/prd_img_4.jpg"
+                  class="header__cart-img"
+                />
+                <div class="header__cart-item-info">
+                  <div class="header__cart-item-head">
+                    <h5 class="header__cart-item-name">
+                      Áo giáp bảo hộ cho nữ
+                    </h5>
+                    <div class="header__cart-item-price-wrap">
+                      <span class="header__cart-item-price">1.200.000</span>
+                      <span class="header__cart-item-multiply">x</span>
+                      <span class="header__cart-item-qnt">1</span>
+                    </div>
+                  </div>
+                  <div class="header__cart-item-body">
+                    <span class="header__cart-item-description">
+                      Phân loại:
+                      <span class="header__cart-item-classify"
+                        >Giáp bảo hộ</span
+                      >
+                    </span>
+                    <span class="header__cart-item-remove">Xóa</span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <button class="btn btn--primary header__cart-view-cart">
+              Xem giỏ hàng
+            </button>
           </div>
         </div>
       </div>
-    </main>
-    <footer><%- include('../components/footer'); %></footer>
-  </body>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.dotdotdot/4.1.0/dotdotdot.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-  <script src="../../public/js/item-view.js"></script>
-</html>
+      <!--end cart -->
+    </div>
+
+    <!--end header-search -->
+  </div>
+  <ul class="header__sort-bar">
+    <li class="header__sort-item">
+      <a href="#" class="header__sort-link">Liên quan</a>
+    </li>
+
+    <li class="header__sort-item header__sort-item--active">
+      <a href="#" class="header__sort-link">Mới nhất</a>
+    </li>
+
+    <li class="header__sort-item">
+      <a href="#" class="header__sort-link">Bán chạy</a>
+    </li>
+
+    <li class="header__sort-item">
+      <a href="#" class="header__sort-link">Giá</a>
+    </li>
+  </ul>
+</header>
+<!--end header -->

@@ -2,6 +2,7 @@
 
 let id = $(".id").text();
 let selected;
+let totalQuantity = 0;
 
 //toastr
 toastr.options = {
@@ -40,8 +41,10 @@ $.ajax({
       <img src="${data.data.productID[i].thumb}" alt="" />
     </div>
     `);
+    totalQuantity = totalQuantity + data.data.productID[i].quantity;
   }
-
+  //append totalQuantity
+  $(".item-left").text(totalQuantity + " Sản phẩm có sẵn");
   // animation
   $(".owl-one").owlCarousel({
     loop: false,
@@ -211,11 +214,11 @@ $.ajax({
   }
   $(".item-category").text(data.data.categoryID.categoryName);
 
-  //output hình ảnh
+  //output hình ảnh và số lượng
   $(".item-select-btn").on("click", function () {
+    let sizeEle = $(".item-select-btn-choosed.item-select-btn-size");
+    let colorEle = $(".item-select-btn-choosed.item-select-btn-color");
     if ($(".item-select-btn-choosed").length == 2) {
-      let sizeEle = $(".item-select-btn-choosed.item-select-btn-size");
-      let colorEle = $(".item-select-btn-choosed.item-select-btn-color");
       let outputImg = data.data.productID.find(function (a, b) {
         if (a.color == colorEle.text() && a.size == sizeEle.text()) {
           return a;
@@ -227,10 +230,21 @@ $.ajax({
         if (ele.getAttribute("id") == outputImg._id) {
           $(".owl-one").trigger("to.owl.carousel", i);
           selected = ele.getAttribute("id");
+          $(".item-left").text(outputImg.quantity + " Sản phẩm có sẵn");
         }
       }
+    } else if ($(".item-select-btn-choosed").length == 1) {
+      let oneButtonQuantity = 0;
+      data.data.productID.find(function (a, b) {
+        if (a.color == colorEle.text() || a.size == sizeEle.text()) {
+          oneButtonQuantity = a.quantity + oneButtonQuantity;
+          console.log(a.quantity);
+        }
+      });
+      $(".item-left").text(oneButtonQuantity + " Sản phẩm có sẵn");
     } else {
       selected = "";
+      $(".item-left").text(totalQuantity + " Sản phẩm có sẵn");
     }
   });
 
@@ -251,7 +265,7 @@ $.ajax({
         })
         .catch(function (err) {
           console.log(err);
-          toastr[err.toastr](err.mess);
+          toastr["error"]("lỗi server");
         });
     } else {
       toastr["warning"]("Vui lòng chọn phân loại và nhập số lượng");
@@ -263,10 +277,11 @@ $.ajax({
   $.ajax({
     type: "POST",
     url: "/product/related/" + category,
-  }).then(function (data) {
-    console.log(data);
-    for (let i = 0; i < data.data.length; i++) {
-      let append = `
+  })
+    .then(function (data) {
+      console.log(data);
+      for (let i = 0; i < data.data.length; i++) {
+        let append = `
       <a href="/product/${data.data[i]._id}" class="owl-carousel-item">
          <img
            src="${data.data[i].listImg[0]}"
@@ -281,36 +296,48 @@ $.ajax({
          </div>
       </a>
       `;
-      $(".owl-two").append(append);
-    }
-    $(".owl-two").owlCarousel({
-      loop: true,
-      margin: 10,
-      nav: true,
-      responsive: {
-        0: {
-          items: 1,
+        $(".owl-two").append(append);
+      }
+      $(".owl-two").owlCarousel({
+        loop: true,
+        margin: 10,
+        nav: true,
+        responsive: {
+          0: {
+            items: 1,
+          },
+          600: {
+            items: 3,
+          },
+          1000: {
+            items: 4,
+          },
+          1500: {
+            items: 5,
+          },
+          1800: {
+            items: 7,
+          },
         },
-        600: {
-          items: 3,
-        },
-        1000: {
-          items: 4,
-        },
-        1500: {
-          items: 5,
-        },
-        1800: {
-          items: 7,
-        },
-      },
-    });
-    $(document).ready(function () {
-      $(".carousel-title").dotdotdot({
-        height: 38,
-        fallbackToLetter: true,
-        watch: true,
       });
+      $(document).ready(function () {
+        $(".carousel-title").dotdotdot({
+          height: 38,
+          fallbackToLetter: true,
+          watch: true,
+        });
+      });
+    })
+    .catch(function (err) {
+      toastr["error"]("Lỗi server");
+      console.log(err);
     });
-  });
+});
+
+//append cart
+$.ajax({
+  url: "/user/cart",
+  type: "POST",
+}).then(function (data) {
+  console.log(data);
 });

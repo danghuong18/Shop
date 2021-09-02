@@ -57,12 +57,12 @@ button:hover {
   width: calc(100% - 450px);
 }
 
-.item-overview-no-img .item-title {
+.item-title {
   font-size: 20px;
   font-weight: 500;
 }
 
-.item-overview-no-img .item-price {
+.item-price {
   font-size: 30px;
   color: rgb(238, 77, 45);
   line-height: 1.5;
@@ -73,26 +73,35 @@ button:hover {
   display: block;
 }
 
-.item-overview-no-img .item-select-prop {
+.item-select-prop {
   font-size: 14px;
 }
 
-.item-overview-no-img .item-select-prop-margin {
+.item-select-prop-margin {
   margin: 20px;
 }
 
-.item-overview-no-img .item-select-prop span {
+.item-select-prop span {
   display: inline-block;
   width: 100px;
 }
 
-.item-overview-no-img input {
+.item-quantity {
+  width: 80px;
+}
+
+.item-left {
+  width: auto !important;
+  margin-left: 20px;
+}
+
+input {
   font-size: 18px;
   padding: 10px;
   border: 1px solid #ccc;
 }
 
-.item-overview-no-img .item-action button {
+.item-action button {
   padding: 12px;
   border-radius: 2px;
   width: 160px;

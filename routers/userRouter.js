@@ -10,6 +10,55 @@ const { checkLogin } = require("../middleWare/checkAuth");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+router.get("/", checkLogin, async (req, res) => {
+  if (req.role === "admin") {
+    try {
+      let sort = req.query.sort;
+      let limit = req.query.limit * 1;
+      let skip = (req.query.page - 1) * limit;
+      let pages = 1;
+      let sortby = {};
+
+      if (sort == "name-az") {
+        sortby = { fullName: 1 };
+      } else if (sort == "name-za") {
+        sortby = { fullName: -1 };
+      } else if (sort == "username-az") {
+        sortby = { username: 1 };
+      } else if (sort == "username-za") {
+        sortby = { username: -1 };
+      } else if (sort == "date-desc") {
+        sortby = { createDate: -1 };
+      } else if (sort == "date-asc") {
+        sortby = { createDate: 1 };
+      }
+
+      let users = await UserModel.find({}).skip(skip).limit(limit).sort(sortby);
+      let all_users = await UserModel.find({});
+      if (all_users.length > 0) {
+        pages = Math.ceil(all_users.length / limit);
+      }
+      if (users.length > 0) {
+        res.json({
+          message: "Succcessed",
+          status: 200,
+          data: users,
+          pages: pages,
+        });
+      } else {
+        res.json({
+          message: "Không có thương hiệu nào để hiển thị cả.",
+          status: 400,
+        });
+      }
+    } catch (error) {
+      res.json({ message: "Server error!", status: 500, error });
+    }
+  } else {
+    res.json({ message: "Bạn không có quyền ở đây.", status: 400 });
+  }
+});
+
 router.get("/login", (req, res) => {
   res.render("pages/login");
 });
@@ -62,6 +111,60 @@ router.post("/login", async (req, res) => {
     }
   } catch (error) {
     res.json({ status: 500, mess: "loi server", error });
+  }
+});
+
+router.post("/loginCpanel", async (req, res) => {
+  try {
+    const user = await UserModel.findOne({ username: req.body.username });
+    if (user) {
+      const checkPassword = await bcrypt.compare(
+        req.body.password,
+        user.password
+      );
+      if (checkPassword) {
+        const token = jwt.sign({ id: user._id }, "thai");
+
+        if (user.role === "admin") {
+          const cpanel = jwt.sign({ id: "admin" }, "thai");
+          res.json({
+            message: "Đăng nhập thành công!",
+            status: 200,
+            data: { token, cpanel },
+          });
+        } else {
+          res.json({
+            message: "Bạn không có quyền đăng nhập ở đây.",
+            status: 400,
+          });
+        }
+      } else {
+        res.json({
+          message: "Bạn đã nhập sai password, mời nhập lại.",
+          status: 400,
+        });
+      }
+    } else {
+      res.json({
+        message: "Username không tồn tại, mời nhập lại.",
+        status: 400,
+      });
+    }
+  } catch (error) {
+    res.json({ message: "Server error!", status: 500 });
+  }
+});
+
+router.post("/accessCpanel", checkLogin, function (req, res) {
+  try {
+    const cpanel = jwt.sign({ id: "admin" }, "thai");
+    if (req.role === "admin") {
+      res.json({ message: "Truy cập Cpanel thành công!", status: 200, cpanel });
+    } else {
+      res.json({ message: "Không thể truy cập Cpanel.", status: 400 });
+    }
+  } catch (error) {
+    res.json({ message: "Server error!", status: 500, error });
   }
 });
 
@@ -125,7 +228,6 @@ router.post("/addcart", checkLogin, async (req, res) => {
         res.json({
           status: 400,
           mess: ["Không đủ hàng", "Không đủ hàng, vui lòng nhập lại số lượng"],
-          toastr: "error",
         });
       }
     } else {
@@ -152,8 +254,7 @@ router.post("/addcart", checkLogin, async (req, res) => {
     res.json({
       status: 500,
       err: err,
-      mess: "Lỗi server",
-      toastr: "error",
+      mess: "loi server",
     });
   }
 });
@@ -187,8 +288,7 @@ router.post("/cart", checkLogin, async function (req, res) {
     res.json({
       status: 500,
       err: err,
-      mess: "Lỗi server",
-      toastr: "error",
+      mess: "loi server",
     });
   }
 });
@@ -215,8 +315,7 @@ router.delete("/cart/delete", checkLogin, async function (req, res) {
     res.json({
       status: 500,
       err: err,
-      mess: "Lỗi server",
-      toastr: "error",
+      mess: "loi server",
     });
   }
 });
