@@ -7,8 +7,51 @@ const ProductModel = require("../model/productModel");
 const ProductCodeModel = require("../model/productCodeModel");
 const BlackListModel = require("../model/blackListModel");
 const { checkLogin } = require("../middleWare/checkAuth");
+const multer = require("multer");
+const fs = require('fs');
+const path = require("path");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+
+async function GetListFile(list_id = []){
+  list_file = []
+  try {
+      let items = await UserModel.find({_id: list_id});
+      if(items.length > 0){
+          for(x in items){
+              list_file.push(items[x].avatar);
+          }
+      }
+  } catch (error) {}
+
+  return list_file;
+}
+
+function DeleteFile(list_file = []){
+  for(x in list_file){
+      if (fs.existsSync(path.join(__dirname, `..${list_file[x]}`))) {
+          fs.unlinkSync(path.join(__dirname, `..${list_file[x]}`));
+      }
+  }
+}
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, "../public/upload"));
+  },
+  filename: function (req, file, cb) {
+      var filetypes = /jpeg|jpg|png|gif/;
+      var mimetype = filetypes.test(file.mimetype);
+      var extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+      if (mimetype && extname) {
+          cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname));
+      }else{
+          cb("ErrorType");
+      }
+  }
+});
+
+const upload = multer({storage: storage});
 
 router.get("/", checkLogin, async (req, res) => {
   if(req.role === "admin"){
@@ -142,6 +185,117 @@ router.post("/accessCpanel", checkLogin, function(req, res){
     }
   } catch (error) {
     res.json({message: "Server error!", status: 500, error});
+  }
+});
+
+router.post("/setRoleCpanel", checkLogin, async (req, res)=>{
+  if(req.role === "admin"){
+    try {
+      let user_id = req.body.user_id;
+      let set_role = req.body.set_role;
+      let checkUser = await UserModel.findOne({_id: user_id});
+      if(checkUser){
+        if(user_id != req.login_id){
+          let update_role = await UserModel.updateOne({_id: user_id}, {$set: {role: set_role}});
+          if(update_role.ok){
+            res.json({message: set_role ==="admin"? "Thêm quyền admin thành công!" : "Bỏ quyền admin thành công!", status: 200});
+          }else{
+            res.json({message: set_role ==="admin"? "Thêm quyền admin không thành công." : "Bỏ quyền admin không thành công.", status: 400});
+          }
+        }else{
+          res.json({message: "Bạn không thể set quyền của chính mình.", status: 400});
+        }
+      }else{
+        res.json({message: "Không tìm thấy user.", status: 400});
+      }
+    } catch (error) {
+      res.json({message: "Server error!", status: 500, error});
+    }
+  }else{
+    res.json({message: "Bạn không có quyền ở đây.", status: 400});
+  }
+});
+
+router.post("/deleteCpanel", checkLogin, async (req, res)=>{
+  if(req.role === "admin"){
+    try {
+      let list_user = req.body['list_user[]'];
+      if(list_user.includes(req.login_id)){
+        res.json({message: "Bạn không thể xoá chính mình.", status: 400});
+      }else{
+        let list_file = await GetListFile(list_user);
+
+        let delete_item = await UserModel.deleteMany({_id: list_user});
+        if(delete_item.deletedCount > 0){
+            DeleteFile(list_file);
+            res.json({message: "Xoá user thành công!", status: 200});
+        }else{
+            res.json({message: "Không thể xoá user.", status: 400});
+        }
+      }
+    } catch (error) {
+        res.json({message: "Server error!", status: 500, error});
+    }
+  }else{
+    res.json({message: "Bạn không có quyền ở đây.", status: 400});
+  }
+});
+
+router.post("/editCpanelProfile", checkLogin, async (req, res)=>{
+  if(req.role === "admin"){
+    upload.single("avatar")(req, res, async (err)=>{
+      if (err) {
+          if(err == "ErrorType"){
+              res.json({message: "Hình ảnh tải lên không hỗ trợ, phải là file *.png, *.jpg, *.gif.", status: 406});
+          }else{
+              res.json({message: "Lỗi trong quá trình upload hình ảnh.", status: 400, err});
+          }
+      }else{
+          let avatar = "";
+
+          if(req.file) {
+              avatar = "/public/upload/" + req.file.filename;
+          }
+
+          try {
+              let updateDate = Date();
+              let id = req.login_id;
+              let fullName = req.body["full-name"];
+              let email = req.body.email;
+              let phone = req.body.phone;
+              let dob = req.body["birth-day"];
+              let gender = req.body.gender;
+              let list_file = await GetListFile([id]);
+              let set_data = {};
+              if(req.file) {
+                set_data = {avatar: avatar, fullName: fullName, email: email, phone: phone, DOB: dob, gender: gender, updateDate: updateDate};
+              }else{
+                set_data = {fullName: fullName, email: email, phone: phone, DOB: dob, gender: gender, updateDate: updateDate};
+              }
+
+              let edit_profile = await UserModel.findOneAndUpdate({_id: id}, {$set: set_data}, { returnOriginal: false });
+
+              if(edit_profile){
+                if(req.file){
+                  DeleteFile(list_file);
+                }
+                res.json({message: "Sửa profile thành công!", status: 200, data: edit_profile});
+              }else{
+                if(req.file){
+                  DeleteFile([avatar]);
+                }
+                res.json({message: "Không thể sửa profile.", status: 400});
+              }
+          } catch (error) {
+              if(req.file) {
+                  DeleteFile([avatar]); //Delete image has uploaded
+              }
+              res.json({message: "Server error!", status: 500, error});
+          }
+      }
+    });
+  }else{
+    res.json({message: "Bạn không có quyền ở đây.", status: 400});
   }
 });
 

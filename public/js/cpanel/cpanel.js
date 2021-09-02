@@ -54,6 +54,10 @@ function notification(prepend_class=null, status=200, action=null, delay=5000){
     }
 }
 
+function random(max){
+    return Math.floor(Math.random() * max);
+}
+
 function delete_cookie(name) {
     document.cookie = name + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
 }
@@ -108,7 +112,31 @@ $(".header__input").on("input", function(){
     let query = $(this).val();
     if(query.length >= 4){
         $(".header__item-search .dropdown-list").css({"display": "block"});
-        dropdown();
+        $.ajax({
+            url: "/cpanel/search?q=" + query,
+            type: "GET"
+        }).then((data)=>{
+
+            if(data.status == 200){
+                let search_droplist = ``
+
+                for(x in data.data){
+                    let thumb = ``;
+                    if(data.data[x].listImg.length > 0){
+                        thumb = data.data[x].listImg[random(data.data[x].listImg.length)];
+                    }else{
+                        thumb = `https://cdn1.vectorstock.com/i/thumb-large/46/50/missing-picture-page-for-website-design-or-mobile-vector-27814650.jpg`;
+                    }
+                    search_droplist += `<li class="dropdown-item"><a href="/cpanel/product/${data.data[x]._id}"><span class="dropdown-item__body"><span class="dropdown-item__image"><img src="${thumb}"></span><label>${data.data[x].productName}</label></span></a></li>`
+                }
+
+                $(".header__item-search .dropdown-list").html(search_droplist);
+
+                dropdown();
+            }else if(data.status == 400){
+                $(".header__item-search .dropdown-list").html(`<li class="dropdown-item"><a>Không có gì để hiển thị cả.</a></li>`);
+            }
+        });
     }else{
         $(".header__item-search .dropdown-list").css({"display": ""});
     }

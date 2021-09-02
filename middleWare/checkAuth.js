@@ -14,6 +14,7 @@ async function checkLogin(req, res, next) {
         const user = await UserModel.findOne({ _id: id });
         if (user) {
           req.role = user.role;
+          req.login_id = id;
           next();
         } else {
           res.json({message: "Token không hợp lệ.", status: 400});

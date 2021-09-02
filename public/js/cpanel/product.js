@@ -131,11 +131,11 @@ function delete_product(list_item = []) {
             if(data.status == 200){
                 notification(".main-body__container", data.status, data.message);
                 reloadData(true);
-                modal(false);
             }else{
                 notification(".main-body__container", data.status, data.message);
             }
         });
+        modal(false);
     }
 }
 

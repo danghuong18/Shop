@@ -131,9 +131,75 @@ function reloadData(isLoadPagination = false){
     getList(limit, current_page, isLoadPagination);
 }
 
-function delete_user(list_item = []){
-    
+function save(){
+    var createForm = $("#edit-profile");
+    var formData = new FormData(createForm[0]);
+    $.ajax({
+        url: "/user/editCpanelProfile",
+        type: "POST",
+        processData: false,
+        contentType: false,
+        data: formData
+    }).then((data)=>{
+        if(data.status == 200){
+            notification(".main-body__container", data.status, data.message);
+
+            if(data.data.avatar){
+                $(".header__item-profile .avatar img").attr({"src": data.data.avatar, "style": ""});
+                $(".avatar-profile .border-avatar img").attr({"src": data.data.avatar, "style": ""});
+            }
+
+        }else{
+            notification(".main-body__container", data.status, data.message);
+        }
+    });
 }
+
+function delete_user(list_user = []){
+    if(list_user && list_user != undefined && list_user != "") {
+        $.ajax({
+            url: "/user/deleteCpanel",
+            type: "POST",
+            data: {
+                list_user: list_user
+            }
+        }).then((data)=>{
+            if(data.status == 200){
+                notification(".main-body__container", data.status, data.message);
+                reloadData(true);
+            }else{
+                notification(".main-body__container", data.status, data.message);
+            }
+        });
+        modal(false);
+    }
+}
+
+function getMeta(url){
+    var r = $.Deferred();
+
+    $('<img/>').attr('src', url).load(function(){
+        var s = {w:this.width, h:this.height};
+        r.resolve(s)
+    });
+    return r;
+}
+
+$(".header__item-profile .avatar img").on("load", function(){
+    if($(this).height() < $(this).width()) {
+        $(this).css({"height": "100%", "width" : "auto"});
+    }else{
+        $(this).css({"height": "auto", "width" : "100%"});
+    }
+});
+
+$(".avatar-profile .border-avatar img").on("load", function(){
+    if($(this).height() < $(this).width()) {
+        $(this).css({"height": "100%", "width" : "auto"});
+    }else{
+        $(this).css({"height": "auto", "width" : "100%"});
+    }
+});
 
 function action(action="create", item_id=null){
     if(action == "delete"){
@@ -143,8 +209,26 @@ function action(action="create", item_id=null){
 }
 
 function role(id, isSetAdmin = true){
-
+    $.ajax({
+        url: "/user/setRoleCpanel",
+        type: "POST",
+        data: {
+            user_id: id,
+            set_role: isSetAdmin ? "admin" : "user"
+        }
+    }).then((data)=>{
+        if(data.status == 200){
+            notification(".main-body__container", data.status, data.message);
+            reloadData();
+        }else{
+            notification(".main-body__container", data.status, data.message);
+        }
+    });
 }
+
+$(".avatar-profile").on("click", function(){
+    $(".edit-avatar").click();
+});
 
 $(".action__task").on("change", function(){
     let action = $(this).val();
