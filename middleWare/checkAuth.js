@@ -7,24 +7,63 @@ async function checkLogin(req, res, next) {
     const token = req.cookies.cookie;
     if (token) {
       const checkToken = await BlackListModel.findOne({ token });
-      if (checkToken) {
-        res.json({ status: 400, mess: "token da bi vo hieu" });
+      if(checkToken) {
+        res.json({message: "Token đã bị vô hiệu hoá.", status: 400});
       } else {
         const id = jwt.verify(token, "thai").id;
         const user = await UserModel.findOne({ _id: id });
         if (user) {
           req.role = user.role;
+          req.login_id = id;
           next();
         } else {
-          res.json({ status: 400, mess: "token khong hop le" });
+          res.json({message: "Token không hợp lệ.", status: 400});
         }
       }
     } else {
-      res.json({ status: 400, mess: "vui long dang nhap" });
+      res.json({message: "Vui lòng đăng nhập.", status: 400});
     }
   } catch (error) {
-    res.json({ status: 500, mess: "loi server", error });
+    res.json({message: "Server error!", status: 500, error});
   }
 }
 
-module.exports = { checkLogin };
+async function checkAdminLogin(req, res, next) {
+  let login_params = {isLogin: false, isAdmin: false};
+  let isLoginCpanel =  false;
+  try {
+    const token = req.cookies.cookie;
+    const cpanel = req.cookies.cpanel;
+    if (token) {
+      const checkToken = await BlackListModel.findOne({ token });
+      
+      if(!checkToken)
+      {
+        const id = jwt.verify(token, "thai").id;
+        const user = await UserModel.findOne({ _id: id });
+        if (user) {
+          login_params = {isLogin: true, isAdmin: false};
+          if(user.role === "admin"){
+            req.login_info = user;
+            login_params = {isLogin: true, isAdmin: true};
+            if(cpanel){
+              const cpanel_role = jwt.verify(cpanel, "thai").id;
+              if(cpanel_role === "admin" && user.role === "admin"){
+                isLoginCpanel = true;
+                next();
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    if(!isLoginCpanel){
+      res.render("pages/cpanel/login", login_params);
+    }
+  } catch (error) {
+    res.json({message: "Server error!", status: 500, error});
+  }
+}
+
+module.exports = { checkLogin, checkAdminLogin };

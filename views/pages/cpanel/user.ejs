@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <%- include('../../components/cpanel/head.ejs'); %>
-    <title>Admin Cpanel</title>
+    <title><%= name %> | Admin Cpanel</title>
 </head>
 <body>
     <div class="wrapper">
@@ -12,112 +12,36 @@
             <div class="main-body__container">
                 <div class="main-body__container__action">
                     <div class="main-body__container__action--left">
-                        <a href="#" class="create-item">Tạo item</a>
                         <a class="uncheck-item">Bỏ chọn</a>
                     </div>
                     <div class="main-body__container__action--right">
                         <div class="sort">
                             <select class="sort__task">
                                 <option value="">Sắp xếp theo</option>
-                                <option value="11">Ngày tạo trước</option>
-                                <option value="11">Ngày tạo sau</option>
-                                <option value="11">Danh mục</option>
-                                <option value="11">Thương Hiệu</option>
+                                <option value="name-az">Tên [A-Z]</option>
+                                <option value="name-za">Tên [Z-A]</option>
+                                <option value="username-az">Username [A-Z]</option>
+                                <option value="username-za">Username [Z-A]</option>
+                                <option value="date-desc">Đăng ký mới nhất</option>
+                                <option value="date-asc">Đăng ký cũ nhất</option>
                             </select>
                         </div>
                         <div class="action">
                             <select class="action__task">
                                 <option value="">Hành động</option>
-                                <option value="11">Xoá</option>
-                                <option value="11">Đẩy lên đầu</option>
+                                <option value="delete">Xoá</option>
                             </select>
                         </div>
                     </div>
                 </div>
                 <ul class="main-body__container__list">
-                    <li class="main-body__container__item" id="item-1">
-                        <input type="checkbox" class="checkbox-item" value="1">
-                        <div class="body-item">
-                            <a href="#" class="body-item__title">
-                                iPhone 12 Pro Max
-                            </a>
-                            <div class="body-item__info">
-                                Chân kinh haha
-                            </div>
-                        </div>
-                        <div class="action-item">
-                            <span class="action-item__delete">Xoá</span>
-                            <span class="action-item__edit">Sửa</span>
-                        </div>
-                    </li>
-                    <li class="main-body__container__item" id="item-2">
-                        <input type="checkbox" class="checkbox-item" value="2">
-                        <div class="body-item">
-                            <a href="#" class="body-item__title">
-                                iPhone 12 Pro Max
-                            </a>
-                            <div class="body-item__info">
-                                Chân kinh haha
-                            </div>
-                        </div>
-                        <div class="action-item">
-                            <span class="action-item__delete">Xoá</span>
-                            <span class="action-item__edit">Sửa</span>
-                        </div>
-                    </li>
-                    <li class="main-body__container__item" id="item-3">
-                        <input type="checkbox" class="checkbox-item" value="3">
-                        <div class="body-item">
-                            <a href="#" class="body-item__title">
-                                iPhone 12 Pro Max
-                            </a>
-                            <div class="body-item__info">
-                                Chân kinh haha
-                            </div>
-                        </div>
-                        <div class="action-item">
-                            <span class="action-item__delete">Xoá</span>
-                            <span class="action-item__edit">Sửa</span>
-                        </div>
-                    </li>
-                    <li class="main-body__container__item" id="item-4">
-                        <input type="checkbox" class="checkbox-item" value="4">
-                        <div class="body-item">
-                            <a href="#" class="body-item__title">
-                                iPhone 12 Pro Max
-                            </a>
-                            <div class="body-item__info">
-                                Chân kinh haha
-                            </div>
-                        </div>
-                        <div class="action-item">
-                            <span class="action-item__delete">Xoá</span>
-                            <span class="action-item__edit">Sửa</span>
-                        </div>
-                    </li>
-                    <li class="main-body__container__item" id="item-5">
-                        <input type="checkbox" class="checkbox-item" value="5">
-                        <div class="body-item">
-                            <a href="#" class="body-item__title">
-                                iPhone 12 Pro Max
-                            </a>
-                            <div class="body-item__info">
-                                Chân kinh haha
-                            </div>
-                        </div>
-                        <div class="action-item">
-                            <span class="action-item__delete">Xoá</span>
-                            <span class="action-item__edit">Sửa</span>
-                        </div>
+                    <li class="main-body__container__item no-item">
+                        Không có user nào để hiển thị ở đây cả!
                     </li>
                 </ul>
                 <div class="pagination">
                     <ul class="pagination__list">
-                        <li class="pagination__item active" id="page-1">1</li>
-                        <li class="pagination__item" id="page-2">2</li>
-                        <li class="pagination__item" id="page-3">3</li>
-                        <li class="pagination__item" id="page-4">4</li>
-                        <li class="pagination__item" id="page-5">5</li>
+                        <li class="pagination__item active" id="1">1</li>
                     </ul>
                     <select class="pagination__selection">
                         <option value="5">5</option>
@@ -135,14 +59,11 @@
             <div class="modal__container">
                 <div class="modal__container__content">
                     <div class="modal-header">
-                        <span class="modal-title">Tiêu đề thôi mà</span>
+                        <span class="modal-title">Tiêu đề</span>
                         <span class="modal-close">x</span>
                     </div>
                     <div class="modal-body">
-                        Tôi chỉ test thôi ấy mà!
-                        Tôi chỉ test thôi ấy mà!
-                        Tôi chỉ test thôi ấy mà!
-                        Tôi chỉ test thôi ấy mà!
+                        Nội dung
                     </div>
                     <div class="modal-footer">
                         <span class="modal-button modal-button-close">Đóng</span>
@@ -155,5 +76,6 @@
         </div>
     </div>
     <%- include('../../components/cpanel/js_footer.ejs'); %>
+    <script src="/public/js/cpanel/user.js"></script>
 </body>
 </html>

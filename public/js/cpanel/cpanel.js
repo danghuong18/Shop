@@ -31,26 +31,54 @@ function modal(isOpen=true, title=null, body=null, button=null, buttonfunc=null)
     }
 }
 
-function notification(prepend_class=null, status="success", action=null, delay=5000){
+function notification(prepend_class=null, status=200, action=null, delay=5000){
     if(prepend_class!=null && status!=null && action!=null ){
-        let notif_text = "";
-        if(status=="success"){
-            notif_text = action + " thành công!"
-        }else if(status=="warning") {
-            notif_text = action + " chưa thành công!"
-        }else if(status=="error") {
-            notif_text = action + " xảy ra lỗi!"
+        let notif_class = "";
+        if(status == 200) {
+            notif_class = "success";
+        }else if(status == 500){
+            notif_class = "error";
+        }else {
+            notif_class = "warning";
         }
 
-        let notif = `<div class="notification notification--${status}">${notif_text}</div>`;
-        $(".notification").remove();
+        let id = Date.now();
+        let notif = `<div class="notification notification--${notif_class}" id="notif-${id}">${action}</div>`;
+
         $(prepend_class).prepend(notif);
-        $(".notification").delay(4000).fadeOut();
+        $("#notif-" + id).delay(delay).fadeOut();
+
+        setTimeout(function(){
+            $("#notif-" + id).remove();
+        }, delay + 1000);
     }
+}
+
+function random(max){
+    return Math.floor(Math.random() * max);
+}
+
+function delete_cookie(name) {
+    document.cookie = name + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
 }
 
 $(window).on("resize", function(){
     dropdown();
+});
+
+$(".log-out").on("click", function(){
+    $.ajax({
+        url: "/user/logout",
+        type: "POST",
+    }).then((data)=>{
+        if(data.status == 200){
+            delete_cookie("cookie");
+            delete_cookie("cpanel");
+            location.reload();
+        }else{
+            console.log(data.message);
+        }
+    });
 });
 
 $(".header__item-bars").on("click", function(){
@@ -84,7 +112,31 @@ $(".header__input").on("input", function(){
     let query = $(this).val();
     if(query.length >= 4){
         $(".header__item-search .dropdown-list").css({"display": "block"});
-        dropdown();
+        $.ajax({
+            url: "/cpanel/search?q=" + query,
+            type: "GET"
+        }).then((data)=>{
+
+            if(data.status == 200){
+                let search_droplist = ``
+
+                for(x in data.data){
+                    let thumb = ``;
+                    if(data.data[x].listImg.length > 0){
+                        thumb = data.data[x].listImg[random(data.data[x].listImg.length)];
+                    }else{
+                        thumb = `https://cdn1.vectorstock.com/i/thumb-large/46/50/missing-picture-page-for-website-design-or-mobile-vector-27814650.jpg`;
+                    }
+                    search_droplist += `<li class="dropdown-item"><a href="/cpanel/product/${data.data[x]._id}"><span class="dropdown-item__body"><span class="dropdown-item__image"><img src="${thumb}"></span><label>${data.data[x].productName}</label></span></a></li>`
+                }
+
+                $(".header__item-search .dropdown-list").html(search_droplist);
+
+                dropdown();
+            }else if(data.status == 400){
+                $(".header__item-search .dropdown-list").html(`<li class="dropdown-item"><a>Không có gì để hiển thị cả.</a></li>`);
+            }
+        });
     }else{
         $(".header__item-search .dropdown-list").css({"display": ""});
     }
@@ -164,4 +216,27 @@ $(".modal-close").on("click", function(){
 
 $(".modal-button-close").on("click", function(){
     modal(false);
+});
+
+$(document).ready(()=>{
+    let sidebar_item = $(".sidebar__item");
+    let dropdown_item = $(".header__item-bars .dropdown-item");
+    var current_url = window.location.href;
+    sidebar_item.each(function(i)
+    {
+        let url = $(this.getElementsByTagName("a")[0]).attr("href");
+        if(current_url.includes(url)){
+            sidebar_item.removeClass("active");
+            $(this).addClass("active");
+        }
+     });
+
+     dropdown_item.each(function(i)
+     {
+         let url = $(this.getElementsByTagName("a")[0]).attr("href");
+         if(current_url.includes(url)){
+            dropdown_item.removeClass("active");
+             $(this).addClass("active");
+         }
+      });
 });
