@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="../../public/css/cart.css" />
+  <link rel="stylesheet" href="../../public/css/base.css" />
+  <link rel="stylesheet" href="../../public/css/grid.css" />
+  <link
+    rel="stylesheet"
+    href="../../public/fonts/fontawesome/css/all.min.css"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+    rel="stylesheet"
+  />
+</head>
+<body>
+  <header><%- include('../components/header'); %></header>
+
+
+
+  <main>
+    <h3>Hồ Sơ Của Tôi </h3>
+    <p>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
+    <table>
+      <tr>
+        <td>Tên Đăng Nhập</td>
+        <td><input type="text" name="" id="" value="<%= user.username %>"></td>
+      </tr>
+      <tr>
+        <td>Tên </td>
+        <td><input type="text" name="" id="" value="<%= user.fullName %>"></td>
+      </tr>
+      <tr>
+        <td>Email </td>
+        <td><%= user.email %>  <a href=""> thay đổi</a></td>
+      </tr>
+      <tr>
+        <td>Giới Tính</td>
+        <td>
+          
+          <% if(user.gender == 'male'){ %>
+            <input type="radio" name="gender" id="" value="male" checked> Nam
+          <% }else{  %>
+            <input type="radio" name="gender" id="" value="male" > Nam
+          <% } %>
+
+          <% if(user.gender == 'female'){ %>
+            <input type="radio" name="gender" id="" value="female" checked> Nu
+          <% }else{  %>
+            <input type="radio" name="gender" id="" value="female" > Nu
+          <% } %>
+
+          <% if(user.gender == 'other'){ %>
+            <input type="radio" name="gender" id="" value="other" checked> Khac
+          <% }else{  %>
+            <input type="radio" name="gender" id="" value="other" > Khac
+          <% } %>
+        </td>
+      </tr>
+      <tr>
+        <td>Số Điện Thoại        </td>
+        <td><%= user.phone %></td>
+      </tr>
+
+      <tr>
+        <td>Avatar</td>
+        <td>
+          <% if(user.avatar){ %>
+            <img src="<%= user.avatar %>" alt="">
+          <% }else{  %>
+            <img src="/public/img/avata.jpg" alt="">
+          <% } %>
+          <input type="file" name="" id="">
+        </td>
+      </tr>
+    </table>
+  </main>
+
+  <footer><%- include('../components/footer'); %></footer>
+
+</body>
+</html>
