@@ -5,6 +5,7 @@ const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
 const { checkLogin } = require("../middleWare/checkAuth");
+const { getUserInfo } = require("../middleWare/checkAuth");
 
 async function GetListFile(list_id = []) {
   list_file = [];
@@ -661,9 +662,12 @@ router.post("/delete-image", checkLogin, async (req, res) => {
   }
 });
 
-router.get("/:id", (req, res) => {
+router.get("/:id", getUserInfo, (req, res) => {
   try {
-    res.render("pages/item-view", { id: req.params.id });
+    res.render("pages/item-view", {
+      id: req.params.id,
+      login_info: req.login_info,
+    });
   } catch (err) {
     res.json({
       mess: "loi server",

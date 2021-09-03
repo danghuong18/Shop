@@ -115,7 +115,10 @@ router.get("/logon", (req, res) => {
 });
 
 router.get("/cart", getUserInfo, (req, res) => {
-  res.render("pages/cart", { login_info: req.login_info });
+  res.render("pages/cart", {
+    login_info: req.login_info,
+    login_info: req.login_info,
+  });
 });
 
 router.post("/", async (req, res) => {
