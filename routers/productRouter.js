@@ -5,7 +5,6 @@ const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
 const { checkLogin } = require("../middleWare/checkAuth");
-const { getUserInfo } = require("../middleWare/checkAuth");
 
 async function GetListFile(list_id = []) {
   list_file = [];
@@ -318,6 +317,7 @@ router.post("/create-product-item", checkLogin, async (req, res) => {
                   price: price,
                   quantity: quantity,
                   thumb: thumb,
+                  productCode: product_id,
                   createDate: createDate,
                   updateDate: createDate,
                 });
@@ -661,12 +661,9 @@ router.post("/delete-image", checkLogin, async (req, res) => {
   }
 });
 
-router.get("/:id", getUserInfo, (req, res) => {
+router.get("/:id", (req, res) => {
   try {
-    res.render("pages/item-view", {
-      id: req.params.id,
-      login_info: req.login_info,
-    });
+    res.render("pages/item-view", { id: req.params.id });
   } catch (err) {
     res.json({
       mess: "loi server",
@@ -695,6 +692,7 @@ router.post("/:productID", async (req, res) => {
       data: err,
       status: 500,
     });
+    console.log(err);
   }
 });
 
