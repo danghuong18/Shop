@@ -16,6 +16,7 @@ async function checkLogin(req, res, next) {
           req.user = user;
           req.role = user.role;
           req.login_id = id;
+          req.login_info = user;
           next();
         } else {
           res.json({ message: "Token không hợp lệ.", status: 400 });
@@ -66,4 +67,11 @@ async function checkAdminLogin(req, res, next) {
   }
 }
 
-module.exports = { checkLogin, checkAdminLogin };
+async function getUserInfo(req, res, next) {
+  let token = req.cookies.cookie;
+  let user = await UserModel.findOne({ _id: jwt.verify(token, "thai").id });
+  req.login_info = user;
+  next();
+}
+
+module.exports = { checkLogin, checkAdminLogin, getUserInfo };
