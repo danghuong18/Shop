@@ -320,24 +320,9 @@ $.ajax({
           },
         },
       });
-      $(document).ready(function () {
-        $(".carousel-title").dotdotdot({
-          height: 38,
-          fallbackToLetter: true,
-          watch: true,
-        });
-      });
     })
     .catch(function (err) {
       toastr["error"]("Lỗi server");
       console.log(err);
     });
-});
-
-//append cart
-$.ajax({
-  url: "/user/cart",
-  type: "POST",
-}).then(function (data) {
-  console.log(data);
 });

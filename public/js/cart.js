@@ -25,7 +25,7 @@ $(document).ready(function () {
   })
     .then(function (data) {
       for (let i = 0; i < data.data.length; i++) {
-        $(".cart-item-container").append(`
+        $(".cart-item-container").prepend(`
               <div class="cart-item" id="${data.data[i]._id}">
                 <input type="checkbox" class="cart-checkbox cart-item-check" />
                 <a

@@ -15,7 +15,7 @@
   display: flex;
   align-items: center;
   background: white;
-  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.09);
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   padding: 15px 20px;
   margin: 15px 0px;
 }
@@ -53,7 +53,7 @@
   display: flex;
   align-items: center;
   background: white;
-  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.09);
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   padding: 15px 20px;
   margin: 15px 0px;
 }
@@ -106,4 +106,21 @@
 .cart-item-action {
   width: 6.43557%;
   text-align: center;
+}
+
+.cart-select-zone {
+  display: flex;
+  bottom: 0;
+  position: sticky;
+  align-items: center;
+  background: white;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  padding: 15px 20px;
+  margin: 15px 0px;
+}
+
+.cart-select-zone-1,
+.cart-select-zone-2,
+.cart-select-zone-3 {
+  cursor: pointer;
 }

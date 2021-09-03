@@ -7,6 +7,7 @@ const ProductModel = require("../model/productModel");
 const ProductCodeModel = require("../model/productCodeModel");
 const BlackListModel = require("../model/blackListModel");
 const { checkLogin } = require("../middleWare/checkAuth");
+const { getUserInfo } = require("../middleWare/checkAuth");
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
@@ -113,8 +114,8 @@ router.get("/logon", (req, res) => {
   res.render("pages/logon");
 });
 
-router.get("/cart", (req, res) => {
-  res.render("pages/cart");
+router.get("/cart", getUserInfo, (req, res) => {
+  res.render("pages/cart", { login_info: req.login_info });
 });
 
 router.post("/", async (req, res) => {
@@ -456,7 +457,6 @@ router.post("/addcart", checkLogin, async (req, res) => {
       });
     }
   } catch (err) {
-    console.log(err);
     res.json({
       status: 500,
       err: err,
@@ -506,7 +506,6 @@ router.delete("/cart/delete", checkLogin, async function (req, res) {
     let productID = req.body.productID;
     let cartID = await UserModel.findOne({ _id: userID });
     cartID = cartID.cartID;
-    console.log(cartID);
     let data = await CartModel.updateOne(
       { _id: cartID },
       { $pull: { listProduct: { productID: productID } } }
