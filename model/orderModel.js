@@ -1,5 +1,7 @@
 const mongoose = require('./dbConnect');
 
+const STATUS = ["pending", "success", "fail"];
+
 const OrderSchema = mongoose.Schema({
     listProduct: [{
         productID: {
@@ -14,6 +16,11 @@ const OrderSchema = mongoose.Schema({
     },
     address: String,
     phone: String,
+    status: {
+        type: String,
+        enum: STATUS,
+        default: STATUS[1],
+    },
     createDate: Date
 }, {collection: 'order'});
 

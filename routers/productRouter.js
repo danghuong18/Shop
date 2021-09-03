@@ -267,6 +267,7 @@ router.post("/create-product-item", checkLogin, async (req, res)=>{
                                     price: price,
                                     quantity: quantity,
                                     thumb: thumb,
+                                    productCode: product_id,
                                     createDate: createDate,
                                     updateDate: createDate});
             

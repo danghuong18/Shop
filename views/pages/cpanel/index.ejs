@@ -11,41 +11,13 @@
         <section class="main-body">
             <div class="main-body__statistic">
                 <ul class="main-body__statistic__list">
-                    <li class="main-body__statistic__item">
-                        <div class="icon"><i class="fas fa-money-bill-wave"></i></div>
-                        <div class="info">
-                            <div class="heading">$4590</div>
-                            <span class="desc">Last month sales</span>
-                        </div>
-                    </li>
-                    <li class="main-body__statistic__item main-body__statistic__item--new">
-                        <div class="icon"><i class="fas fa-users"></i></div>
-                        <div class="info">
-                            <div class="heading">$4590</div>
-                            <span class="desc">Last month sales</span>
-                        </div>
-                    </li>
-                    <li class="main-body__statistic__item main-body__statistic__item--total">
-                        <div class="icon"><i class="fas fa-shopping-bag"></i></div>
-                        <div class="info">
-                            <div class="heading">$4590</div>
-                            <span class="desc">Last month sales</span>
-                        </div>
-                    </li>
-                    <li class="main-body__statistic__item  main-body__statistic__item--visitor">
-                        <div class="icon"><i class="far fa-eye"></i></div>
-                        <div class="info">
-                            <div class="heading">$4590</div>
-                            <span class="desc">Last month sales</span>
-                        </div>
-                    </li>
                 </ul>
             </div>
             <div class="main-body__split">
                 <div class="main-body__split-60">
                     <div class="main-body__split-header">ĐƠN HÀNG GẦN ĐÂY</div>
                     <div class="main-body__split-body">
-                        <table>
+                        <table class="recent-order">
                             <tbody>
                                 <tr>
                                     <th>
@@ -288,20 +260,115 @@
                     </div>
                 </div>
                 <div class="main-body__split-60">
-                    <div class="main-body__split-header main-body__split-header--hot">SẢN PHẨM MỚI NHẤT</div>
-                    <div class="main-body__split-body">70%</div>
+                    <div class="main-body__split-header main-body__split-header--hot">DOANH THU</div>
+                    <div class="main-body__split-body">
+                        <table class="graph">
+                            <caption>Doanh Thu Theo Ngày</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Item</th>
+                                    <th scope="col">Percent</th>
+                                </tr>
+                            </thead><tbody>
+                                <tr style="height:85%">
+                                    <th scope="row">Your Blog</th>
+                                    <td><span>85%</span></td>
+                                </tr>
+                                <tr style="height:23%">
+                                    <th scope="row">Medium</th>
+                                    <td><span>23%</span></td>
+                                </tr>
+                                <tr style="height:7%">
+                                    <th scope="row">Tumblr</th>
+                                    <td><span>7%</span></td>
+                                </tr>
+                                <tr style="height:38%">
+                                    <th scope="row">Facebook</th>
+                                    <td><span>38%</span></td>
+                                </tr>
+                                <tr style="height:35%">
+                                    <th scope="row">Youtube</th>
+                                    <td><span>35%</span></td>
+                                </tr>
+                                <tr style="height:30%">
+                                    <th scope="row">LinkedIn</th>
+                                    <td><span>30%</span></td>
+                                </tr>
+                                <tr style="height:5%">
+                                    <th scope="row">Twitter</th>
+                                    <td><span>5%</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="main-body__split-100">
                     <div class="main-body__split-header">MẶT HÀNG HOT</div>
                     <div class="main-body__split-body">
                         <ul class="hot-product-list">
                             <li class="hot-product-item">
-                                <span class="hot-product-item-image">
-                                    <img src="/public/upload/product-image-1630074098491.jpg">
-                                    <a href="" class="hot-product-item-title">
-                                        Đắc Nhân Tâm
-                                    </a>
-                                </span>
+                                <a href="#" title="Đắc Nhân Tâm">
+                                    <span class="hot-product-item-image">
+                                        <img src="/public/upload/product-image-1630074098491.jpg">
+                                        <span class="hot-product-item-background"></span>
+                                        <span class="hot-product-item-position">1</span>
+                                        <span class="hot-product-item-title">
+                                            Đắc Nhân Tâm
+                                        </span>
+                                    </span>
+                                </a>
+                            </li>
+
+                            <li class="hot-product-item">
+                                <a href="#" title="Đắc Nhân Tâm">
+                                    <span class="hot-product-item-image">
+                                        <img src="/public/upload/product-image-1630074098491.jpg">
+                                        <span class="hot-product-item-background"></span>
+                                        <span class="hot-product-item-position">2</span>
+                                        <span class="hot-product-item-title">
+                                            Đắc Nhân Tâm
+                                        </span>
+                                    </span>
+                                </a>
+                            </li>
+
+                            <li class="hot-product-item">
+                                <a href="#" title="Đắc Nhân Tâm">
+                                    <span class="hot-product-item-image">
+                                        <img src="/public/upload/product-image-1630074098491.jpg">
+                                        <span class="hot-product-item-background"></span>
+                                        <span class="hot-product-item-position">3</span>
+                                        <span class="hot-product-item-title">
+                                            Đắc Nhân Tâm
+                                        </span>
+                                    </span>
+                                </a>
+                            </li>
+
+                            <li class="hot-product-item">
+                                <a href="#" title="Đắc Nhân Tâm">
+                                    <span class="hot-product-item-image">
+                                        <img src="/public/upload/product-image-1630074098491.jpg">
+                                        <span class="hot-product-item-background"></span>
+                                        <span class="hot-product-item-position">4</span>
+                                        <span class="hot-product-item-title">
+                                            Đắc Nhân Tâm
+                                        </span>
+                                    </span>
+                                </a>
+                            </li>
+
+                            <li class="hot-product-item">
+                                <a href="#" title="Đắc Nhân Tâm">
+                                    <span class="hot-product-item-image">
+                                        <img src="/public/upload/product-image-1630074098491.jpg">
+                                        <span class="hot-product-item-background"></span>
+                                        <span class="hot-product-item-position">5</span>
+                                        <span class="hot-product-item-title">
+                                            Đắc Nhân Tâm
+                                        </span>
+                                    </span>
+                                </a>
                             </li>
                         </ul>
                     </div>
@@ -330,5 +397,6 @@
         </div>
     </div>
     <%- include('../../components/cpanel/js_footer.ejs'); %>
+    <script src="/public/js/cpanel/statistic.js"></script>
 </body>
 </html>

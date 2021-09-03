@@ -48,7 +48,7 @@
                                 <label>
                                     Ngày sinh
                                 </label>
-                                <input type="date" name="birth-day" class="birth-day" value="<%= login_info.DOB %>">
+                                <input type="date" name="birth-day" class="birth-day" value="<%= new Date(login_info.DOB).toISOString().slice(0,10) %>">
                             </div>
                             <div class="form-group">
                                 <label>
@@ -58,8 +58,6 @@
                                     <option value="male" <%= (login_info.gender == "male")? 'selected' : ''  %>>Nam</option>
                                     <option value="female" <%= (login_info.gender == "female")? 'selected' : ''  %>>Nữ</option>
                                 </select>
-                                <!-- <input type="radio" name="gender" class="gender" value="male"> Nam
-                                <input type="radio" name="gender" class="gender" value="female"> Nữ -->
                             </div>
                         </div>
                     </div>

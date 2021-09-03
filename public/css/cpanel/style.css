@@ -19,22 +19,6 @@ body {
   background-color: #f1f1f1;
 }
 
-table {
-  font-family: "Roboto";
-  font-size: 1.6rem;
-  width: 100%;
-}
-
-td, th {
-  text-align: left;
-  padding: 1rem 0.5rem;
-}
-
-th {
-  font-weight: 600;
-  border-bottom: 2px solid #d8d8d8;
-}
-
 .wrapper {
   width: 100%;
 }
@@ -159,6 +143,10 @@ th {
 .header__item-search .dropdown-list .dropdown-item label {
   font-size: 1.6rem;
   font-weight: 600;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 .header__item-notification {
   cursor: pointer;
@@ -974,6 +962,77 @@ th {
   font-size: 1.6rem;
   font-weight: 600;
 }
+.main-body__split-body .hot-product-list {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  flex-direction: row;
+}
+.main-body__split-body .hot-product-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  width: calc(20% - 1rem);
+  height: 26rem;
+  overflow: hidden;
+}
+.main-body__split-body .hot-product-item-image {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  width: 100%;
+  height: 26rem;
+  overflow: hidden;
+}
+.main-body__split-body .hot-product-item-image img {
+  width: 100%;
+}
+.main-body__split-body .hot-product-item-background {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-image: linear-gradient(to bottom, #76c80e, #1fbba6);
+  opacity: 0.75;
+}
+.main-body__split-body .hot-product-item-background:hover {
+  opacity: 0.45;
+  transition: opacity 0.4s;
+}
+.main-body__split-body .hot-product-item-position {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0.5rem;
+  font-size: 3rem;
+  width: 5rem;
+  height: 5rem;
+  font-weight: 600;
+  color: #fff;
+  background: #fe5e3a;
+}
+.main-body__split-body .hot-product-item-title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #fff;
+}
 .main-body.toggled {
   margin-left: 5rem;
 }
@@ -1355,6 +1414,150 @@ th {
   color: #fe5e3a;
 }
 
+table {
+  font-family: "Roboto";
+  font-size: 1.6rem;
+  width: 100%;
+}
+
+.recent-order td,
+.recent-order th {
+  text-align: left;
+  padding: 1rem 0.5rem;
+}
+
+.recent-order th {
+  font-weight: 600;
+  border-bottom: 2px solid #d8d8d8;
+}
+
+.graph {
+  margin-bottom: 1em;
+  font: normal 100%/150% arial, helvetica, sans-serif;
+}
+
+.graph caption {
+  font: bold 150%/120% arial, helvetica, sans-serif;
+  padding-bottom: 0.33em;
+}
+
+.graph tbody th {
+  text-align: right;
+}
+
+@supports (display: grid) {
+  .graph {
+    display: block;
+    width: 95%;
+    height: 200px;
+  }
+
+  .graph caption {
+    display: block;
+  }
+
+  .graph thead {
+    display: none;
+  }
+
+  .graph tbody {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(2em, 1fr));
+    column-gap: 2.5%;
+    align-items: end;
+    height: 100%;
+    margin: 3em 0 1em 2.8em;
+    padding: 0 1em;
+    border-bottom: 1px dotted rgba(0, 0, 0, 0.5);
+    background: repeating-linear-gradient(180deg, rgba(170, 170, 170, 0.7) 0, rgba(170, 170, 170, 0.7) 1px, transparent 1px, transparent 20%);
+  }
+
+  .graph tbody:before,
+.graph tbody:after {
+    position: absolute;
+    left: -3.2em;
+    width: 2.8em;
+    text-align: right;
+    font: bold 80%/120% arial, helvetica, sans-serif;
+  }
+
+  .graph tbody:before {
+    content: "100%";
+    top: -0.6em;
+  }
+
+  .graph tbody:after {
+    content: "0%";
+    bottom: -0.6em;
+  }
+
+  .graph tr {
+    position: relative;
+    display: block;
+  }
+
+  .graph tr:hover {
+    z-index: 999;
+  }
+
+  .graph th,
+.graph td {
+    display: block;
+    text-align: center;
+  }
+
+  .graph tbody th {
+    position: absolute;
+    top: -3em;
+    left: 0;
+    width: 100%;
+    font-weight: normal;
+    text-align: center;
+    white-space: nowrap;
+    text-indent: 0;
+    transform: rotate(-45deg);
+  }
+
+  .graph tbody th:after {
+    content: "";
+  }
+
+  .graph td {
+    width: 100%;
+    height: 100%;
+    background: #fe5e3a;
+    transition: background 0.5s;
+  }
+
+  .graph tr:hover td {
+    opacity: 0.7;
+  }
+
+  .graph td span {
+    overflow: hidden;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 0;
+    padding: 0.5em 0;
+    margin: -1em 0 0;
+    font: normal 85%/120% arial, helvetica, sans-serif;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.5s;
+    color: white;
+  }
+
+  .toggleGraph:checked + table td span,
+.graph tr:hover td span {
+    width: 4em;
+    margin-left: -2em;
+    /* 1/2 the declared width */
+    opacity: 1;
+  }
+}
+/* grid only */
 /* width */
 ::-webkit-scrollbar {
   width: 0.5rem;
