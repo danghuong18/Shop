@@ -6,6 +6,10 @@ const ProductSchema = mongoose.Schema({
     color: String,
     size: String,
     thumb: String,
+    productCode: {
+        type: String,
+        ref: 'productCode'
+    },
     createDate: Date,
     updateDate: Date
 }, {collection: 'product'});

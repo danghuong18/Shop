@@ -248,6 +248,7 @@ function edit() {
                 </script>`
                 $(".product-images").html(list_image);
                 $(".product-images").append(script);
+                $(".main-body__container__title").html(product_name);
             }else{
                 notification("#form-body", data.status, data.message);
             }
@@ -315,8 +316,8 @@ function delete_item(list_item=[]){
                 notification("#list-body", data.status, data.message);
             }
         });
+        modal(false);
     }
-    modal(false);
 }
 
 function delete_image(id){

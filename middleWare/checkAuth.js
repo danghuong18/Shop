@@ -15,6 +15,7 @@ async function checkLogin(req, res, next) {
         if (user) {
           req.user = user;
           req.role = user.role;
+          req.login_id = id;
           next();
         } else {
           res.json({ message: "Token không hợp lệ.", status: 400 });

@@ -10,6 +10,11 @@
         <%- include('../../components/cpanel/sidebar.ejs'); %>
         <section class="main-body">
             <div class="main-body__container" id="form-body">
+                <% if(isEdit) { %>
+                    <div class="main-body__container__title">
+                        <%= product.productName %>
+                    </div>
+                <% } %>
                 <form action="#" id="<%= isEdit? 'edit-product' : 'create-product' %>" method="post" enctype="multipart/form-data">
                     <div class="main-body__container__panel">
                         <div class="split">
@@ -55,32 +60,31 @@
                                     Hình sản phẩm
                                 </label>
                                 <input type="file" name="product-image" class="product-image"  accept="image/gif, image/jpeg, image/png" multiple required>
-
-                                <% if(isEdit) { %>
-                                    <% if(product.listImg.length > 0) { %>
-                                        <ul class="product-images">
-                                        <% for(x in product.listImg) { %>
-                                            <li class="product-images-item" id="image-<%= x %>">
-                                                <img src="<%= product.listImg[x] %>">
-                                                <a title="Xoá ảnh này"><span class="delete-image-button" id="<%= x %>">X</span></a>
-                                            </li>
+                                <ul class="product-images">
+                                    <% if(isEdit) { %>
+                                        <% if(product.listImg.length > 0) { %>       
+                                            <% for(x in product.listImg) { %>
+                                                <li class="product-images-item" id="image-<%= x %>">
+                                                    <img src="<%= product.listImg[x] %>">
+                                                    <a title="Xoá ảnh này"><span class="delete-image-button" id="<%= x %>">X</span></a>
+                                                </li>
+                                            <% } %>
+                                                <script>
+                                                    $(".delete-image-button").on("click", function(){
+                                                        let id = $(this).attr("id");
+                                                    
+                                                        $("#image-" + id).delay(200).fadeOut();
+                                                    
+                                                        setTimeout(function(){
+                                                            $("#image-" + id).remove();
+                                                        }, 1000);
+                                                    
+                                                        delete_image(id);
+                                                    });
+                                                </script>
                                         <% } %>
-                                            <script>
-                                                $(".delete-image-button").on("click", function(){
-                                                    let id = $(this).attr("id");
-                                                
-                                                    $("#image-" + id).delay(200).fadeOut();
-                                                
-                                                    setTimeout(function(){
-                                                        $("#image-" + id).remove();
-                                                    }, 1000);
-                                                
-                                                    delete_image(id);
-                                                });
-                                            </script>
-                                        </ul>
                                     <% } %>
-                                <% } %>
+                                </ul>
                             </div>
                         </div>
                         <div class="split">
@@ -98,7 +102,7 @@
                                 <label>
                                     Thương hiệu sản phẩm
                                 </label>
-                                <select name="brand" required class="product-brand" required>
+                                <select name="brand" class="product-brand" required>
                                     <% brands.forEach(function(brand) {%>
                                         <option value="<%= brand._id %>" <%= isEdit? (product.brand.includes(brand._id) ? 'selected': '') : '' %>><%= brand.brandName %></option>
                                     <% }); %>

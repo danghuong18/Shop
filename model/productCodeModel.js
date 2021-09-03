@@ -31,6 +31,9 @@ const ProductCodeSchema = mongoose.Schema(
   { collection: "productCode" }
 );
 
+ProductCodeSchema.index({ "$**": "text" });
+// ProductCodeSchema.index({name: 'text', 'description': 'text'});
+
 const ProductCodeModel = mongoose.model("productCode", ProductCodeSchema);
 
 module.exports = ProductCodeModel;
