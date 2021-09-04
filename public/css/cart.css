@@ -14,6 +14,7 @@
   font-size: 14px;
   display: flex;
   align-items: center;
+  justify-content: center;
   background: white;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   padding: 15px 20px;
@@ -122,5 +123,42 @@
 .cart-select-zone-1,
 .cart-select-zone-2,
 .cart-select-zone-3 {
+  cursor: pointer;
+}
+
+.cart-select-zone span {
+  margin: 0px 20px;
+  text-align: center;
+}
+
+.cart-select-zone-1 {
+  width: 15%;
+}
+
+.cart-select-zone-2 {
+  width: 5%;
+}
+
+.cart-select-zone-3 {
+  width: 15%;
+}
+
+.cart-select-zone-4 {
+  width: 15%;
+}
+
+.cart-select-zone-5 {
+  width: 15%;
+  color: #ee4d2d;
+  font-size: 20px;
+}
+
+.cart-select-zone button {
+  width: 15%;
+  font-size: 14px;
+  color: white;
+  border: none;
+  padding: 12px 12px;
+  background: #ee4d2d;
   cursor: pointer;
 }

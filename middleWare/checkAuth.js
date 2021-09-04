@@ -18,11 +18,19 @@ async function checkLogin(req, res, next) {
           req.login_info = user;
           next();
         } else {
-          res.json({ message: "Token không hợp lệ.", status: 400 });
+          res.json({
+            message: "Token không hợp lệ.",
+            status: 400,
+            logged_in: false,
+          });
         }
       }
     } else {
-      res.json({ message: "Vui lòng đăng nhập.", status: 400 });
+      res.json({
+        message: "Vui lòng đăng nhập.",
+        status: 400,
+        logged_in: false,
+      });
     }
   } catch (error) {
     res.json({ message: "Server error!", status: 500, error });
@@ -67,10 +75,19 @@ async function checkAdminLogin(req, res, next) {
 }
 
 async function getUserInfo(req, res, next) {
-  let token = req.cookies.cookie;
-  let user = await UserModel.findOne({ _id: jwt.verify(token, "thai").id });
-  req.login_info = user;
-  next();
+  try {
+    let token = req.cookies.cookie;
+    if (token) {
+      let user = await UserModel.findOne({ _id: jwt.verify(token, "thai").id });
+      req.login_info = user;
+      next();
+    } else {
+      req.login_info = false;
+      next();
+    }
+  } catch (err) {
+    res.json({ message: "Server error!", err, status: 500 });
+  }
 }
 
 module.exports = { checkLogin, checkAdminLogin, getUserInfo };

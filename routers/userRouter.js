@@ -106,17 +106,18 @@ router.get("/", checkLogin, async (req, res) => {
   }
 });
 
-router.get("/login", (req, res) => {
-  res.render("pages/login");
+router.get("/login", getUserInfo, (req, res) => {
+  res.render("pages/login", {
+    login_info: req.login_info,
+  });
 });
 
-router.get("/logon", (req, res) => {
-  res.render("pages/logon");
+router.get("/logon", getUserInfo, (req, res) => {
+  res.render("pages/logon", { login_info: req.login_info });
 });
 
 router.get("/cart", getUserInfo, (req, res) => {
   res.render("pages/cart", {
-    login_info: req.login_info,
     login_info: req.login_info,
   });
 });
@@ -412,6 +413,15 @@ router.post("/addcart", checkLogin, async (req, res) => {
         mess: ["Không đủ hàng", "Không đủ hàng, vui lòng nhập lại số lượng"],
         toastr: "error",
       });
+    } else if (quantity <= 0) {
+      res.json({
+        status: 400,
+        mess: [
+          "Số lượng không được bé hơn hoặc bằng 0",
+          "Số lượng không được bé hơn hoặc bằng 0",
+        ],
+        toastr: "warning",
+      });
     } else if (oldItem) {
       let oldItemQuantity = oldItem.listProduct;
       oldItemQuantity = oldItemQuantity.filter(function (a, b) {
@@ -430,7 +440,6 @@ router.post("/addcart", checkLogin, async (req, res) => {
         );
         res.json({
           status: 200,
-          data: data,
           mess: ["Đã thêm vào giỏ hàng", "Đổi số lượng sản phẩm thành công"],
           toastr: "success",
         });
@@ -438,6 +447,7 @@ router.post("/addcart", checkLogin, async (req, res) => {
         res.json({
           status: 400,
           mess: ["Không đủ hàng", "Không đủ hàng, vui lòng nhập lại số lượng"],
+          toastr: "warning",
         });
       }
     } else {
@@ -454,7 +464,6 @@ router.post("/addcart", checkLogin, async (req, res) => {
       );
       res.json({
         status: 200,
-        data: data,
         mess: ["Đã thêm vào giỏ hàng", "Đổi số lượng sản phẩm thành công"],
         toastr: "success",
       });
