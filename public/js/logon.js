@@ -43,6 +43,15 @@ $(".logon-button").on("click", async () => {
   }
 });
 
+$.ajax({
+  url: "/user/checkLogin",
+  type: "POST",
+}).then((data) => {
+  if (data.status == 200) {
+    window.location.href = "/";
+  }
+});
+
 function notification(prepend_class=null, status=200, action=null, delay=5000){
   if(prepend_class!=null && status!=null && action!=null ){
       let notif_class = "";

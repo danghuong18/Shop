@@ -311,38 +311,34 @@ router.post("/create-product-item", checkLogin, async (req, res) => {
               let price = req.body.price;
               let quantity = req.body.quantity;
               let createDate = new Date();
-              try {
-                let create = await ProductModel.create({
-                  color: color,
-                  size: size,
-                  price: price,
-                  quantity: quantity,
-                  thumb: thumb,
-                  productCode: product_id,
-                  createDate: createDate,
-                  updateDate: createDate,
-                });
+              
+              let create = await ProductModel.create({
+                color: color,
+                size: size,
+                price: price,
+                quantity: quantity,
+                thumb: thumb,
+                productCode: product_id,
+                createDate: createDate,
+                updateDate: createDate,
+              });
 
-                if (create) {
-                  await ProductCodeModel.updateOne(
-                    { _id: product_id },
-                    { $push: { productID: create._id } }
-                  );
-                  res.json({
-                    message: "Đăng item sản phẩm thành công!",
-                    status: 200,
-                    data: create._id,
-                  });
-                } else {
-                  DeleteFile([thumb]);
-                  res.json({
-                    message: "Không thể tạo item sản phẩm trên.",
-                    status: 400,
-                  });
-                }
-              } catch (error) {
+              if (create) {
+                await ProductCodeModel.updateOne(
+                  { _id: product_id },
+                  { $push: { productID: create._id } }
+                );
+                res.json({
+                  message: "Đăng item sản phẩm thành công!",
+                  status: 200,
+                  data: create._id,
+                });
+              } else {
                 DeleteFile([thumb]);
-                res.json({ message: "Server error!", status: 500, error });
+                res.json({
+                  message: "Không thể tạo item sản phẩm trên.",
+                  status: 400,
+                });
               }
             } else {
               DeleteFile([thumb]);
