@@ -10,9 +10,9 @@ $(".logon-button").on("click", async () => {
     let email = $(".email").val();
     let phone = $(".phone").val();
     let gender = $(".gender").val();
-    if(username != "" && username == undefined && password == "" && password == undefined
-    && fullName != "" && fullName == undefined && email == "" && email == undefined
-    && phone != "" && phone == undefined){
+    if(username != "" && username != undefined && password != "" && password != undefined
+    && fullName != "" && fullName != undefined && email != "" && email != undefined
+    && phone != "" && phone != undefined){
       const res = await $.ajax({
         url: "/user",
         type: "POST",
