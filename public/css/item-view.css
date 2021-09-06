@@ -44,7 +44,7 @@ button:hover {
 .item-overview {
   display: flex;
   background: white;
-  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.09);
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
 .item-overview img {
@@ -57,12 +57,18 @@ button:hover {
   width: calc(100% - 450px);
 }
 
-.item-overview-no-img .item-title {
+.item-title {
   font-size: 20px;
   font-weight: 500;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
 }
 
-.item-overview-no-img .item-price {
+.item-price {
   font-size: 30px;
   color: rgb(238, 77, 45);
   line-height: 1.5;
@@ -73,26 +79,35 @@ button:hover {
   display: block;
 }
 
-.item-overview-no-img .item-select-prop {
+.item-select-prop {
   font-size: 14px;
 }
 
-.item-overview-no-img .item-select-prop-margin {
+.item-select-prop-margin {
   margin: 20px;
 }
 
-.item-overview-no-img .item-select-prop span {
+.item-select-prop span {
   display: inline-block;
   width: 100px;
 }
 
-.item-overview-no-img input {
+.item-quantity {
+  width: 80px;
+}
+
+.item-left {
+  width: auto !important;
+  margin-left: 20px;
+}
+
+input {
   font-size: 18px;
   padding: 10px;
   border: 1px solid #ccc;
 }
 
-.item-overview-no-img .item-action button {
+.item-action button {
   padding: 12px;
   border-radius: 2px;
   width: 160px;
@@ -102,7 +117,7 @@ button:hover {
   background-color: white;
   padding: 10px;
   margin-top: 20px;
-  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.09);
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
 .item-detail-decs .detail-decs-title {
@@ -160,7 +175,7 @@ button:hover {
   height: 235px;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.09);
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   margin-bottom: 10px;
   background: white;
 }
@@ -175,6 +190,12 @@ button:hover {
   width: 130px;
   height: 38px;
   line-height: 1.2;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
 }
 
 .owl-two .carousel-price {
