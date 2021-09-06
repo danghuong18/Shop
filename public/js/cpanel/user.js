@@ -210,6 +210,10 @@ function role(id, isSetAdmin = true){
     });
 }
 
+$('#edit-profile').on('submit', () => {
+    return false;
+});
+
 $(".avatar-profile").on("click", function(){
     $(".edit-avatar").click();
 });

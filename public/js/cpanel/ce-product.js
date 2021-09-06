@@ -418,6 +418,14 @@ function action(action="create", item_id=null){
     }
 }
 
+$('#create-product').on('submit', () => {
+    return false;
+});
+
+$('#edit-product').on('submit', () => {
+    return false;
+});
+
 $(".plus-button").on("click", function(){
     let count = $(".product-details-item").length;
     let body = `<li class="product-details-item" id="detail-${count + 1}">

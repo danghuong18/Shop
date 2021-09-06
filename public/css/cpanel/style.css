@@ -359,6 +359,7 @@ body {
   width: 100%;
   padding: 1rem;
   color: #7b7b7b;
+  overflow: hidden;
 }
 .main-body__statistic__item .info .heading {
   font-size: 2rem;
@@ -562,6 +563,8 @@ body {
   color: #fff;
   font-size: 1.6rem;
   background-color: #fe5e3a;
+  border: 0;
+  border-radius: 0;
 }
 .main-body__container .submit-button:hover {
   opacity: 0.5;
@@ -1291,6 +1294,8 @@ body {
   color: #fff;
   font-size: 1.6rem;
   background-color: #fe5e3a;
+  border: 0;
+  border-radius: 0;
 }
 .login__form .button:hover {
   opacity: 0.7;
