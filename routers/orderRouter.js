@@ -36,7 +36,7 @@ router.get("/", checkLogin, async (req, res)=>{
                 sortby = {createDate: 1};
             }
     
-            let orders = await OrderModel.find({}).populate({path: "listProduct", populate: { path: "productID", populate: {path: "productCode"}}}).populate("userID", "username").skip(skip).limit(limit).sort(sortby);
+            let orders = await OrderModel.find(filter).populate({path: "listProduct", populate: { path: "productID", populate: {path: "productCode"}}}).populate("userID", "username").skip(skip).limit(limit).sort(sortby);
             let all_orders = await OrderModel.find({});
             if(all_orders.length > 0){
                 pages = Math.ceil(all_orders.length/limit);
@@ -54,5 +54,24 @@ router.get("/", checkLogin, async (req, res)=>{
         res.json({message: "Bạn không có quyền ở đây.", status: 400});
     }
 });
+
+router.post("/confirmOrder", checkLogin, async (req, res)=>{
+    if(req.role === "admin"){
+        try {
+            let id = req.body.id;
+
+            let confirm = await OrderModel.updateOne({_id: id}, {$set: {status: "success"}});
+            if(confirm.ok){
+                res.json({message: "Xác nhận đơn hàng thành công!", status: 200});
+            }else{
+                res.json({message: "Xác nhận đơn hàng không thành công.", status: 400});
+            }
+        } catch (error) {
+            res.json({message: "Server error!", status: 500, });
+        }
+    }else{
+        res.json({message: "Bạn không có quyền ở đây.", status: 400});
+    }
+})
 
 module.exports = router;

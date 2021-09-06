@@ -185,22 +185,6 @@ function getMeta(url){
     return r;
 }
 
-$(".header__item-profile .avatar img").on("load", function(){
-    if($(this).height() < $(this).width()) {
-        $(this).css({"height": "100%", "width" : "auto"});
-    }else{
-        $(this).css({"height": "auto", "width" : "100%"});
-    }
-});
-
-$(".avatar-profile .border-avatar img").on("load", function(){
-    if($(this).height() < $(this).width()) {
-        $(this).css({"height": "100%", "width" : "auto"});
-    }else{
-        $(this).css({"height": "auto", "width" : "100%"});
-    }
-});
-
 function action(action="create", item_id=null){
     if(action == "delete"){
         let body = `Bạn muốn xoá user này không?`;

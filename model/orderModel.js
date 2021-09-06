@@ -16,6 +16,7 @@ const OrderSchema = mongoose.Schema({
     },
     address: String,
     phone: String,
+    price: Number,
     status: {
         type: String,
         enum: STATUS,

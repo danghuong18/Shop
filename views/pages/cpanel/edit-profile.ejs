@@ -48,7 +48,7 @@
                                 <label>
                                     Ngày sinh
                                 </label>
-                                <input type="date" name="birth-day" class="birth-day" value="<%= new Date(login_info.DOB).toISOString().slice(0,10) %>">
+                                <input type="date" name="birth-day" class="birth-day" value="<%= (login_info.DOB)? new Date(login_info.DOB).toISOString().slice(0,10) : '' %>">
                             </div>
                             <div class="form-group">
                                 <label>

@@ -2,8 +2,6 @@ const router = require("express").Router();
 const CategoryModel = require("../model/categoryModel");
 const BrandModel = require("../model/brandModel");
 const ProductCodeModel = require("../model/productCodeModel");
-const UserModel = require("../model/userModel");
-const OrderModel = require("../model/orderModel");
 const { checkLogin, checkAdminLogin } = require("../middleWare/checkAuth");
 
 // app.set("view engine", "ejs");
@@ -109,31 +107,6 @@ router.get("/search", checkLogin, async (req, res)=>{
             }else{
                 res.json({message: "Không tìm thấy kết quả nào cả.", status: 400});
             }
-        } catch (error) {
-            res.json({message: "Server error!", status: 500, error});
-        }
-    }else{
-        res.json({message: "Bạn không có quyền ở đây.", status: 400});
-    }
-});
-
-router.get("/statistic", checkLogin, async (req, res)=>{
-    if(req.role === "admin"){
-        try {
-            let total_revenue = 0;
-
-            let users = await UserModel.find({});
-            let products = await ProductCodeModel.find({});
-            let orders = await OrderModel.find({});
-
-            let total_user = (users.length > 0) ? users.length : 0;
-
-            let total_product = (products.length > 0) ? products.length : 0;
-
-            let total_order = (orders.length > 0) ? orders.length : 0;
-
-            res.json({message: "Successed", status: 200, data: {revenue: total_revenue, user: total_user, product: total_product, order: total_order}});
-
         } catch (error) {
             res.json({message: "Server error!", status: 500, error});
         }
