@@ -96,7 +96,7 @@ router.post("/create", checkLogin, async (req, res)=>{
                     let logo = "/public/upload/" + req.file.filename;
                     try {
                         let title = req.body.title;
-                        let createDate = Date();
+                        let createDate = new Date();
     
                         let check_exist =  await BrandModel.findOne({brandName: title});
                         if(check_exist){
@@ -143,7 +143,7 @@ router.post("/edit", checkLogin, async (req, res)=>{
     
                 try {
     
-                    let updateDate = Date();
+                    let updateDate = new Date();
                     let id = req.body.id;
                     let title = req.body.title;
                     let list_file = await GetListFile([id]);

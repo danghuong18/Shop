@@ -240,7 +240,7 @@ router.post("/create", checkLogin, (req, res) => {
           let title = req.body.title;
           let brand = req.body.brand;
           let description = req.body.description;
-          let createDate = Date();
+          let createDate = new Date();
 
           try {
             let create = await ProductCodeModel.create({
@@ -310,7 +310,7 @@ router.post("/create-product-item", checkLogin, async (req, res) => {
               let size = req.body.size;
               let price = req.body.price;
               let quantity = req.body.quantity;
-              let createDate = Date();
+              let createDate = new Date();
               try {
                 let create = await ProductModel.create({
                   color: color,
@@ -436,7 +436,7 @@ router.post("/edit", checkLogin, (req, res) => {
         let title = req.body.title;
         let brand = req.body.brand;
         let description = req.body.description;
-        let updateDate = Date();
+        let updateDate = new Date();
 
         try {
           let edit = await ProductCodeModel.findOneAndUpdate(

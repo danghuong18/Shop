@@ -31,8 +31,8 @@ app.use("/order", orderRouter);
 app.use("/statistic", statisticRouter);
 app.use("/public", express.static(path.join(__dirname, "./public")));
 
-app.get("/", (req, res) => {
-  res.render("pages/index");
+app.get("/", getUserInfo, (req, res) => {
+  res.render("pages/index", { login_info: req.login_info });
 });
 
 app.get("/login", getUserInfo, (req, res) => {

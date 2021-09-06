@@ -1,20 +1,67 @@
-$("#logon").on("click", async () => {
+$('#logon-form').on('submit', () => {
+  return false;
+});
+
+$(".logon-button").on("click", async () => {
   try {
-    const gender = $("#male").prop("checked") ? "male" : "female";
-    const res = await $.ajax({
-      url: "/user",
-      type: "POST",
-      data: {
-        username: $("#username").val(),
-        password: $("#password").val(),
-        phone: $("#phone").val(),
-        email: $("#email").val(),
-        fullName: $("#fullName").val(),
-        gender: gender,
-      },
-    });
-    $(".noti").html(res.mess);
+    let username = $(".username").val();
+    let password = $(".password").val();
+    let fullName = $(".full-name").val();
+    let email = $(".email").val();
+    let phone = $(".phone").val();
+    let gender = $(".gender").val();
+    if(username != "" && username == undefined && password == "" && password == undefined
+    && fullName != "" && fullName == undefined && email == "" && email == undefined
+    && phone != "" && phone == undefined){
+      const res = await $.ajax({
+        url: "/user",
+        type: "POST",
+        data: {
+          username: username,
+          password: password,
+          fullName: fullName,
+          email: email,
+          phone: phone,
+          gender: gender,
+        },
+      });
+  
+      if (res.status == 200) {
+        notification(".login", res.status, res.message);
+  
+        setTimeout(function(){
+          window.location.href = "/login";
+        }, 2000);
+        
+      }else{
+        notification(".login", res.status, res.message);
+      }
+    }
+
   } catch (error) {
     console.log(error);
   }
 });
+
+function notification(prepend_class=null, status=200, action=null, delay=5000){
+  if(prepend_class!=null && status!=null && action!=null ){
+      let notif_class = "";
+      if(status == 200) {
+          notif_class = "success";
+      }else if(status == 500){
+          notif_class = "error";
+      }else {
+          notif_class = "warning";
+      }
+
+      let id = Date.now();
+      let notif = `<div class="notification notification-${notif_class}" id="notif-${id}">${action}</div>`;
+
+      $(prepend_class).prepend(notif);
+      $("#notif-" + id).delay(delay).fadeOut();
+
+      setTimeout(function(){
+          $("#notif-" + id).remove();
+      }, delay + 1000);
+  }
+}

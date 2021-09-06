@@ -8,30 +8,25 @@
     <link rel="stylesheet" href="../../public/css/login.css" />
     <link rel="stylesheet" href="../../public/css/base.css" />
     <link rel="stylesheet" href="../../public/css/grid.css" />
-    <link
-      rel="stylesheet"
-      href="../../public/fonts/fontawesome/css/all.min.css"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="stylesheet" href="../../public/fonts/fontawesome/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet"/>
   </head>
   <body>
     <header><%- include('../components/header'); %></header>
-    <div class="container">
-      <div class="line">
-        <div class="title">username</div>
-        <div><input type="text" name="" id="username" /></div>
+    <section class="main-container">
+      <div class="login">
+        <form action="#" method="post" id="login-form">
+          <div class="form-group">
+            <input type="text" id="username" placeholder="Nhập vào username hoặc email" required>
+          </div>
+          <div class="form-group">
+            <input type="password" id="password" placeholder="Nhập vào mật khẩu" required>
+          </div>
+          <button class="login-button">Đăng nhập</button>
+        </form>
+        <div class="notice-regist">Nếu chưa có tài khoản, đăng ký <a href="/logon">tại đây</a>.</div>
       </div>
-      <div class="line">
-        <div class="title">password</div>
-        <div><input type="password" name="" id="password" /></div>
-      </div>
-    </div>
-    <button id="login">Login</button>
-    <div><a href="/logon">register an account</a></div>
-    <div class="noti"></div>
+    </section>
     <footer><%- include('../components/footer'); %></footer>
   </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

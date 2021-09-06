@@ -13,6 +13,7 @@ const fs = require("fs");
 const path = require("path");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { deleteOne } = require("../model/userModel");
 
 async function GetListFile(list_id = []) {
   list_file = [];
@@ -123,51 +124,97 @@ router.get("/cart", getUserInfo, (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  try {
-    if (req.body.username && req.body.password) {
-      const checkUsername = await UserModel.findOne({
-        username: req.body.username,
-      });
-      if (checkUsername) {
-        res.json({ status: 400, mess: "username da ton tai" });
-      } else {
-        req.body.password = await bcrypt.hash(req.body.password, 10);
-        await UserModel.create(req.body);
-        res.json({ status: 200, mess: "tao tai khoan ok" });
-      }
+  // try {
+    let now = new Date();
+    let username = (req.body.username).toLowerCase();
+    let password = req.body.password;
+    let fullName = req.body.fullName;
+    let email = (req.body.email).toLowerCase();
+    let phone = req.body.phone;
+    let gender = req.body.gender != ""? req.body.gender : "male";
+    let createDate = now;
+    let dob = now;
+
+    const checkExist = await UserModel.find({
+      $or: [
+      {username: username },
+      {email: email }]
+    });
+
+    if (checkExist.length > 0) {
+      res.json({status: 400, message: "Username hoặc email đã tồn tại, vui lòng chọn lại."});
     } else {
-      res.json({ status: 400, mess: "bad request" });
+      let createCart = await CartModel.create({listProduct: []});
+      if(createCart){
+        password = await bcrypt.hash(password, 10);
+
+        let createUser = await UserModel.create({
+          username: username,
+          password: password,
+          fullName: fullName,
+          email: email,
+          phone: phone,
+          gender: gender,
+          DOB: dob,
+          cartID: createCart._id,
+          addressList: [],
+          createDate: createDate
+        });
+
+        if(createUser){
+          res.json({status: 200, message: "Tạo tài khoản thành công!" });
+        }else{
+          await CartModel.deleteOne({_id: createCart._id});
+          res.json({status: 400, message: "Tạo tài khoản không thành công." });
+        }
+      }else{
+        res.json({status: 400, message: "Lỗi tạo giỏ hàng, không thể tạo tài khoản." });
+      }
+
     }
-  } catch (error) {
-    res.json({ status: 500, mess: "loi server", error });
-  }
+  // } catch (error) {
+  //   res.json({status: 500, message: "Server error!", error});
+  // }
 });
 
 router.post("/login", async (req, res) => {
   try {
-    const user = await UserModel.findOne({ username: req.body.username });
+    let username = (req.body.username).toLowerCase();
+    const user = await UserModel.findOne({
+      $or: [
+      {username: username },
+      {email: username }]
+    });
+
     if (user) {
       const checkPassword = await bcrypt.compare(
         req.body.password,
         user.password
       );
+
       if (checkPassword) {
         const token = jwt.sign({ id: user._id }, "thai");
-        res.json({ status: 200, mess: "dang nhap thanh cong", token });
+        res.json({ status: 200, message: "Đăng nhập thành công!", token});
       } else {
-        res.json({ status: 400, mess: "sai password" });
+        res.json({ status: 400, message: "Sai password, mời nhập lại." });
       }
+
     } else {
-      res.json({ status: 400, mess: "sai username" });
+      res.json({ status: 400, message: "Sai username hoặc email, mời nhập lại." });
     }
   } catch (error) {
-    res.json({ status: 500, mess: "loi server", error });
+    res.json({ status: 500, message: "Server error!", error });
   }
 });
 
 router.post("/loginCpanel", async (req, res) => {
   try {
-    const user = await UserModel.findOne({ username: req.body.username });
+    let username = (req.body.username).toLowerCase();
+    const user = await UserModel.findOne({
+      $or: [
+      {username: username },
+      {email: username }]
+    });
     if (user) {
       const checkPassword = await bcrypt.compare(
         req.body.password,
@@ -197,7 +244,7 @@ router.post("/loginCpanel", async (req, res) => {
       }
     } else {
       res.json({
-        message: "Username không tồn tại, mời nhập lại.",
+        message: "Username hoặc email không tồn tại, mời nhập lại.",
         status: 400,
       });
     }
@@ -315,15 +362,16 @@ router.post("/editCpanelProfile", checkLogin, async (req, res) => {
         }
 
         try {
-          let updateDate = Date();
+          let updateDate = new Date();
           let id = req.login_id;
           let fullName = req.body["full-name"];
-          let email = req.body.email;
+          let email = (req.body.email).toLowerCase();
           let phone = req.body.phone;
           let dob = req.body["birth-day"];
           let gender = req.body.gender;
           let list_file = await GetListFile([id]);
           let set_data = {};
+
           if (req.file) {
             set_data = {
               avatar: avatar,

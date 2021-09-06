@@ -44,7 +44,7 @@ router.post("/create", checkLogin, async (req, res)=>{
     if(req.role === "admin"){
         try {
             let title = req.body.title;
-            let createDate = Date();
+            let createDate = new Date();
     
             let check_exist =  await CategoryModel.findOne({categoryName: title});
     
@@ -71,7 +71,7 @@ router.post("/edit", checkLogin, async (req, res)=>{
         try {
             let id = req.body.id;
             let title = req.body.title;
-            let updateDate = Date();
+            let updateDate = new Date();
     
             let check_exist =  await CategoryModel.findOne({categoryName: title});
             if(check_exist){
