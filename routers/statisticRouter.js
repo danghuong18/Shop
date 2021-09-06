@@ -39,7 +39,8 @@ async function revenueByDay(day){
         { $match: {
             $and: [
                 {status: {$eq: "success"}},
-                {createDate: {$eq: day }}
+                {createDate: {$gte: day }},
+                {createDate: {$lte: day }}
             ]
           }
         },
@@ -62,13 +63,17 @@ router.get("/revenue", checkLogin, async (req, res)=>{
         try {
             let result = [];
             let max = 0;
-            for(x = 7; x > 0; x--){
-                let revenue = await revenueByDay("0" + x + "-09-2021");
+            let day = new Date();
+            // console.log(now.getDate());
+            for(i = 1; i <= 7; i++){
+                day.setDate(day.getDate() - 1);
+                // console.log(new Date(day));
+                let revenue = await revenueByDay(new Date(day));
 
                 if(revenue > max){
                     max = revenue;
                 }
-                result.push({day: "0" + x + "-09-2021", revenue: revenue});
+                result.push({day: new Date(day), revenue: revenue});
             }
 
             max = maxNumber(max);

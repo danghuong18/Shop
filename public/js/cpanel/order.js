@@ -186,7 +186,7 @@ $(document).ready(()=>{
 $(".sort__task").on("change", function(){
     let sort = $(this).val();
     if(sort != null && sort != "" && sort != undefined){
-        reloadData();
+        reloadData(true);
     }
 });
 

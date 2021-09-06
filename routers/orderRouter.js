@@ -37,7 +37,7 @@ router.get("/", checkLogin, async (req, res)=>{
             }
     
             let orders = await OrderModel.find(filter).populate({path: "listProduct", populate: { path: "productID", populate: {path: "productCode"}}}).populate("userID", "username").skip(skip).limit(limit).sort(sortby);
-            let all_orders = await OrderModel.find({});
+            let all_orders = await OrderModel.find(filter);
             if(all_orders.length > 0){
                 pages = Math.ceil(all_orders.length/limit);
             }
