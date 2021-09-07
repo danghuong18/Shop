@@ -44,7 +44,7 @@ button:hover {
 .item-overview {
   display: flex;
   background: white;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 
 .item-overview img {
@@ -117,7 +117,7 @@ input {
   background-color: white;
   padding: 10px;
   margin-top: 20px;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 
 .item-detail-decs .detail-decs-title {
@@ -175,7 +175,7 @@ input {
   height: 235px;
   display: flex;
   flex-direction: column;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   margin-bottom: 10px;
   background: white;
 }
@@ -186,19 +186,19 @@ input {
 
 .owl-two .carousel-title {
   display: inline-block;
-  font-size: 12px;
+  font-size: 13px;
   width: 130px;
-  height: 38px;
   line-height: 1.2;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
   word-break: break-word;
+  margin-bottom: 10px;
 }
 
 .owl-two .carousel-price {
   color: rgb(238, 77, 45);
-  font-size: 16px;
+  font-size: 17px;
 }
