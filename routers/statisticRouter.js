@@ -4,6 +4,51 @@ const ProductCodeModel = require("../model/productCodeModel");
 const UserModel = require("../model/userModel");
 
 const router = require("express").Router();
+
+async function revenueByDay(day){
+    let orders = await OrderModel.aggregate([
+        { $match: {
+            $and: [
+                {status: {$eq: "success"}},
+                {createDate: {$gte: day.startOfDay() }},
+                {createDate: {$lte: day.endOfDay() }}
+            ]
+          }
+        },
+        { $group: {_id: null, "revenue": { $sum: "$price" }}}
+    ]);
+
+    let revenue = (orders.length > 0) ? orders[0].revenue : 0;
+
+    return revenue;
+}
+
+function maxNumber(number){
+    let numLength = number.toString().length;
+    let numDevide = (number/Math.pow(10, numLength - 1))/5;
+    return Math.ceil(numDevide*10)*5*Math.pow(10, numLength - 2);
+}
+
+// This is a safety check to make sure the prototype is not already defined.
+Function.prototype.method = function (name, func) {
+    if (!this.prototype[name]) {
+        this.prototype[name] = func;
+        return this;
+    }
+};
+
+Date.method('endOfDay', function () {
+    var date = new Date(this);
+    date.setHours(23, 59, 59, 999);
+    return date;
+});
+
+Date.method('startOfDay', function () {
+    var date = new Date(this);
+    date.setHours(0, 0, 0, 0);
+    return  date;
+});
+
 router.get("/", checkLogin, async (req, res)=>{
     if(req.role === "admin"){
         try {
@@ -34,46 +79,21 @@ router.get("/", checkLogin, async (req, res)=>{
     }
 });
 
-async function revenueByDay(day){
-    let orders = await OrderModel.aggregate([
-        { $match: {
-            $and: [
-                {status: {$eq: "success"}},
-                {createDate: {$gte: day }},
-                {createDate: {$lte: day }}
-            ]
-          }
-        },
-        { $group: {_id: null, "revenue": { $sum: "$price" }}}
-    ]);
-
-    let revenue = (orders.length > 0) ? orders[0].revenue : 0;
-
-    return revenue;
-}
-
-function maxNumber(number){
-    let numLength = number.toString().length;
-    let numDevide = (number/Math.pow(10, numLength - 1))/5;
-    return Math.ceil(numDevide*10)*5*Math.pow(10, numLength - 2);
-}
-
 router.get("/revenue", checkLogin, async (req, res)=>{
     if(req.role === "admin"){
         try {
             let result = [];
             let max = 0;
-            let day = new Date();
-            // console.log(now.getDate());
+            let date = new Date();
+
             for(i = 1; i <= 7; i++){
-                day.setDate(day.getDate() - 1);
-                // console.log(new Date(day));
-                let revenue = await revenueByDay(new Date(day));
+                let revenue = await revenueByDay(date);
 
                 if(revenue > max){
                     max = revenue;
                 }
-                result.push({day: new Date(day), revenue: revenue});
+                result.push({day: new Date(date).toLocaleDateString(), revenue: revenue});
+                date.setDate(date.getDate() - 1);
             }
 
             max = maxNumber(max);

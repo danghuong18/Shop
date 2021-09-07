@@ -74,10 +74,8 @@ function loadRevenueData() {
         if(data.status == 200){
             let list = ``;
             let max = data.max;
-            console.log(max);
+
             for(x in data.data){
-                // let avatar = (data.data[x].avatar) ? data.data[x].avatar : "";
-                console.log(data.data[x].revenue);
                 let percent = Math.floor((data.data[x].revenue/max)*100);
                 list += `
                 <tr style="height:${percent}%">
@@ -152,7 +150,7 @@ function loadOrderData(){
                         ${status}
                     </td>
                     <td>
-                        ${data.data[x].createDate}
+                        ${new Date(data.data[x].createDate).toLocaleDateString("vi-VN")}
                     </td>
                 </tr>`;
             }
@@ -160,7 +158,7 @@ function loadOrderData(){
             let final_list = `
             <tbody>
                 <tr>
-                    <th style="width: 30%">
+                    <th style="width: 40%">
                         Sản phẩm
                     </th>
                     <th style="width: 20%">
@@ -169,7 +167,7 @@ function loadOrderData(){
                     <th style="width: 20%">
                         Trạng thái
                     </th>
-                    <th style="width: 30%">
+                    <th style="width: 20%">
                         Ngày mua
                     </th>
                 </tr>

@@ -36,7 +36,7 @@ function getList(limit, page, isLoadPagination = false){
                 if(data.data[x].DOB){
                     dob = `  <span class="body-item__details-category">
                                     <span class="title">DOB:</span>
-                                    <span class="desc">${data.data[x].DOB}</span>
+                                    <span class="desc">${new Date(data.data[x].DOB).toLocaleDateString("vi-VN")}</span>
                                 </span>`;
                 }
 

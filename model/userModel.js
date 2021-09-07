@@ -27,6 +27,8 @@ const UserSchema = mongoose.Schema(
       enum: ROLES,
       default: ROLES[0],
     },
+    createDate: Date,
+    updateDate: Date
   },
   { collection: "user" }
 );
