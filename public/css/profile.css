@@ -385,6 +385,8 @@ ol, ul {
   color: #7b7b7b;
 }
 .container .content__normal .address-item__content .text {
+  font-size: 1.8rem;
+  font-weight: 600;
   display: inline-block;
   width: 100%;
 }
@@ -551,6 +553,32 @@ ol, ul {
   }
   .container .content__normal .form-group__button button {
     width: 50%;
+  }
+  .container .content__normal .address-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    flex-direction: row;
+  }
+  .container .content__normal .address-item__content, .container .content__normal .address-item__action {
+    width: 100%;
+  }
+  .container .content__normal .address-item__content .text,
+.container .content__normal .address-item__content .status {
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .container .content__normal .address-item__content .status {
+    width: 100%;
+    display: inline-block;
+  }
+  .container .content__normal .address-item__action--top, .container .content__normal .address-item__action--bottom {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    flex-direction: row;
   }
 }
 @keyframes opacity_animation {
