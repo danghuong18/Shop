@@ -75,6 +75,17 @@ function reloadAddress(data){
     }
 }
 
+function readImage(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $(".avatar-profile .border-avatar img").attr({"src": e.target.result});
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
 $('#profile-form').on('submit', () => {
     return false;
 });
@@ -237,6 +248,10 @@ $(".choose-avatar").on("click", function(){
 
 $(".border-avatar").on("click", function(){
     $(".edit-avatar").click();
+});
+
+$(".edit-avatar").on("change", function(){
+    readImage(this);
 });
 
 $(".sidebar__item").on("click", function(){
