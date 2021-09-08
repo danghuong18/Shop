@@ -266,26 +266,3 @@ $(".avatar-profile .border-avatar img").on("load", function(){
         $(this).css({"height": "auto", "width" : "100%"});
     }
 });
-
-function notification(prepend_class=null, status=200, action=null, delay=5000){
-    if(prepend_class!=null && status!=null && action!=null ){
-        let notif_class = "";
-        if(status == 200) {
-            notif_class = "success";
-        }else if(status == 500){
-            notif_class = "error";
-        }else {
-            notif_class = "warning";
-        }
-  
-        let id = Date.now();
-        let notif = `<div class="notification notification--${notif_class}" id="notif-${id}">${action}</div>`;
-  
-        $(prepend_class).prepend(notif);
-        $("#notif-" + id).delay(delay).fadeOut();
-  
-        setTimeout(function(){
-            $("#notif-" + id).remove();
-        }, delay + 1000);
-    }
-  }

@@ -14,14 +14,14 @@ $(".login-button").on("click", async () => {
 
     if (res.status == 200) {
       setCookie("cookie", res.token, 30);
-      notification(".container__login", res.status, res.message);
+      notification(".container", res.status, res.message);
 
       setTimeout(function(){
         window.location.href = "/";
       }, 2000);
       
     }else{
-      notification(".container__login", res.status, res.message);
+      notification(".container", res.status, res.message);
     }
   } catch (error) {
     console.log(error);

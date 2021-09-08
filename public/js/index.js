@@ -13,6 +13,36 @@ $("#logout").on("click", async () => {
   }
 });
 
+function setCookie(cname, cvalue, exdays) {
+  const d = new Date();
+  d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+  let expires = "expires=" + d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
 function delete_cookie(name) {
   document.cookie = name + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+}
+
+function notification(prepend_class=null, status=200, action=null, delay=5000){
+  if(prepend_class!=null && status!=null && action!=null ){
+      let notif_class = "";
+      if(status == 200) {
+          notif_class = "success";
+      }else if(status == 500){
+          notif_class = "error";
+      }else {
+          notif_class = "warning";
+      }
+
+      let id = Date.now();
+      let notif = `<div class="notification notification--${notif_class}" id="notif-${id}">${action}</div>`;
+
+      $(prepend_class).prepend(notif);
+      $("#notif-" + id).delay(delay).fadeOut();
+
+      setTimeout(function(){
+          $("#notif-" + id).remove();
+      }, delay + 1000);
+  }
 }
