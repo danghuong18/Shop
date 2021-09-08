@@ -553,6 +553,18 @@ body {
 .main-body__container .form-group .avatar-profile .border-avatar img {
   width: 100%;
 }
+.main-body__container .form-group .birthday {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  flex-direction: row;
+}
+.main-body__container .form-group .birthday .day,
+.main-body__container .form-group .birthday .month,
+.main-body__container .form-group .birthday .year {
+  width: calc(100%/3 - 5px);
+}
 .main-body__container .submit-button {
   cursor: pointer;
   width: 50%;
@@ -1355,7 +1367,7 @@ body {
 .status-order--pending {
   background: #ff9501;
 }
-.status-order--failed {
+.status-order--fail {
   background: #fe5e3a;
 }
 

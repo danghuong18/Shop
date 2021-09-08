@@ -50,7 +50,7 @@ Date.method('startOfDay', function () {
 });
 
 router.get("/", checkLogin, async (req, res)=>{
-    if(req.role === "admin"){
+    if(req.login_info.role === "admin"){
         try {
             // let orders_success = await OrderModel.find({status: "success"});
             let orders_success = await OrderModel.aggregate([
@@ -80,7 +80,7 @@ router.get("/", checkLogin, async (req, res)=>{
 });
 
 router.get("/revenue", checkLogin, async (req, res)=>{
-    if(req.role === "admin"){
+    if(req.login_info.role === "admin"){
         try {
             let result = [];
             let max = 0;

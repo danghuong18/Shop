@@ -1,0 +1,601 @@
+$primary_color: #fc5837;
+$primary_color_90: #fc583790;
+$second_color: #76c80e;
+$second_color_90: #76c80e90;
+$third_color: #ff9501;
+$third_color_90: #ff950190;
+$black_color: #000000;
+$black_color_90: #00000090;
+$white_color: #fff;
+$gray_color: #7b7b7b;
+$shadow_gray_color: #ccc;
+
+@mixin flex($align: flex-start, $justify: flex-start, $wrap: nowrap, $dir: row) {
+    display: flex;
+    align-items: $align;
+    justify-content: $justify;
+    flex-wrap: $wrap;
+    flex-direction: $dir;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+.container {
+    max-width: 1200px;
+    background: $white_color;
+    margin: 1rem auto;
+    padding: 2rem;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    box-shadow: 0 3px 10px 0 rgb(0 0 0 / 14%);
+
+    &__title {
+        text-align: center;
+        font-size: 2.5rem;
+        text-transform: uppercase;
+        border-bottom: 1px solid $shadow_gray_color;
+        margin-bottom: 1rem;
+    }
+
+    &__login {
+        max-width: 35rem;
+        margin: 0 auto;
+        padding: 1rem 0;
+
+        .form-group {
+            margin-bottom: 1rem;
+
+            input,
+            select {
+                font-family: "Roboto";
+                font-size: 1.6rem;
+                border: 0;
+                outline: 0;
+                border-radius: 0;
+                width: 100%;
+                height: 4rem;
+                padding: 1rem;
+                border: 1px solid $primary_color;
+
+                &:focus,
+                &:focus-within {
+                    border-width: 2px;
+                }
+            }
+        }
+
+        button {
+            @include flex(center, center);
+            cursor: pointer;
+            width: 100%;
+            padding: 1rem;
+            color: $white_color;
+            font-size: 1.6rem;
+            background: $primary_color;
+            border: 0;
+            outline: 0;
+            border-radius: 0;
+
+            &:hover {
+                opacity: 0.5;
+            }
+        }
+    }
+
+    &__notice {
+        font-size: 1.6rem;
+        color: $gray_color;
+
+        a {
+            font-weight: 600;
+            &:hover {
+                color: $primary_color;
+            }
+        }
+    }
+
+    .sidebar {
+        width: 20%;
+
+        &__avatar {
+            @include flex(center, flex-start);
+            padding: 2rem 0;
+
+            .avatar-image {
+                @include flex(center, center);
+                width: 30%;
+                width: 5rem;
+                height: 5rem;
+                border-radius: 2.5rem;
+                border: 2px solid $primary_color;
+                overflow: hidden;
+
+                img {
+                    width: 100%;
+                }
+            }
+
+            .avatar-username {
+                width: 70%;
+                margin-left: 1rem;
+                font-size: 1.6rem;
+                font-weight: 600;
+                color: $primary_color;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+
+        &__list {
+
+        }
+
+        &__item {
+            cursor: pointer;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: $gray_color;
+            background: $shadow_gray_color;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-top-left-radius: 1rem;
+            border-bottom-left-radius: 1rem;
+            transition: color 0.2s, background 0.2s;
+
+            &:hover {
+                color: $white_color;
+                background: $gray_color;
+            }
+
+            &.active {
+                cursor: default;
+                color: $white_color;
+                background: $primary_color;
+            }
+        }
+    }
+
+    .content {
+        width: 80%;
+        min-height: 33.5rem;
+        background: $white_color;
+        padding: 2rem;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        box-shadow: 0 3px 10px 0 rgb(0 0 0 / 14%);
+
+        #profile-form,
+        #address-form,
+        #password-form {
+            animation: opacity_animation 0.5s;
+        }
+
+        &__title {
+            @include flex(center, flex-start);
+            text-align: left;
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            border-bottom: 1px solid $shadow_gray_color;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+
+            &--left,
+            &--right {
+                width: 50%;
+            }
+
+            &--right {
+                @include flex(center, flex-end);
+            }
+
+            .add-address {
+                @include flex(center, center);
+                cursor: pointer;
+                padding: 0.5rem 1rem;
+                color: $white_color;
+                font-size: 1.6rem;
+                background: $primary_color;
+
+                &:hover {
+                    opacity: 0.5;
+                }
+            }
+        }
+        
+        &__split {
+            @include flex(flex-start, space-between);
+            &-60 {
+                width: 60%;
+
+                .form-group {
+                    margin-bottom: 1rem;
+                    @include flex(center, space-between);
+    
+                    &__title {
+                        width: 20%;
+                        font-size: 1.6rem;
+                        font-weight: 600;
+                        color: $gray_color;
+                    }
+    
+                    &__input {
+                        width: 80%;
+                        margin-left: 1rem;
+
+                        .username {
+                            font-size: 1.6rem;
+                        }
+
+                        input,
+                        select {
+                            font-family: "Roboto";
+                            font-size: 1.6rem;
+                            border: 0;
+                            outline: 0;
+                            border-radius: 0;
+                            width: 100%;
+                            height: 4rem;
+                            padding: 1rem;
+                            border: 1px solid $primary_color;
+
+                            &:focus,
+                            &:focus-within {
+                                border-width: 2px;
+                            }
+                        }
+
+                        .birthday {
+                            @include flex(center, space-between);
+
+                            select {
+                                width: calc(100%/3 - 5px);
+                            }
+                        }
+
+                        button {
+                            @include flex(center, center);
+                            cursor: pointer;
+                            // width: 100%;
+                            padding: 1rem;
+                            color: $white_color;
+                            font-size: 1.6rem;
+                            background: $primary_color;
+                            border: 0;
+                            outline: 0;
+                            border-radius: 0;
+
+                            &:hover {
+                                opacity: 0.5;
+                            }
+                        }
+                    }
+                }
+            }
+
+            &-40 {
+                width: 40%;
+
+                .form-group {
+                    @include flex(center, center, wrap);
+
+                    input,
+                    .avatar-profile{
+                        width: 100%;
+                    }
+
+                    .avatar-profile{
+                        @include flex(center, center, wrap);
+
+                        .border-avatar {
+                            @include flex(center, center);
+                            border: 2px solid $primary_color;
+                            width: 20rem;
+                            height: 20rem;
+                            border-radius: 100%;
+                            overflow: hidden;
+
+                            img {
+                                width: 100%;
+                            }
+                        }
+                    }
+
+                    .choose-avatar {
+                        @include flex(center, center);
+                        margin-top: 1rem;
+                        cursor: pointer;
+                        padding: 0.5rem 1rem;
+                        color: $primary_color;
+                        font-size: 1.6rem;
+                        background: $white_color;
+                        border: 1px solid $primary_color;
+                        outline: 0;
+                        border-radius: 0;
+
+                        &:hover {
+                            color: $white_color;
+                            background: $primary_color;
+                            transition: color 0.2s, background 0.2s, border 0.2s;
+                        }
+                    }
+                }
+            }
+        }
+
+        &__normal {
+            max-width: 60rem;
+            margin: 0 auto;
+
+            .form-group {
+                margin-bottom: 1rem;
+                @include flex(center, space-between);
+
+                &__title {
+                    width: 20%;
+                    font-size: 1.6rem;
+                    font-weight: 600;
+                    color: $gray_color;
+                }
+
+                &__input {
+                    width: 80%;
+                    margin-left: 1rem;
+
+                    input,
+                    select {
+                        font-family: "Roboto";
+                        font-size: 1.6rem;
+                        border: 0;
+                        outline: 0;
+                        border-radius: 0;
+                        width: 100%;
+                        height: 4rem;
+                        padding: 1rem;
+                        border: 1px solid $primary_color;
+
+                        &:focus,
+                        &:focus-within {
+                            border-width: 2px;
+                        }
+                    }
+
+                    button {
+                        @include flex(center, center);
+                        cursor: pointer;
+                        padding: 1rem;
+                        color: $white_color;
+                        font-size: 1.6rem;
+                        background: $primary_color;
+                        border: 0;
+                        outline: 0;
+                        border-radius: 0;
+
+                        &:hover {
+                            opacity: 0.5;
+                        }
+                    }
+                }
+            }
+
+            .address-item {
+                @include flex(center, space-between);
+                width: 100%;
+                // display: inline-block;
+                padding: 1rem;
+                border-bottom: 1px solid;
+                font-size: 1.6rem;
+                color: $gray_color;
+
+                &__content {
+                    .text {
+                        display: inline-block;
+                        width: 100%;
+                    }
+
+                    .status {
+                        padding: 2.5px 5px;
+                        // padding-left: 1rem;
+                        color: $white_color;
+                        border-left: 5px solid $second_color;
+                        background: $second_color_90;
+                    }
+                }
+
+                &__action {
+                    @include flex(center, center, wrap);
+                    .delete {
+                        margin-left: 0.5rem;
+                    }
+
+                    .set-default {
+                        margin-top: 0.5rem;
+                    }
+
+                    .edit,
+                    .delete,
+                    .set-default {
+                        cursor: pointer;
+                        padding: 0.5rem;
+                        transition: color 0.2s, background 0.2s;
+
+                        &:hover {
+                            color: $white_color;
+                            background: $primary_color;
+                        }
+                    }
+
+                    &--top,
+                    &--bottom {
+                        width: 100%;
+                        @include flex(center, flex-end);
+                    }
+                }
+            }
+        }
+    }
+
+    &.profile {
+        @include flex(flex-start, space-between, nowrap);
+        background: none;
+        padding: 0;
+        box-shadow: none;
+    }
+}
+  
+.notification {
+    font-size: 1.6rem;
+    padding: 1rem;
+    color: $white_color;
+    background: $black_color_90;
+    border: 1px solid $black_color;
+    margin-bottom: 1rem;
+
+    &--success {
+        background: $second_color_90;
+        border: 1px solid $second_color;
+    }
+
+    &--warning {
+        background: $third_color_90;
+        border: 1px solid $third_color;
+    }
+
+    &--error {
+        background: $primary_color_90;
+        border: 1px solid $primary_color;
+    }
+}
+
+@media screen and (max-width: 1023px) {
+
+}
+
+@media screen and (max-width: 767px) {
+    .container {
+        &.profile {
+            @include flex(center, center, wrap);
+        }
+
+        .sidebar {
+            width: 100%;
+            &__avatar {
+                display: none;
+            }
+
+            &__list {
+                @include flex(center, space-between);
+            }
+
+            &__item {
+                @include flex(center, center);
+                width: calc(100%/3 - 5px);
+                margin-bottom: 0;
+                border-top-left-radius: 1rem;
+                border-top-right-radius: 1rem;
+                border-bottom-left-radius: 0;
+            }
+        }
+
+        .content {
+            width: 100%;
+
+            &__title {
+                font-size: 2rem;
+            }
+
+            &__split{
+                @include flex(center, center, wrap);
+                &-60,
+                &-40 {
+                    width: 100%;
+                }
+
+                &-40 {
+                    margin-bottom: 1rem;
+                }
+
+                // &-40 {
+                //     width: 30%;
+
+                //     .form-group {
+                //         .avatar-profile {
+                //             .border-avatar {
+                //                 width: 15rem;
+                //                 height: 15rem;
+                //             }
+                //         }
+                //     }
+                // }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 479px) {
+    .container {
+        .content {
+            &__split{
+                &-60 {
+                    .form-group {
+                        &__title {
+                            display: none;
+                        }
+
+                        &__input {
+                            width: 100%;
+                            margin-left: 0;
+                        }
+
+                        &__button {
+                            @include flex(center, center);
+
+                            button {
+                                width: 50%;
+                            }
+                        }
+                    }
+                }
+
+                &-40 {
+                    .form-group {
+                        .avatar-profile {
+                            .border-avatar {
+                                width: 15rem;
+                                height: 15rem;
+                            }
+                        }
+                    }
+                }
+            }
+
+            &__normal {
+                .form-group {
+                    &__title {
+                        display: none;
+                    }
+
+                    &__input {
+                        width: 100%;
+                        margin-left: 0;
+                    }
+
+                    &__button {
+                        @include flex(center, center);
+
+                        button {
+                            width: 50%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@keyframes opacity_animation {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}

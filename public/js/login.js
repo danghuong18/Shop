@@ -9,19 +9,19 @@ $(".login-button").on("click", async () => {
     const res = await $.ajax({
       type: "POST",
       url: "/user/login",
-      data: { username, password },
+      data: { username, password }
     });
 
     if (res.status == 200) {
       setCookie("cookie", res.token, 30);
-      notification(".login", res.status, res.message);
+      notification(".container__login", res.status, res.message);
 
       setTimeout(function(){
         window.location.href = "/";
       }, 2000);
       
     }else{
-      notification(".login", res.status, res.message);
+      notification(".container__login", res.status, res.message);
     }
   } catch (error) {
     console.log(error);
@@ -56,7 +56,7 @@ function notification(prepend_class=null, status=200, action=null, delay=5000){
       }
 
       let id = Date.now();
-      let notif = `<div class="notification notification-${notif_class}" id="notif-${id}">${action}</div>`;
+      let notif = `<div class="notification notification--${notif_class}" id="notif-${id}">${action}</div>`;
 
       $(prepend_class).prepend(notif);
       $("#notif-" + id).delay(delay).fadeOut();

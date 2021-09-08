@@ -645,6 +645,15 @@ body {
                     }
                 }
             }
+
+            .birthday {
+                @include flex(center, space-between);
+                .day,
+                .month,
+                .year {
+                    width: calc(100%/3 - 5px);
+                }
+            }
         }
 
         .submit-button {
@@ -1499,7 +1508,7 @@ body {
         background: $second_color;
     }
 
-    &--failed {
+    &--fail {
         background: $primary_color;
     }
 }

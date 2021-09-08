@@ -95,7 +95,7 @@ router.get("/order", checkAdminLogin, (req, res)=>{
 });
 
 router.get("/search", checkLogin, async (req, res)=>{
-    if(req.role === "admin"){
+    if(req.login_info.role === "admin"){
         try {
             let result = {};
             let query = req.query.q;

@@ -51,7 +51,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 router.get("/", checkLogin, async (req, res) => {
-  if (req.role === "admin") {
+  if (req.login_info.role === "admin") {
     try {
       let sort = req.query.sort;
       let limit = req.query.limit * 1;
@@ -101,7 +101,7 @@ router.get("/", checkLogin, async (req, res) => {
 });
 
 router.get("/item", checkLogin, async (req, res) => {
-  if (req.role === "admin") {
+  if (req.login_info.role === "admin") {
     try {
       let id = req.query.product_id;
       let sort = req.query.sort;
@@ -161,7 +161,7 @@ router.get("/item", checkLogin, async (req, res) => {
 });
 
 router.get("/item/:id", checkLogin, async (req, res) => {
-  if (req.role === "admin") {
+  if (req.login_info.role === "admin") {
     let item_id = req.params.id;
     try {
       let item = await ProductModel.findOne({ _id: item_id });
@@ -180,7 +180,7 @@ router.get("/item/:id", checkLogin, async (req, res) => {
 });
 
 router.post("/create", checkLogin, (req, res) => {
-  if (req.role === "admin") {
+  if (req.login_info.role === "admin") {
     upload.array("product-image", 10)(req, res, async (err) => {
       if (err) {
         if (err == "ErrorType") {
@@ -283,7 +283,7 @@ router.post("/create", checkLogin, (req, res) => {
 });
 
 router.post("/create-product-item", checkLogin, async (req, res) => {
-  if (req.role === "admin") {
+  if (req.login_info.role === "admin") {
     upload.single("thumbnail-product-item")(req, res, async (err) => {
       if (err) {
         if (err == "ErrorType") {
@@ -369,7 +369,7 @@ router.post("/create-product-item", checkLogin, async (req, res) => {
 });
 
 router.post("/edit", checkLogin, (req, res) => {
-  if (req.role === "admin") {
+  if (req.login_info.role === "admin") {
     upload.array("product-image", 10)(req, res, async (err) => {
       if (err) {
         if (err == "ErrorType") {
@@ -480,7 +480,7 @@ router.post("/edit", checkLogin, (req, res) => {
 });
 
 router.post("/edit-product-item", checkLogin, async (req, res) => {
-  if (req.role === "admin") {
+  if (req.login_info.role === "admin") {
     upload.single("thumbnail-product-item")(req, res, async (err) => {
       if (err) {
         if (err == "ErrorType") {
@@ -555,7 +555,7 @@ router.post("/edit-product-item", checkLogin, async (req, res) => {
 });
 
 router.post("/delete", checkLogin, async (req, res) => {
-  if (req.role === "admin") {
+  if (req.login_info.role === "admin") {
     try {
       let list_product = req.body["list_product[]"];
       let products = await ProductCodeModel.find({ _id: list_product });
@@ -598,7 +598,7 @@ router.post("/delete", checkLogin, async (req, res) => {
 });
 
 router.post("/delete-product-item", checkLogin, async (req, res) => {
-  if (req.role === "admin") {
+  if (req.login_info.role === "admin") {
     try {
       let product_id = req.body.product_id;
       let list_item = req.body["list_item[]"];
@@ -607,7 +607,7 @@ router.post("/delete-product-item", checkLogin, async (req, res) => {
         { _id: product_id },
         { $pull: { productID: { $in: list_item } } }
       );
-      if (update_product.ok) {
+      if (update_product.nModified) {
         let delete_item = await ProductModel.deleteMany({ _id: list_item });
         if (delete_item.deletedCount > 0) {
           DeleteFile(list_file);
@@ -630,7 +630,7 @@ router.post("/delete-product-item", checkLogin, async (req, res) => {
 });
 
 router.post("/delete-image", checkLogin, async (req, res) => {
-  if (req.role === "admin") {
+  if (req.login_info.role === "admin") {
     try {
       let product_id = req.body.product_id;
       let image_url = req.body.image_url;
@@ -638,7 +638,7 @@ router.post("/delete-image", checkLogin, async (req, res) => {
         { _id: product_id },
         { $pull: { listImg: { $in: image_url } } }
       );
-      if (delete_image.ok) {
+      if (delete_image.nModified) {
         DeleteFile([image_url]);
         res.json({
           message: "Xoá hình ảnh của sản phẩm thành công!",

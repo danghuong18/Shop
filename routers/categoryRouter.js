@@ -3,7 +3,7 @@ const { checkLogin } = require("../middleWare/checkAuth");
 const CategoryModel = require("../model/categoryModel");
 
 router.get("/", checkLogin, async (req, res)=> {
-    if(req.role === "admin"){
+    if(req.login_info.role === "admin"){
         try {
             let sort = req.query.sort;
             let limit = req.query.limit*1;
@@ -41,7 +41,7 @@ router.get("/", checkLogin, async (req, res)=> {
 });
 
 router.post("/create", checkLogin, async (req, res)=>{
-    if(req.role === "admin"){
+    if(req.login_info.role === "admin"){
         try {
             let title = req.body.title;
             let createDate = new Date();
@@ -67,7 +67,7 @@ router.post("/create", checkLogin, async (req, res)=>{
 });
 
 router.post("/edit", checkLogin, async (req, res)=>{
-    if(req.role === "admin"){
+    if(req.login_info.role === "admin"){
         try {
             let id = req.body.id;
             let title = req.body.title;
@@ -83,7 +83,7 @@ router.post("/edit", checkLogin, async (req, res)=>{
                 }
             }else{
                 let edit = await CategoryModel.updateOne({_id: id}, {$set: { categoryName: title, updateDate: updateDate}});
-                if(edit.ok){
+                if(edit.nModified){
                     res.json({message: "Sửa danh mục thành công!", status: 200});
                 }else{
                     res.json({message: "Không thể sửa danh mục.", status: 400});
@@ -99,7 +99,7 @@ router.post("/edit", checkLogin, async (req, res)=>{
 });
 
 router.post("/delete", checkLogin, async (req, res)=>{
-    if(req.role === "admin"){
+    if(req.login_info.role === "admin"){
         try {
             let list_item = req.body['list_item[]'];
             let delete_item = await CategoryModel.deleteMany({_id: list_item});

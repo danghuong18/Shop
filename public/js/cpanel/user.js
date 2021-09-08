@@ -132,27 +132,37 @@ function reloadData(isLoadPagination = false){
 }
 
 function save(){
-    var createForm = $("#edit-profile");
-    var formData = new FormData(createForm[0]);
-    $.ajax({
-        url: "/user/editCpanelProfile",
-        type: "POST",
-        processData: false,
-        contentType: false,
-        data: formData
-    }).then((data)=>{
-        if(data.status == 200){
-            notification(".main-body__container", data.status, data.message);
+    let day = $(".day").val();
+    let month = $(".month").val();
+    let year = $(".year").val();
+    let dob = new Date(year + "-" + month + "-" + day);
 
-            if(data.data.avatar){
-                $(".header__item-profile .avatar img").attr({"src": data.data.avatar, "style": ""});
-                $(".avatar-profile .border-avatar img").attr({"src": data.data.avatar, "style": ""});
+    if(dob.getDate() != day){
+        let status = `Ngày tháng năm sinh bị sai, mời chọn lại.`;
+        notification(".main-body__container", 400, status);
+    }else{
+        var createForm = $("#edit-profile");
+        var formData = new FormData(createForm[0]);
+        $.ajax({
+            url: "/user/editProfile",
+            type: "POST",
+            processData: false,
+            contentType: false,
+            data: formData
+        }).then((data)=>{
+            if(data.status == 200){
+                notification(".main-body__container", data.status, data.message);
+    
+                if(data.data.avatar){
+                    $(".header__item-profile .avatar img").attr({"src": data.data.avatar, "style": ""});
+                    $(".avatar-profile .border-avatar img").attr({"src": data.data.avatar, "style": ""});
+                }
+    
+            }else{
+                notification(".main-body__container", data.status, data.message);
             }
-
-        }else{
-            notification(".main-body__container", data.status, data.message);
-        }
-    });
+        });
+    }
 }
 
 function delete_user(list_user = []){

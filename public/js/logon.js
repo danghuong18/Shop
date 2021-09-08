@@ -23,18 +23,18 @@ $(".logon-button").on("click", async () => {
           email: email,
           phone: phone,
           gender: gender,
-        },
+        }
       });
   
       if (res.status == 200) {
-        notification(".login", res.status, res.message);
+        notification(".container__login", res.status, res.message);
   
         setTimeout(function(){
           window.location.href = "/login";
         }, 2000);
         
       }else{
-        notification(".login", res.status, res.message);
+        notification(".container__login", res.status, res.message);
       }
     }
 
@@ -64,7 +64,7 @@ function notification(prepend_class=null, status=200, action=null, delay=5000){
       }
 
       let id = Date.now();
-      let notif = `<div class="notification notification-${notif_class}" id="notif-${id}">${action}</div>`;
+      let notif = `<div class="notification notification--${notif_class}" id="notif-${id}">${action}</div>`;
 
       $(prepend_class).prepend(notif);
       $("#notif-" + id).delay(delay).fadeOut();

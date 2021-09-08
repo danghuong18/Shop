@@ -3,7 +3,7 @@ const OrderModel = require("../model/orderModel");
 const { checkLogin } = require("../middleWare/checkAuth");
 
 router.get("/", checkLogin, async (req, res)=>{
-    if(req.role === "admin"){
+    if(req.login_info.role === "admin"){
         try {
             let sort = req.query.sort;
             let limit = req.query.limit*1;
@@ -56,12 +56,12 @@ router.get("/", checkLogin, async (req, res)=>{
 });
 
 router.post("/confirmOrder", checkLogin, async (req, res)=>{
-    if(req.role === "admin"){
+    if(req.login_info.role === "admin"){
         try {
             let id = req.body.id;
 
             let confirm = await OrderModel.updateOne({_id: id}, {$set: {status: "success"}});
-            if(confirm.ok){
+            if(confirm.nModified){
                 res.json({message: "Xác nhận đơn hàng thành công!", status: 200});
             }else{
                 res.json({message: "Xác nhận đơn hàng không thành công.", status: 400});
