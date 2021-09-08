@@ -266,3 +266,10 @@ $(".avatar-profile .border-avatar img").on("load", function(){
         $(this).css({"height": "auto", "width" : "100%"});
     }
 });
+
+$(document).ready(()=>{
+    let split_link = (document.URL).split("#");
+    if(split_link.length == 2){
+        $("#" + split_link[1]).click();
+    }
+});
