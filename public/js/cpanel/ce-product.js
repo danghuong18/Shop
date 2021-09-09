@@ -360,19 +360,26 @@ function action(action="create", item_id=null){
                         </div>
                         <div class="form-group">
                             <label>Giá sản phẩm (VNĐ)</label>
-                            <input type="number" name="price" min="0" step="10000" oninput="this.value = 
+                            <input type="number" name="price" min="0" oninput="this.value = 
                             !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="price-product-item" placeholder="Nhập vào giá sản phẩm">
                         </div>
                         <div class="form-group">
                             <label>Số lượng</label>
-                            <input type="number" name="quantity" min="0" step="5" oninput="this.value = 
+                            <input type="number" name="quantity" min="0" oninput="this.value = 
                             !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="quantity-product-item" placeholder="Nhập vào số lượng sản phẩm">
                         </div>
                         <div class="form-group">
                             <label>Hình sản phẩm</label>
                             <input type="file" name="thumbnail-product-item" class="thumbnail-product-item" accept="image/gif, image/jpeg, image/png">
                         </div>
-                    </form>`;
+                        <button style="display: none;">Tạo</button>
+                    </form>
+                    <script>
+                        $('#create-product-item').on('submit', () => {
+                            add_item();
+                            return false;
+                        });
+                    </script>`;
         modal(true, `Tạo item sản phẩm`, body, `Tạo`, `add_item()`);
     }else if(action == "edit"){
         $.ajax({
@@ -395,19 +402,26 @@ function action(action="create", item_id=null){
                                 </div>
                                 <div class="form-group">
                                     <label>Giá sản phẩm (VNĐ)</label>
-                                    <input type="number" name="price" min="0" step="10000" oninput="this.value = 
+                                    <input type="number" name="price" min="0" oninput="this.value = 
                                     !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="price-product-item" value="${data.data.price}" placeholder="Nhập vào giá sản phẩm">
                                 </div>
                                 <div class="form-group">
                                     <label>Số lượng</label>
-                                    <input type="number" name="quantity" min="0" step="5" oninput="this.value = 
+                                    <input type="number" name="quantity" min="0" oninput="this.value = 
                                     !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="quantity-product-item" value="${data.data.quantity}" placeholder="Nhập vào số lượng sản phẩm">
                                 </div>
                                 <div class="form-group">
                                     <label>Hình sản phẩm (Để trống nếu không muốn thay đổi)</label>
                                     <input type="file" name="thumbnail-product-item" class="thumbnail-product-item" accept="image/gif, image/jpeg, image/png">
                                 </div>
-                            </form>`;
+                                <button style="display: none;">Sửa</button>
+                            </form>
+                            <script>
+                                $('#edit-product-item').on('submit', () => {
+                                    edit_item();
+                                    return false;
+                                });
+                            </script>`;
                 modal(true, `Sửa item sản phẩm`, body, `Sửa`, `edit_item()`);
             }
         });

@@ -174,7 +174,14 @@ function action(action="create", item_id=null){
                             <label>Logo thương hiệu</label>
                             <input type="file" name="brandlogo" class="logo-brand" accept="image/gif, image/jpeg, image/png">
                         </div>
-                    </form>`;
+                        <button style="display: none;">Tạo</button>
+                    </form>
+                    <script>
+                        $('#create-brand').on('submit', () => {
+                            add();
+                            return false;
+                        });
+                    </script>`;
         modal(true, `Tạo thương hiệu`, body, `Tạo`, `add()`);
     }else if(action == "edit"){
         let brand_name = $(`#item-${item_id} .body-item__title`)[0].innerText;
@@ -191,7 +198,14 @@ function action(action="create", item_id=null){
                             <label>Logo thương hiệu (Để trống nếu không muốn thay logo)</label>
                             <input type="file" name="brandlogo" class="logo-brand" accept="image/gif, image/jpeg, image/png">
                         </div>
-                    </form>`;
+                        <button style="display: none;">Sửa</button>
+                    </form>
+                    <script>
+                        $('#edit-brand').on('submit', () => {
+                            edit('${item_id}');
+                            return false;
+                        });
+                    </script>`;
         modal(true, `Sửa thương hiệu`, body, `Sửa`, `edit('${item_id}')`);
     }else if(action == "delete"){
         let brand_name = $(`#item-${item_id} .body-item__title`)[0].innerText;
