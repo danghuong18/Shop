@@ -1088,6 +1088,8 @@ body {
   flex-wrap: nowrap;
   flex-direction: row;
   margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #d8d8d8;
 }
 .main-body__split-body .member-item-avatar {
   display: flex;
@@ -1099,6 +1101,7 @@ body {
   width: 5rem;
   overflow: hidden;
   margin-right: 1rem;
+  border: 1px solid #fe5e3a;
 }
 .main-body__split-body .member-item-avatar img {
   width: 100%;

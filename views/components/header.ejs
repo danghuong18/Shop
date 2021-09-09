@@ -85,6 +85,11 @@
             <li class="header__navbar-user-item">
               <a href="#">Đơn mua</a>
             </li>
+            <% if(login_info.role == "admin") { %>
+              <li class="header__navbar-user-item">
+                <a href="/cpanel">Admin Cpanel</a>
+              </li>
+            <% } %>
             <li class="header__navbar-user-item header__navbar-user-item--separate">
               <a href="#" id="logout">Đăng xuất</a>
             </li>

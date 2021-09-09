@@ -1231,6 +1231,8 @@ body {
             .member-item {
                 @include flex(center, flex-start);
                 margin-bottom: 1rem;
+                padding-bottom: 1rem;
+                border-bottom: 1px solid $shadow_color;
 
                 &-avatar {
                     @include flex(center, center);
@@ -1238,6 +1240,7 @@ body {
                     width: 5rem;
                     overflow: hidden;
                     margin-right: 1rem;
+                    border: 1px solid $primary_color;
                     img {
                         width: 100%;
                     }
