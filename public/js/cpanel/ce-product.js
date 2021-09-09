@@ -372,7 +372,7 @@ function action(action="create", item_id=null){
                             <label>Hình sản phẩm</label>
                             <input type="file" name="thumbnail-product-item" class="thumbnail-product-item" accept="image/gif, image/jpeg, image/png">
                         </div>
-                        <button style="display: none;">Tạo</button>
+                        <button style="position: absolute; visibility: hidden;">Tạo</button>
                     </form>
                     <script>
                         $('#create-product-item').on('submit', () => {
@@ -414,7 +414,7 @@ function action(action="create", item_id=null){
                                     <label>Hình sản phẩm (Để trống nếu không muốn thay đổi)</label>
                                     <input type="file" name="thumbnail-product-item" class="thumbnail-product-item" accept="image/gif, image/jpeg, image/png">
                                 </div>
-                                <button style="display: none;">Sửa</button>
+                                <button style="position: absolute; visibility: hidden;">Sửa</button>
                             </form>
                             <script>
                                 $('#edit-product-item').on('submit', () => {

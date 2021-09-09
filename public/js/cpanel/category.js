@@ -163,7 +163,7 @@ function action(action="create", item_id=null){
                         <div class="form-group">
                             <input type="text" name="title" class="add-category" placeholder="Nhập vào tên danh mục">
                         </div>
-                        <button style="display: none;">Tạo</button>
+                        <button style="position: absolute; visibility: hidden;">Tạo</button>
                     </form>
                     <script>
                         $('#create-category').on('submit', () => {
@@ -178,7 +178,7 @@ function action(action="create", item_id=null){
                         <div class="form-group">
                             <input type="text" name="title" class="edit-category" placeholder="Nhập vào tên danh mục" value="${category_name}">
                         </div>
-                        <button style="display: none;">Sửa</button>
+                        <button style="position: absolute; visibility: hidden;">Sửa</button>
                     </form>
                     <script>
                         $('#edit-category').on('submit', () => {

@@ -174,7 +174,7 @@ function action(action="create", item_id=null){
                             <label>Logo thương hiệu</label>
                             <input type="file" name="brandlogo" class="logo-brand" accept="image/gif, image/jpeg, image/png">
                         </div>
-                        <button style="display: none;">Tạo</button>
+                        <button style="position: absolute; visibility: hidden;">Tạo</button>
                     </form>
                     <script>
                         $('#create-brand').on('submit', () => {
@@ -198,7 +198,7 @@ function action(action="create", item_id=null){
                             <label>Logo thương hiệu (Để trống nếu không muốn thay logo)</label>
                             <input type="file" name="brandlogo" class="logo-brand" accept="image/gif, image/jpeg, image/png">
                         </div>
-                        <button style="display: none;">Sửa</button>
+                        <button style="position: absolute; visibility: hidden;">Sửa</button>
                     </form>
                     <script>
                         $('#edit-brand').on('submit', () => {
