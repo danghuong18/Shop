@@ -1604,10 +1604,10 @@ table {
 
 .graph {
   margin-bottom: 1em;
-  font: normal 100%/150% arial, helvetica, sans-serif;
+  font: normal 100%/150% "Roboto";
 }
 .graph caption {
-  font: bold 150%/120% arial, helvetica, sans-serif;
+  font: bold 150%/120% "Roboto";
   padding-bottom: 0.33em;
 }
 .graph tbody th {
@@ -1617,7 +1617,7 @@ table {
 @supports (display: grid) {
   .graph {
     display: block;
-    width: 95%;
+    width: 99%;
     height: 200px;
   }
   .graph caption {
@@ -1630,10 +1630,10 @@ table {
     position: relative;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(2em, 1fr));
-    column-gap: 2.5%;
+    column-gap: 2%;
     align-items: end;
     height: 100%;
-    margin: 4em 0 1em 2.8em;
+    margin: 4em 0 1em 0.8em;
     padding: 0 1em;
     border-bottom: 1px dotted rgba(0, 0, 0, 0.5);
     background: repeating-linear-gradient(180deg, rgba(170, 170, 170, 0.7) 0, rgba(170, 170, 170, 0.7) 1px, transparent 1px, transparent 20%);
@@ -1654,10 +1654,10 @@ table {
   }
   .graph tbody:before, .graph tbody:after {
     position: absolute;
-    left: -3.2em;
-    width: 2.8em;
+    left: -1.2em;
+    width: 0.8em;
     text-align: right;
-    font: bold 80%/120% arial, helvetica, sans-serif;
+    font: bold 80%/120% "Roboto";
   }
   .graph tr {
     position: relative;
@@ -1872,6 +1872,16 @@ table {
   }
 }
 @media screen and (max-width: 479px) {
+  table {
+    font-size: 1.2rem;
+  }
+
+  .main-body {
+    padding: 1rem;
+  }
+  .main-body__container {
+    margin-bottom: 1rem;
+  }
   .main-body__container__action {
     display: flex;
     align-items: center;
@@ -1934,12 +1944,18 @@ table {
     font-size: 1.6rem;
     -webkit-line-clamp: 3;
   }
+  .main-body__split-body {
+    padding: 1rem;
+  }
   .main-body__split-body .hot-product-item {
     width: 100%;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
   }
   .main-body__split-body .hot-product-item:last-child {
     margin-bottom: 0;
+  }
+  .main-body__split-100, .main-body__split-60, .main-body__split-40 {
+    margin-bottom: 1rem;
   }
 
   .pagination {
@@ -1964,6 +1980,11 @@ table {
     border-radius: 3.5rem;
     background: none;
     margin-bottom: 0;
+  }
+}
+@media screen and (max-width: 359px) {
+  table {
+    font-size: 1rem;
   }
 }
 @keyframes opacity_animation {

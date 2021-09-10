@@ -1751,10 +1751,10 @@ table {
 
 .graph {
 	margin-bottom:1em;
-    font:normal 100%/150% arial,helvetica,sans-serif;
+    font:normal 100%/150% "Roboto";
 
     caption {
-        font:bold 150%/120% arial,helvetica,sans-serif;
+        font:bold 150%/120% "Roboto";
         padding-bottom:0.33em;
     }
 
@@ -1769,7 +1769,7 @@ table {
 
     .graph {
         display:block;
-        width:95%;
+        width:99%;
         height:200px;
 
         caption {
@@ -1784,10 +1784,10 @@ table {
             position:relative;
             display:grid;
             grid-template-columns:repeat(auto-fit, minmax(2em, 1fr));
-            column-gap:2.5%;
+            column-gap:2%;
             align-items:end;
             height:100%;
-            margin:4em 0 1em 2.8em;
+            margin:4em 0 1em 0.8em;
             padding:0 1em;
             border-bottom:1px dotted rgba(0,0,0,0.5);
             background:repeating-linear-gradient(
@@ -1817,21 +1817,11 @@ table {
             &:before,
             &:after {
                 position:absolute;
-                left:-3.2em;
-                width:2.8em;
+                left:-1.2em;
+                width:0.8em;
                 text-align:right;
-                font:bold 80%/120% arial,helvetica,sans-serif;
+                font:bold 80%/120% "Roboto";
             }
-
-            // &:before {
-            //     content:"100%";
-            //     top:-0.6em;
-            // }
-
-            // &:after {
-            //     content:"0%";
-            //     bottom:-0.6em;
-            // }
         }
 
         tr {
@@ -2105,8 +2095,14 @@ table {
 }
 
 @media screen and (max-width: 479px) {
+    table {
+        font-size: 1.2rem;
+    }
+
     .main-body {
+        padding: 1rem;
         &__container {
+            margin-bottom: 1rem;
             &__action {
                 @include flex(center, flex-start, wrap);
                 &--left {
@@ -2178,14 +2174,21 @@ table {
         &__split {
 
             &-body {
+                padding: 1rem;
                 .hot-product-item {
                     width: 100%;
-                    margin-bottom: 2rem;
+                    margin-bottom: 1rem;
 
                     &:last-child {
                         margin-bottom: 0;
                     }
                 }
+            }
+
+            &-100,
+            &-60,
+            &-40 {
+                margin-bottom: 1rem;
             }
         }
     }
@@ -2211,6 +2214,12 @@ table {
             background: none;
             margin-bottom: 0;
         }
+    }
+}
+
+@media screen and (max-width: 359px) {
+    table {
+        font-size: 1rem;
     }
 }
 
