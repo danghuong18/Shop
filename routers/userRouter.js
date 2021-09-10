@@ -130,6 +130,8 @@ router.post("/", async (req, res) => {
       if (checkUsername) {
         res.json({ status: 400, mess: "username da ton tai" });
       } else {
+        const cart = await CartModel.create({});
+        req.body.cartID = cart._id;
         req.body.password = await bcrypt.hash(req.body.password, 10);
         await UserModel.create(req.body);
         res.json({ status: 200, mess: "tao tai khoan ok" });
