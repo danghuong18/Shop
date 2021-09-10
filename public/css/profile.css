@@ -582,6 +582,21 @@ ol, ul {
     flex-direction: row;
   }
 }
+@media screen and (max-width: 359px) {
+  .container .content__title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    flex-direction: row;
+  }
+  .container .content__title--left, .container .content__title--right {
+    width: 100%;
+  }
+  .container .content__title .add-address {
+    width: 100%;
+  }
+}
 @keyframes opacity_animation {
   from {
     opacity: 0;

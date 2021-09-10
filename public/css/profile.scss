@@ -627,6 +627,25 @@ ol, ul {
     }
 }
 
+@media screen and (max-width: 359px) {
+    .container {
+        .content {
+            &__title {
+                @include flex(center, center, wrap);
+
+                &--left,
+                &--right {
+                    width: 100%;
+                }
+
+                .add-address {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
+
 @keyframes opacity_animation {
     from {opacity: 0;}
     to {opacity: 1;}
