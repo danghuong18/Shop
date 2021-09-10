@@ -97,7 +97,7 @@ body {
 
     &__item {
         position: relative;
-        padding: 2rem;
+        padding: 1rem;
         height: 5rem;
         width: 10%;
         font-size: 1.4rem;
@@ -234,6 +234,7 @@ body {
                 height: 3rem;
                 overflow: hidden;
                 border-radius: 100%;
+                border: 1px solid $primary_color;
                 // width: 20%;
                 img {
                     width: 100%;
@@ -2097,6 +2098,12 @@ table {
 @media screen and (max-width: 479px) {
     table {
         font-size: 1.2rem;
+    }
+
+    .header {
+        &__item {
+            padding: 0.5rem;
+        }
     }
 
     .main-body {

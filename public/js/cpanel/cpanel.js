@@ -1,5 +1,5 @@
 function dropdown(){
-    if($(window).width() <= 768){
+    if($(window).width() < 768){
         $(".dropdown-list").css({"width": $(".header").width() - 10});
         $(".dropdown-list").offset({left: 5 });
     }else{
@@ -169,7 +169,7 @@ $(".header__input").on("input", function(){
 
 $(".header__item-search").on("click", function(){
 
-    if($(window).width() <= 768){
+    if($(window).width() < 768){
         $(".header__input").css({"display": "block"});
         $(".header__input").focus();
         $(".header__item-search i").css({"display": "none"});
@@ -186,7 +186,7 @@ $(".header__item-search").on("click", function(){
 
 $(".header__item-search").on("clickout", function(){
     $(".header__item-search .dropdown-list").css({"display": ""});
-    if($(window).width() <= 768){
+    if($(window).width() < 768){
         $(".header__input").css({"display": ""});
         // $(".header__input").focusout();
         $(".header__item-search i").css({"display": ""});
