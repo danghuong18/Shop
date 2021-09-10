@@ -43,7 +43,7 @@ function loadData(){
 
 function loadUserData(){
     $.ajax({
-        url: "/user",
+        url: "/user?limit=10&sort=date-desc",
         type: "GET"
     }).then((data)=>{
         if(data.status == 200){
