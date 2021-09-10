@@ -119,7 +119,7 @@ function loadRevenueData() {
 
 function loadOrderData(){
     $.ajax({
-        url: "/order?limit=10",
+        url: "/order?limit=10&sort=date-desc",
         type: "GET"
     }).then((data)=>{
         if(data.status == 200){
@@ -183,7 +183,7 @@ function loadOrderData(){
 
 function loadProductData(){
     $.ajax({
-        url: "/product?limit=5",
+        url: "/product?limit=5&sort=date-desc",
         type: "GET"
     }).then((data)=>{
         if(data.status == 200){
