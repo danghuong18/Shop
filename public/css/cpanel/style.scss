@@ -684,6 +684,7 @@ body {
             margin-bottom: 1rem;
             position: relative;
             @include flex(center, flex-start);
+            animation: opacity_animation 0.2s;
 
             .checkbox-item {
                 width: 5rem;

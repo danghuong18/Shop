@@ -594,6 +594,7 @@ body {
   justify-content: flex-start;
   flex-wrap: nowrap;
   flex-direction: row;
+  animation: opacity_animation 0.2s;
 }
 .main-body__container__item .checkbox-item {
   width: 5rem;
