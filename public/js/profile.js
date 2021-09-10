@@ -154,6 +154,7 @@ $(".add-address-button").on("click", async function(){
           
             if (res.status == 200) {
                 $('#add-address').slideUp();
+                $(".new-address").val("");
                 reloadAddress(res.data);
                 notification(".content", res.status, res.message);
             }else{
