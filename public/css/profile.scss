@@ -134,6 +134,9 @@ ol, ul {
         }
 
         &__item {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
             cursor: pointer;
             font-size: 1.6rem;
             font-weight: 600;
