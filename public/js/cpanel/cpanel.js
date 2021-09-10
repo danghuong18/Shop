@@ -243,6 +243,22 @@ $(".modal-button-close").on("click", function(){
     modal(false);
 });
 
+$(".header__item-profile .avatar img").on("load", function(){
+    if($(this).height() < $(this).width()) {
+        $(this).css({"height": "100%", "width" : "auto"});
+    }else{
+        $(this).css({"height": "auto", "width" : "100%"});
+    }
+});
+
+$(".avatar-profile .border-avatar img").on("load", function(){
+    if($(this).height() < $(this).width()) {
+        $(this).css({"height": "100%", "width" : "auto"});
+    }else{
+        $(this).css({"height": "auto", "width" : "100%"});
+    }
+});
+
 $(document).ready(()=>{
 
     let sidebar_item = $(".sidebar__item");

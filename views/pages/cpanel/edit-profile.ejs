@@ -48,7 +48,36 @@
                                 <label>
                                     Ngày sinh
                                 </label>
-                                <input type="date" name="birth-day" class="birth-day" value="<%= new Date(login_info.DOB).toISOString().slice(0,10) %>">
+                                <div class="birthday">
+                                    <%
+                                    let date = new Date();
+                                    let day = date.getDate();
+                                    let month = date.getMonth() +  1;
+                                    let year = date.getFullYear();
+                                    if(login_info.DOB){
+                                        let dob = new Date(login_info.DOB);
+                                        day = dob.getDate();
+                                        month = dob.getMonth() + 1;
+                                        year = dob.getFullYear();
+                                    }
+                                    
+                                    %>
+                                    <select name="day" class="day">
+                                        <% for(x=1; x<=31; x++) { %>
+                                            <option value="<%= x %>" <%= (x == day)? 'selected':'' %>><%= x %></option>
+                                        <%} %>
+                                    </select>
+                                    <select name="month" class="month">
+                                        <% for(x=1; x<=12; x++) { %>
+                                            <option value="<%= x %>" <%= (x == month)? 'selected':'' %>>Tháng <%= x %></option>
+                                        <%} %>
+                                    </select>
+                                    <select name="year" class="year">
+                                        <% for(x=date.getFullYear()-100; x<=date.getFullYear(); x++) { %>
+                                            <option value="<%= x %>" <%= (x == year)? 'selected':'' %>><%= x %></option>
+                                        <%} %>
+                                    </select>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label>
@@ -61,7 +90,7 @@
                             </div>
                         </div>
                     </div>
-                    <a class="submit-button" onclick="save()">Lưu thông tin</a>
+                    <button class="submit-button" onclick="save()">Lưu thông tin</button>
                 </form>
             </div>
         </section>

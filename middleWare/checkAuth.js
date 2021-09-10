@@ -13,8 +13,6 @@ async function checkLogin(req, res, next) {
         const id = jwt.verify(token, "thai").id;
         const user = await UserModel.findOne({ _id: id });
         if (user) {
-          req.role = user.role;
-          req.login_id = id;
           req.login_info = user;
           next();
         } else {

@@ -36,7 +36,7 @@ function getList(limit, page, isLoadPagination = false){
                 if(data.data[x].DOB){
                     dob = `  <span class="body-item__details-category">
                                     <span class="title">DOB:</span>
-                                    <span class="desc">${data.data[x].DOB}</span>
+                                    <span class="desc">${new Date(data.data[x].DOB).toLocaleDateString("vi-VN")}</span>
                                 </span>`;
                 }
 
@@ -132,27 +132,37 @@ function reloadData(isLoadPagination = false){
 }
 
 function save(){
-    var createForm = $("#edit-profile");
-    var formData = new FormData(createForm[0]);
-    $.ajax({
-        url: "/user/editCpanelProfile",
-        type: "POST",
-        processData: false,
-        contentType: false,
-        data: formData
-    }).then((data)=>{
-        if(data.status == 200){
-            notification(".main-body__container", data.status, data.message);
+    let day = $(".day").val();
+    let month = $(".month").val();
+    let year = $(".year").val();
+    let dob = new Date(year + "-" + month + "-" + day);
 
-            if(data.data.avatar){
-                $(".header__item-profile .avatar img").attr({"src": data.data.avatar, "style": ""});
-                $(".avatar-profile .border-avatar img").attr({"src": data.data.avatar, "style": ""});
+    if(dob.getDate() != day){
+        let status = `Ngày tháng năm sinh bị sai, mời chọn lại.`;
+        notification(".main-body__container", 400, status);
+    }else{
+        var createForm = $("#edit-profile");
+        var formData = new FormData(createForm[0]);
+        $.ajax({
+            url: "/user/editProfile",
+            type: "POST",
+            processData: false,
+            contentType: false,
+            data: formData
+        }).then((data)=>{
+            if(data.status == 200){
+                notification(".main-body__container", data.status, data.message);
+    
+                if(data.data.avatar){
+                    $(".header__item-profile .avatar img").attr({"src": data.data.avatar, "style": ""});
+                    $(".avatar-profile .border-avatar img").attr({"src": data.data.avatar, "style": ""});
+                }
+    
+            }else{
+                notification(".main-body__container", data.status, data.message);
             }
-
-        }else{
-            notification(".main-body__container", data.status, data.message);
-        }
-    });
+        });
+    }
 }
 
 function delete_user(list_user = []){
@@ -185,22 +195,6 @@ function getMeta(url){
     return r;
 }
 
-$(".header__item-profile .avatar img").on("load", function(){
-    if($(this).height() < $(this).width()) {
-        $(this).css({"height": "100%", "width" : "auto"});
-    }else{
-        $(this).css({"height": "auto", "width" : "100%"});
-    }
-});
-
-$(".avatar-profile .border-avatar img").on("load", function(){
-    if($(this).height() < $(this).width()) {
-        $(this).css({"height": "100%", "width" : "auto"});
-    }else{
-        $(this).css({"height": "auto", "width" : "100%"});
-    }
-});
-
 function action(action="create", item_id=null){
     if(action == "delete"){
         let body = `Bạn muốn xoá user này không?`;
@@ -225,6 +219,10 @@ function role(id, isSetAdmin = true){
         }
     });
 }
+
+$('#edit-profile').on('submit', () => {
+    return false;
+});
 
 $(".avatar-profile").on("click", function(){
     $(".edit-avatar").click();
