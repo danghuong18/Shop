@@ -46,7 +46,7 @@ const storage = multer.diskStorage({
 const upload = multer({storage: storage});
 
 router.get("/", checkLogin, async (req, res)=> {
-    if(req.role === "admin"){
+    if(req.login_info.role === "admin"){
         try {
             let sort = req.query.sort;
             let limit = req.query.limit*1;
@@ -83,7 +83,7 @@ router.get("/", checkLogin, async (req, res)=> {
 });
 
 router.post("/create", checkLogin, async (req, res)=>{
-    if(req.role === "admin"){
+    if(req.login_info.role === "admin"){
         upload.single("brandlogo")(req, res, async (err)=>{
             if (err) {
                 if(err == "ErrorType"){
@@ -96,7 +96,7 @@ router.post("/create", checkLogin, async (req, res)=>{
                     let logo = "/public/upload/" + req.file.filename;
                     try {
                         let title = req.body.title;
-                        let createDate = Date();
+                        let createDate = new Date();
     
                         let check_exist =  await BrandModel.findOne({brandName: title});
                         if(check_exist){
@@ -126,7 +126,7 @@ router.post("/create", checkLogin, async (req, res)=>{
 });
 
 router.post("/edit", checkLogin, async (req, res)=>{
-    if(req.role === "admin"){
+    if(req.login_info.role === "admin"){
         upload.single("brandlogo")(req, res, async (err)=>{
             if (err) {
                 if(err == "ErrorType"){
@@ -143,7 +143,7 @@ router.post("/edit", checkLogin, async (req, res)=>{
     
                 try {
     
-                    let updateDate = Date();
+                    let updateDate = new Date();
                     let id = req.body.id;
                     let title = req.body.title;
                     let list_file = await GetListFile([id]);
@@ -161,7 +161,7 @@ router.post("/edit", checkLogin, async (req, res)=>{
                             if(req.file) {
                                 set_data = {logo: logo, updateDate: updateDate};
                                 let edit = await BrandModel.updateOne({_id: id}, {$set: set_data});
-                                if(edit.ok){
+                                if(edit.nModified){
                                     DeleteFile(list_file); //Delete image has replaced
                                     res.json({message: "Sửa thương hiệu thành công!", status: 200});
                                 }else{
@@ -181,7 +181,7 @@ router.post("/edit", checkLogin, async (req, res)=>{
                         }
         
                         let edit = await BrandModel.updateOne({_id: id}, {$set: set_data});
-                        if(edit.ok){
+                        if(edit.nModified){
                             if(req.file) {
                                 DeleteFile(list_file); //Delete image has replaced
                             }
@@ -207,7 +207,7 @@ router.post("/edit", checkLogin, async (req, res)=>{
 });
 
 router.post("/delete", checkLogin, async (req, res)=>{
-    if(req.role === "admin"){
+    if(req.login_info.role === "admin"){
         try {
             let list_item = req.body['list_item[]'];
             let list_file = await GetListFile(list_item);

@@ -59,7 +59,7 @@
                                 <label>
                                     Hình sản phẩm
                                 </label>
-                                <input type="file" name="product-image" class="product-image"  accept="image/gif, image/jpeg, image/png" multiple required>
+                                <input type="file" name="product-image" class="product-image"  accept="image/gif, image/jpeg, image/png" multiple <%= !isEdit? 'required': '' %>>
                                 <ul class="product-images">
                                     <% if(isEdit) { %>
                                         <% if(product.listImg.length > 0) { %>       
@@ -116,7 +116,8 @@
                             </div>
                         </div>
                     </div>
-                    <a class="submit-button" onclick="<% if(isEdit) { %>edit('<%= product._id %>')<% }else { %>add()<% } %>"><%= isEdit? 'Lưu Sản Phẩm' : 'Đăng Sản Phẩm' %></a>
+                    <button class="submit-button" onclick="<% if(isEdit) { %>edit('<%= product._id %>')<% }else { %>add()<% } %>"><%= isEdit? 'Lưu Sản Phẩm' : 'Đăng Sản Phẩm' %></button>
+                    <!-- <a class="submit-button" onclick="<% if(isEdit) { %>edit('<%= product._id %>')<% }else { %>add()<% } %>"><%= isEdit? 'Lưu Sản Phẩm' : 'Đăng Sản Phẩm' %></a> -->
                 </form>
             </div>
 

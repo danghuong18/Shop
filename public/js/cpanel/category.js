@@ -159,15 +159,33 @@ function delete_item(list_item=[]){
 
 function action(action="create", item_id=null){
     if(action == "create"){
-        let body = `<div class="form-group">
-                        <input type="text" name="title" class="add-category" placeholder="Nhập vào tên danh mục">
-                    </div>`;
+        let body = `<form action="#" id="create-category" method="post">
+                        <div class="form-group">
+                            <input type="text" name="title" class="add-category" placeholder="Nhập vào tên danh mục">
+                        </div>
+                        <button style="position: absolute; visibility: hidden;">Tạo</button>
+                    </form>
+                    <script>
+                        $('#create-category').on('submit', () => {
+                            add();
+                            return false;
+                        });
+                    </script>`;
         modal(true, `Tạo danh mục`, body, `Tạo`, `add()`);
     }else if(action == "edit"){
         let category_name = $(`#item-${item_id} .body-item__title`)[0].innerText;
-        let body = `<div class="form-group">
-                        <input type="text" name="title" class="edit-category" placeholder="Nhập vào tên danh mục" value="${category_name}">
-                    </div>`;
+        let body = `<form action="#" id="edit-category" method="post">
+                        <div class="form-group">
+                            <input type="text" name="title" class="edit-category" placeholder="Nhập vào tên danh mục" value="${category_name}">
+                        </div>
+                        <button style="position: absolute; visibility: hidden;">Sửa</button>
+                    </form>
+                    <script>
+                        $('#edit-category').on('submit', () => {
+                            edit('${item_id}');
+                            return false;
+                        });
+                    </script>`;
         modal(true, `Sửa danh mục`, body, `Sửa`, `edit('${item_id}')`);
     }else if(action == "delete"){
         let category_name = $(`#item-${item_id} .body-item__title`)[0].innerText;

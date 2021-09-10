@@ -4,83 +4,308 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <link rel="stylesheet" href="../../public/css/cart.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <title>Hồ sơ của tôi</title>
+  <link rel="stylesheet" href="../../public/css/profile.css" />
   <link rel="stylesheet" href="../../public/css/base.css" />
   <link rel="stylesheet" href="../../public/css/grid.css" />
-  <link
-    rel="stylesheet"
-    href="../../public/fonts/fontawesome/css/all.min.css"
-  />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
-    rel="stylesheet"
-  />
+  <link rel="stylesheet" href="../../public/fonts/fontawesome/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet"/>
 </head>
 <body>
   <header><%- include('../components/header'); %></header>
+  <% if(login_info) { %>
+    <section class="container profile">
+        <div class="sidebar">
+            <div class="sidebar__avatar">
+                <span class="avatar-image">
+                    <img src="<%= (login_info.avatar)? login_info.avatar : 'data:image/jpeg;base64,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' %>">
+                </span>
+                <span class="avatar-username">
+                    <%= login_info.username %>
+                </span>
+            </div>
+            <ul class="sidebar__list">
+                <li class="sidebar__item active" id="profile">
+                    Hồ sơ
+                </li>
+                <li class="sidebar__item" id="address">
+                    Địa chỉ
+                </li>
+                <li class="sidebar__item" id="password">
+                    Đổi mật khẩu
+                </li>
+            </ul>
+        </div>
+    
+        <div class="content">
+            <form action="#" method="post" id="profile-form" enctype="multipart/form-data">
+                <div class="content__title">Hồ sơ của tôi</div>
+                <div class="content__split">
+                    <div class="content__split-40">
+                        <div class="form-group">
+                            <div class="avatar-profile">
+                                <span class="border-avatar">
+                                    <img src="<%= (login_info.avatar)? login_info.avatar : 'data:image/jpeg;base64,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' %>">
+                                </span>
+                            </div>
+                            <span class="choose-avatar">Chọn Ảnh</span>
+                            <input type="file" name="avatar" class="edit-avatar" accept="image/gif, image/jpeg, image/png" style="display: none;">
+                        </div>
+                    </div>
+                    <div class="content__split-60">
+                        <div class="form-group">
+                            <span class="form-group__title">
+                                Username
+                            </span>
+                            <span class="form-group__input">
+                                <span class="username"><%= login_info.username %></span>
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <span class="form-group__title">
+                                Họ Tên
+                            </span>
+                            <span class="form-group__input">
+                                <input type="text" name="full-name" class="full-name" placeholder="Nhập vào họ tên" required value="<%= login_info.fullName %>">
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <span class="form-group__title">
+                                Email
+                            </span>
+                            <span class="form-group__input">
+                                <input type="text" name="email" class="email" placeholder="Nhập vào email" required value="<%= login_info.email %>">
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <span class="form-group__title">
+                                Số Điện Thoại
+                            </span>
+                            <span class="form-group__input">
+                                <input type="text" name="phone" class="phone" placeholder="Nhập vào số điện thoại" required value="<%= login_info.phone %>">
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <span class="form-group__title">
+                                Ngày Sinh
+                            </span>
+                            <span class="form-group__input">
+                                <div class="birthday">
+                                    <%
+                                    let date = new Date();
+                                    let day = date.getDate();
+                                    let month = date.getMonth() +  1;
+                                    let year = date.getFullYear();
+                                    if(login_info){
+                                        let dob = new Date(login_info.DOB);
+                                        day = dob.getDate();
+                                        month = dob.getMonth() + 1;
+                                        year = dob.getFullYear();
+                                    }
+                                    
+                                    %>
+                                    <select name="day" class="day">
+                                        <% for(x=1; x<=31; x++) { %>
+                                            <option value="<%= x %>" <%= (x == day)? 'selected':'' %>><%= x %></option>
+                                        <%} %>
+                                    </select>
+                                    <select name="month" class="month">
+                                        <% for(x=1; x<=12; x++) { %>
+                                            <option value="<%= x %>" <%= (x == month)? 'selected':'' %>>Tháng <%= x %></option>
+                                        <%} %>
+                                    </select>
+                                    <select name="year" class="year">
+                                        <% for(x=date.getFullYear()-100; x<=date.getFullYear(); x++) { %>
+                                            <option value="<%= x %>" <%= (x == year)? 'selected':'' %>><%= x %></option>
+                                        <%} %>
+                                    </select>
+                                </div>
+                             </span>
+                        </div>
+                        <div class="form-group">
+                            <span class="form-group__title">
+                                Giới tính
+                            </span>
+                            <span class="form-group__input">
+                                <select name="gender" class="gender">
+                                    <option value="male" <%= (login_info.gender == "male")? 'selected' : ''  %>>Nam</option>
+                                    <option value="female" <%= (login_info.gender == "female")? 'selected' : ''  %>>Nữ</option>
+                                </select>
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <span class="form-group__title">
+                            </span>
+                            <span class="form-group__input form-group__button">
+                                <button class="submit-button">Lưu</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+    
+            <div id="address-form" style="display: none;">
+                <div class="content__title">
+                    <div class="content__title--left">
+                        Địa chỉ của tôi
+                    </div>
+                    <div class="content__title--right">
+                        <span class="add-address">+ Thêm địa chỉ</span>
+                    </div>
+                </div>
+                <div class="content__normal">
+                    <form action="#" method="post" id="add-address" style="display: none;">
+                        <div class="form-group">
+                            <span class="form-group__title">
+                                Địa chỉ
+                            </span>
+                            <span class="form-group__input">
+                                <input type="text" class="new-address" placeholder="Nhập vào địa chỉ" required>
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <span class="form-group__title">
+                            </span>
+                            <span class="form-group__input form-group__button">
+                                <button class="add-address-button">Lưu địa chỉ</button>
+                            </span>
+                        </div>
+                    </form>
+                    <form action="#" method="post" id="edit-address" style="display: none;">
+                        <div class="form-group">
+                            <span class="form-group__title">
+                                Địa chỉ
+                            </span>
+                            <span class="form-group__input">
+                                <input type="text" class="id-address" readonly style="display: none;">
+                                <input type="text" class="old-address" placeholder="Nhập vào địa chỉ" required>
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <span class="form-group__title">
+                            </span>
+                            <span class="form-group__input form-group__button">
+                                <button class="edit-address-button">Sửa địa chỉ</button>
+                            </span>
+                        </div>
+                    </form>
+                    <div class="address-list">
+                        <% if(login_info.addressList.length > 0) { %>
+                            <% for(x in login_info.addressList) { %>
+                                <span class="address-item" id="address-<%= login_info.addressList[x]._id %>">
+                                    <div class="address-item__content">
+                                        <span class="text"><%= login_info.addressList[x].address %></span>
+                                        <% if(login_info.addressList[x].active) { %>
+                                            <span class="status">Địa chỉ mặc định</span>
+                                        <% } %>
+                                    </div>
+                                    <div class="address-item__action">
+                                        <div class="address-item__action--top">
+                                            <span class="edit" id="<%= login_info.addressList[x]._id %>">Sửa</span>
+                                            <span class="delete" id="<%= login_info.addressList[x]._id %>">Xoá</span>
+                                        </div>
+                                        <% if(!login_info.addressList[x].active) { %>
+                                            <div class="address-item__action--bottom">
+                                                <span class="set-default" id="<%= login_info.addressList[x]._id %>">Đặt làm địa chỉ mặc định</span>
+                                            </div>
+                                        <% } %>
+                                    </div>
+                                </span>
+                            <% } %>
+                            <script>
+                                $(".address-item__action .edit").on("click", function(){
+                                    $("#add-address").hide();
+                                    $("#edit-address").slideDown();
+                                    let id = $(this).attr("id");
+                                    let address = $("#address-" + id + " .address-item__content .text").html();
+                                    $(".id-address").val(id);
+                                    $(".old-address").val(address);
+                                });
 
+                                $(".address-item__action .delete").on("click", function(){
+                                    let id = $(this).attr("id");
+                                    $.ajax({
+                                        url: "/user/deleteAddress",
+                                        type: "POST",
+                                        data: {
+                                            id: id
+                                        }
+                                    }).then((data)=>{
+                                        if(data.status == 200){
+                                            $("#address-" + id).slideUp();
+                                            notification(".content", data.status, data.message);
+                                        }else{
+                                            notification(".content", data.status, data.message);
+                                        }
+                                    });
+                                });
 
+                                $(".address-item__action .set-default").on("click", function(){
+                                    let id = $(this).attr("id");
+                                    $.ajax({
+                                        url: "/user/setDefaultAddress",
+                                        type: "POST",
+                                        data: {
+                                            id: id
+                                        }
+                                    }).then((data)=>{
+                                        if(data.status == 200){
+                                            reloadAddress(data.data);
+                                            notification(".content", data.status, data.message);
+                                        }else{
+                                            notification(".content", data.status, data.message);
+                                        }
+                                    });
+                                });
+                            </script>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+    
+            <form action="#" method="post" id="password-form" style="display: none;">
+                <div class="content__title">Đổi mật khẩu</div>
+                <div class="content__normal">
+                    <div class="form-group">
+                        <span class="form-group__title">
+                            Mật Khẩu Hiện Tại
+                        </span>
+                        <span class="form-group__input">
+                            <input type="password" name="current-password" class="current-password" placeholder="Nhập vào mật khẩu hiện tại" required>
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <span class="form-group__title">
+                            Mật Khẩu Mới
+                        </span>
+                        <span class="form-group__input">
+                            <input type="password" name="new-password" class="new-password" placeholder="Nhập vào mật khẩu mới" required>
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <span class="form-group__title">
+                            Xác Nhận Mật Khẩu Mới
+                        </span>
+                        <span class="form-group__input">
+                            <input type="password" name="confirm-password" class="confirm-password" placeholder="Nhập vào mật khẩu xác minh" required>
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <span class="form-group__title">
+                        </span>
+                        <span class="form-group__input form-group__button">
+                            <button class="password-button">Lưu</button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+  <% } %>
 
-  <main>
-    <h3>Hồ Sơ Của Tôi </h3>
-    <p>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
-    <table>
-      <tr>
-        <td>Tên Đăng Nhập</td>
-        <td><input type="text" name="" id="" value="<%= user.username %>"></td>
-      </tr>
-      <tr>
-        <td>Tên </td>
-        <td><input type="text" name="" id="" value="<%= user.fullName %>"></td>
-      </tr>
-      <tr>
-        <td>Email </td>
-        <td><%= user.email %>  <a href=""> thay đổi</a></td>
-      </tr>
-      <tr>
-        <td>Giới Tính</td>
-        <td>
-          
-          <% if(user.gender == 'male'){ %>
-            <input type="radio" name="gender" id="" value="male" checked> Nam
-          <% }else{  %>
-            <input type="radio" name="gender" id="" value="male" > Nam
-          <% } %>
-
-          <% if(user.gender == 'female'){ %>
-            <input type="radio" name="gender" id="" value="female" checked> Nu
-          <% }else{  %>
-            <input type="radio" name="gender" id="" value="female" > Nu
-          <% } %>
-
-          <% if(user.gender == 'other'){ %>
-            <input type="radio" name="gender" id="" value="other" checked> Khac
-          <% }else{  %>
-            <input type="radio" name="gender" id="" value="other" > Khac
-          <% } %>
-        </td>
-      </tr>
-      <tr>
-        <td>Số Điện Thoại        </td>
-        <td><%= user.phone %></td>
-      </tr>
-
-      <tr>
-        <td>Avatar</td>
-        <td>
-          <% if(user.avatar){ %>
-            <img src="<%= user.avatar %>" alt="">
-          <% }else{  %>
-            <img src="/public/img/avata.jpg" alt="">
-          <% } %>
-          <input type="file" name="" id="">
-        </td>
-      </tr>
-    </table>
-  </main>
-
-  <footer><%- include('../components/footer'); %></footer>
-
+ <footer><%- include('../components/footer'); %></footer>
 </body>
+<script src="/public/js/profile.js"></script>
+<script src="/public/js/index.js"></script>
 </html>

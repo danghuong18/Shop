@@ -4,7 +4,7 @@ toastr.options = {
   newestOnTop: false,
   progressBar: true,
   positionClass: "toast-top-right",
-  preventDuplicates: false,
+  preventDuplicates: true,
   onclick: null,
   showDuration: "300",
   hideDuration: "1000",
@@ -24,42 +24,46 @@ $(document).ready(function () {
     type: "POST",
   })
     .then(function (data) {
-      for (let i = 0; i < data.data.length; i++) {
-        $(".cart-item-container").prepend(`
-              <div class="cart-item" id="${data.data[i]._id}">
-                <input type="checkbox" class="cart-checkbox cart-item-check" />
-                <a
-                  href="/product/${data.data[i].productCodeID}"
-                >
-                  <img src="${
-                    data.data[i].thumb
-                  }" alt="" class="cart-item-img" />
-                </a>
-                <div class="cart-item-title">
+      if (data.logged_in == false) {
+        window.location.href = "/user/login";
+      } else {
+        for (let i = 0; i < data.data.length; i++) {
+          $(".cart-item-container").prepend(`
+                <div class="cart-item" id="${data.data[i]._id}">
+                  <input type="checkbox" class="cart-checkbox cart-item-check" />
                   <a
                     href="/product/${data.data[i].productCodeID}"
-                    >${data.data[i].title}</a
                   >
-                </div>
-                <div class="cart-item-choose">
-                  Phân Loại Hàng: <br />
-                  ${data.data[i].color} - ${data.data[i].size}
-                </div>
-                <div class="cart-item-price">₫${data.data[i].price}</div>
-                <div class="cart-item-quantity">
-                  <input
-                    type="number"
-                    class="cart-item-quantity-input"
-                    value="${data.data[i].quantity}"
-                    old="${data.data[i].quantity}"
-                  />
-                </div>
-                <div class="cart-item-total-price">
-                  ₫${data.data[i].price * data.data[i].quantity}
-                </div>
-                <div class="cart-item-action">Xóa</div>
-              </div>    
-              `);
+                    <img src="${
+                      data.data[i].thumb
+                    }" alt="" class="cart-item-img" />
+                  </a>
+                  <div class="cart-item-title">
+                    <a
+                      href="/product/${data.data[i].productCodeID}"
+                      >${data.data[i].title}</a
+                    >
+                  </div>
+                  <div class="cart-item-choose">
+                    Phân Loại Hàng: <br />
+                    ${data.data[i].color} - ${data.data[i].size}
+                  </div>
+                  <div class="cart-item-price">₫${data.data[i].price}</div>
+                  <div class="cart-item-quantity">
+                    <input
+                      type="number"
+                      class="cart-item-quantity-input"
+                      value="${data.data[i].quantity}"
+                      old="${data.data[i].quantity}"
+                    />
+                  </div>
+                  <div class="cart-item-total-price">
+                    ₫${data.data[i].price * data.data[i].quantity}
+                  </div>
+                  <div class="cart-item-action">Xóa</div>
+                </div>    
+                `);
+        }
       }
     })
     .catch(function (err) {
@@ -80,7 +84,7 @@ $(document).on("change", ".cart-item-quantity-input", function () {
     .parent()
     .parent()
     .children(".cart-item-total-price");
-  if (newQuantity - oldQuantity <= 0) {
+  if (newQuantity - oldQuantity == 0) {
     $.ajax({
       url: "/user/cart/delete",
       type: "DELETE",

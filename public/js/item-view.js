@@ -27,6 +27,8 @@ $.ajax({
   type: "POST",
   url: "/product/" + id,
 }).then((data) => {
+  //append title
+  $("title").text(data.data.productName);
   //append img
   for (let i = 0; i < data.data.listImg.length; i++) {
     $(".owl-one").append(`
@@ -261,11 +263,15 @@ $.ajax({
         },
       })
         .then(function (data) {
-          toastr[data.toastr](data.mess[0]);
+          if (data.logged_in == false) {
+            window.location.href = "/user/login";
+          } else {
+            toastr[data.toastr](data.mess[0]);
+          }
         })
         .catch(function (err) {
           console.log(err);
-          toastr["error"]("lỗi server");
+          toastr["error"]("Đã xảy ra lỗi, vui lòng thử lại");
         });
     } else {
       toastr["warning"]("Vui lòng chọn phân loại và nhập số lượng");

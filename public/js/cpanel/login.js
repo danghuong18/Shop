@@ -1,3 +1,7 @@
+$('#login-form').on('submit', () => {
+    return false;
+});
+
 $(".button").on("click", async () => {
     try {
         const username = $(".username").val();
