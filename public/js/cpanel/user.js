@@ -17,9 +17,9 @@ function getList(limit, page, isLoadPagination = false){
 
                 if(data.data[x].role == "admin"){
                     role = `  <div class="role-item">${data.data[x].role}</div>`;
-                    edit_role = `<span class="action-item__edit" onclick="role('${data.data[x]._id}', false)">Bỏ quyền admin</span>`;
+                    edit_role = `<span class="action-item__edit" onclick="setRole('${data.data[x]._id}', false)">Bỏ quyền admin</span>`;
                 }else{
-                    edit_role = `<span class="action-item__edit" onclick="role('${data.data[x]._id}')">Thêm quyền admin</span>`;
+                    edit_role = `<span class="action-item__edit" onclick="setRole('${data.data[x]._id}')">Thêm quyền admin</span>`;
                 }
 
                 avatar = `  <span class="item-avatar">
@@ -202,13 +202,13 @@ function action(action="create", item_id=null){
     }
 }
 
-function role(id, isSetAdmin = true){
+function setRole(id, isSetAdmin = true){
     $.ajax({
         url: "/user/setRoleCpanel",
         type: "POST",
         data: {
             user_id: id,
-            set_role: isSetAdmin ? "admin" : "user"
+            set_role: (isSetAdmin ? "admin" : "user")
         }
     }).then((data)=>{
         if(data.status == 200){
