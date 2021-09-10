@@ -383,6 +383,7 @@ ol, ul {
   border-bottom: 1px solid;
   font-size: 1.6rem;
   color: #7b7b7b;
+  animation: opacity_animation 0.2s;
 }
 .container .content__normal .address-item__content .text {
   font-size: 1.8rem;

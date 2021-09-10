@@ -388,6 +388,7 @@ ol, ul {
                 border-bottom: 1px solid;
                 font-size: 1.6rem;
                 color: $gray_color;
+                animation: opacity_animation 0.2s;
 
                 &__content {
                     .text {
