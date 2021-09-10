@@ -2101,8 +2101,16 @@ table {
 
     .main-body {
         padding: 1rem;
+
+        &__statistic {
+            &__item {
+                margin-bottom: 1rem;
+            }
+        }
+
         &__container {
             margin-bottom: 1rem;
+            padding: 1rem;
             &__action {
                 @include flex(center, flex-start, wrap);
                 &--left {

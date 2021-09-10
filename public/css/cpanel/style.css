@@ -1879,8 +1879,12 @@ table {
   .main-body {
     padding: 1rem;
   }
+  .main-body__statistic__item {
+    margin-bottom: 1rem;
+  }
   .main-body__container {
     margin-bottom: 1rem;
+    padding: 1rem;
   }
   .main-body__container__action {
     display: flex;
