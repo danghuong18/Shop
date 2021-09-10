@@ -11,7 +11,7 @@ toastr.options = {
   newestOnTop: false,
   progressBar: true,
   positionClass: "toast-top-right",
-  preventDuplicates: false,
+  preventDuplicates: true,
   onclick: null,
   showDuration: "300",
   hideDuration: "1000",
@@ -185,17 +185,24 @@ $.ajax({
     $(".spaceprice").text("");
   }
 
-  // append detail
+  // append detail and category
   $(".item-title").text(data.data.productName);
   $(".item-decs-p").text(data.data.description);
-  $(".item-detail").append(
-    `
+  for (let i = 0; i < data.data.categoryID.length; i++) {
+    $(".item-detail").append(
+      `
     <div class="item-detail-container">
-      <span class="item-detail-title">Danh mục</span>
-      <span class="item-detail-content">${data.data.categoryID.categoryName}</span>
+      <span class="item-detail-title">Danh mục ${i + 1}</span>
+      <span class="item-detail-content">${
+        data.data.categoryID[i].categoryName
+      }</span>
     </div>
     `
-  );
+    );
+    $(".item-category").text(data.data.categoryID[i].categoryName + " - ");
+  }
+  let categoryOldText = $(".item-category").text();
+  $(".item-category").text(categoryOldText + data.data.productName);
   $(".item-detail").append(
     `
     <div class="item-detail-container">
@@ -214,7 +221,6 @@ $.ajax({
       `
     );
   }
-  $(".item-category").text(data.data.categoryID.categoryName);
 
   //output hình ảnh và số lượng
   $(".item-select-btn").on("click", function () {
@@ -279,7 +285,10 @@ $.ajax({
   });
 
   //output related items
-  let category = data.data.categoryID._id;
+  let category;
+  for (let i = 0; i < data.data.categoryID.length; i++) {
+    category = data.data.categoryID[i]._id + "-";
+  }
   $.ajax({
     type: "POST",
     url: "/product/related/" + category,
@@ -328,7 +337,7 @@ $.ajax({
       });
     })
     .catch(function (err) {
-      toastr["error"]("Lỗi server");
+      toastr["error"]("Đã xảy ra lỗi, vui lòng thử lại");
       console.log(err);
     });
 });

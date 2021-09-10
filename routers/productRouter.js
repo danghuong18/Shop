@@ -698,8 +698,11 @@ router.post("/:productID", async (req, res) => {
 
 router.post("/related/:categoryID", async (req, res) => {
   try {
+    let find = req.params.categoryID.split("-");
+    find.pop();
+    console.log(find);
     let data = await ProductCodeModel.find({
-      categoryID: req.params.categoryID,
+      categoryID: find,
     })
       .limit(20)
       .populate("productID");
@@ -709,6 +712,7 @@ router.post("/related/:categoryID", async (req, res) => {
       status: 200,
     });
   } catch (err) {
+    console.log(err);
     res.json({
       mess: "loi server",
       err: "err",
