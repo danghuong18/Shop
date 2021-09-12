@@ -132,6 +132,10 @@ function reloadData(isLoadPagination = false){
 }
 
 function save(){
+    let fullName = $(".full-name").val();
+    let email = $(".email").val();
+    let phone = $(".phone").val();
+
     let day = $(".day").val();
     let month = $(".month").val();
     let year = $(".year").val();
@@ -140,7 +144,8 @@ function save(){
     if(dob.getDate() != day){
         let status = `Ngày tháng năm sinh bị sai, mời chọn lại.`;
         notification(".main-body__container", 400, status);
-    }else{
+    }else if(fullName != "" && fullName != undefined && email != "" && email != undefined
+    && validateEmail(email) && phone != "" && phone != undefined){
         var createForm = $("#edit-profile");
         var formData = new FormData(createForm[0]);
         $.ajax({
@@ -162,6 +167,11 @@ function save(){
                 notification(".main-body__container", data.status, data.message);
             }
         });
+    }else {
+        if(!validateEmail(email)){
+            let message = `Sai địa chỉ email mời chọn lại.`;
+            notification(".main-body__container", 400, message);
+        }
     }
 }
 

@@ -10,9 +10,10 @@ $(".logon-button").on("click", async () => {
     let email = $(".email").val();
     let phone = $(".phone").val();
     let gender = $(".gender").val();
+
     if(username != "" && username != undefined && password != "" && password != undefined
     && fullName != "" && fullName != undefined && email != "" && email != undefined
-    && phone != "" && phone != undefined){
+    && validateEmail(email) && phone != "" && phone != undefined){
       const res = await $.ajax({
         url: "/user",
         type: "POST",
@@ -36,6 +37,17 @@ $(".logon-button").on("click", async () => {
       }else{
         notification(".container__login", res.status, res.message);
       }
+    }else {
+      if(username.length <=3){
+        let message = `Username quá ngắn mời chọn lại.`;
+        notification(".container__login", 400, message);
+      }
+
+      if(!validateEmail(email)){
+        let message = `Sai địa chỉ email mời chọn lại.`;
+        notification(".container__login", 400, message);
+      }
+
     }
 
   } catch (error) {

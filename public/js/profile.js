@@ -106,7 +106,7 @@ $(".submit-button").on("click", async function(){
             let status = `Ngày tháng năm sinh bị sai, mời chọn lại.`;
             notification(".content", 400, status);
         }else if(fullName != "" && fullName != undefined && email != "" && email != undefined
-        && phone != "" && phone != undefined){
+        && validateEmail(email) && phone != "" && phone != undefined){
 
         var createForm = $("#profile-form");
         var formData = new FormData(createForm[0]);
@@ -128,6 +128,11 @@ $(".submit-button").on("click", async function(){
           }else{
             notification(".content", res.status, res.message);
           }
+        }else{
+            if(!validateEmail(email)){
+                let message = `Sai địa chỉ email mời chọn lại.`;
+                notification(".container__login", 400, message);
+            }
         }
     
     } catch (error) {
