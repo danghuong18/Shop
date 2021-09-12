@@ -131,7 +131,7 @@ $(".submit-button").on("click", async function(){
         }else{
             if(!validateEmail(email)){
                 let message = `Sai địa chỉ email mời chọn lại.`;
-                notification(".container__login", 400, message);
+                notification(".content", 400, message);
             }
         }
     
