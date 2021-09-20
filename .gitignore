@@ -2,3 +2,4 @@ node_modules
 package-lock.json
 public/upload/*
 .prettierignore
+!public/upload/default-avatar.jpg

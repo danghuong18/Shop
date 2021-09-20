@@ -190,6 +190,7 @@ body {
 }
 .header__input {
   width: 100%;
+  height: 100%;
   flex-grow: 1;
   border: 0;
   outline: none;
@@ -1801,7 +1802,6 @@ table {
     display: none;
   }
   .header__input {
-    margin-top: -0.5rem;
     display: none;
   }
   .header.toggled {
