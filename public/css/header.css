@@ -1105,12 +1105,12 @@
   margin-bottom: 4px;
 }
 
-.mobile-category__list {
+/* .mobile-category__list {
   display: flex;
   list-style: none;
   max-width: 100%;
   overflow-x: auto;
-}
+} */
 
 .mobile-category__list::-webkit-scrollbar {
   display: none;

@@ -35,8 +35,14 @@ app.use("/order", orderRouter);
 app.use("/statistic", statisticRouter);
 app.use("/public", express.static(path.join(__dirname, "./public")));
 
-app.get("/", getUserInfo, (req, res) => {
-  res.render("pages/index", { login_info: req.login_info });
+app.get("/", getUserInfo, async (req, res) => {
+  let brand = await BrandModel.find({}).sort({brandName: 1});
+  let category = await CategoryModel.find({}).sort({categoryName: 1});
+  res.render("pages/index", { 
+    login_info: req.login_info,
+    brand: brand,
+    category: category
+  });
 });
 
 app.get("/login", getUserInfo, (req, res) => {

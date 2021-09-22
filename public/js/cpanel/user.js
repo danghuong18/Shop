@@ -139,7 +139,7 @@ function save(){
     let day = $(".day").val();
     let month = $(".month").val();
     let year = $(".year").val();
-    let dob = new Date(year + "-" + month + "-" + day);
+    let dob = new Date(year + "/" + month + "/" + day);
 
     if(dob.getDate() != day){
         let status = `Ngày tháng năm sinh bị sai, mời chọn lại.`;

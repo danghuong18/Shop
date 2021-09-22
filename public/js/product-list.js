@@ -100,6 +100,8 @@ function loadQueryProduct(page, isCategory = false, isBrand = false){
     if(q){
         query += `&q=${q}`;
         category_query += `&q=${q}`;
+        $(".header__search-input").val(q);
+        $(".header__mobile-search-input").val(q);
     }
 
     let category = ``;

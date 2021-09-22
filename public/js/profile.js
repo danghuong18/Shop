@@ -99,7 +99,7 @@ $(".submit-button").on("click", async function(){
         let day = $(".day").val();
         let month = $(".month").val();
         let year = $(".year").val();
-        let dob = new Date(year + "-" + month + "-" + day);
+        let dob = new Date(year + "/" + month + "/" + day);
 
 
         if(dob.getDate() != day){

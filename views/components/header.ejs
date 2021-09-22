@@ -150,9 +150,11 @@
               <a href="/user/profile#address" class="header__mobile-link">Địa chỉ của tôi</a>
             </li>
 
-            <li class="header__mobile-item">
-              <a href="/cpanel" class="header__mobile-link">Admin Cpanel</a>
-            </li>
+            <% if(login_info.role == "admin") { %>
+              <li class="header__mobile-item">
+                <a href="/cpanel" class="header__mobile-link">Admin Cpanel</a>
+              </li>
+            <% } %>
 
             <li class="header__mobile-item">
               <a href="#" id="logout-mobile" class="header__mobile-link">Đăng xuất</a>

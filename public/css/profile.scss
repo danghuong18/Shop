@@ -139,8 +139,17 @@ ol, ul {
         }
     }
 
-    &__category {
+    &__category,
+    &__brand {
         position: relative;
+
+        &__title {
+            font-size: 2rem;
+            color: $gray_color;
+            background: $white_color;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 1rem;
+        }
 
         &__wrapper {
             overflow: hidden;
@@ -156,7 +165,27 @@ ol, ul {
             width: 10%;
         }
 
+        &:hover {
+            .container {
+                &__arrow {
+                    font-size: 3rem;
+                    width: 5rem;
+                    height: 5rem;
+                    margin-top: -2.5rem;
 
+                    &--prev {
+                        margin-left: -2.5rem;
+                    }
+
+                    &--next {
+                        margin-right: -2.5rem;
+                    }
+                }
+            }
+        }
+    }
+
+    &__category {
         .category {
             &__group {
                 width: 100%;
@@ -234,21 +263,57 @@ ol, ul {
                 }
             }
         }
+    }
 
-        &:hover {
-            .container {
-                &__arrow {
-                    font-size: 3rem;
-                    width: 5rem;
-                    height: 5rem;
-                    margin-top: -2.5rem;
+    &__brand {
+        .brand {
+            &__group {
+                width: 100%;
 
-                    &--prev {
-                        margin-left: -2.5rem;
+                &__image {
+                    @include flex(center, center);
+                    width: 100%;
+                    height: 60%;
+                    overflow: hidden;
+
+                    &--circle {
+                        @include flex(center, center);
+                        width: 8rem;
+                        height: 8rem;
+                        overflow: hidden;
                     }
 
-                    &--next {
-                        margin-right: -2.5rem;
+                    img {
+                        width: 100%;
+                    }
+                }
+
+                &__details {
+                    @include flex(center, center);
+                    text-align: center;
+                    color: $gray_color;
+                    font-size: 1.6rem;
+                    font-weight: 600;
+                    width: 100%;
+                    height: 40%;
+                    padding: 0 1rem;
+                    display: -webkit-box;
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 3;
+                }
+
+                a {
+                    @include flex(center, flex-start, wrap, column);
+                    position: relative;
+                    height: 20rem;
+                    border-right: 1px solid rgba(0,0,0,.05);
+                    border-bottom: 1px solid rgba(0,0,0,.05);
+                    background: $white_color;
+
+                    &:hover {
+                        z-index: 1;
+                        border-color: rgba(0,0,0,.12);
+                        box-shadow: 0 0 0.8125rem 0 rgb(0 0 0 / 5%);
                     }
                 }
             }
@@ -441,6 +506,7 @@ ol, ul {
             &--result {
                 background: $white_color;
                 .top-view-detail {
+                    display: block;
                     font-size: 2rem;
                     color: $gray_color;
 
@@ -1018,7 +1084,8 @@ ol, ul {
         box-shadow: none;
     }
 
-    &.shop {
+    &.shop,
+    &.slider {
         background: none;
         padding: 0 1rem;
         box-shadow: none;
@@ -1051,6 +1118,11 @@ ol, ul {
 
 @media screen and (max-width: 1199px) {
     .container {
+
+        &.slider {
+            padding: 0;
+        }
+
         &__arrow {
             &--prev {
                 margin-left: 0;
@@ -1069,7 +1141,8 @@ ol, ul {
             }
         }
 
-        &__category {
+        &__category,
+        &__brand {
             &:hover {
                 .container {
                     &__arrow {
@@ -1094,7 +1167,8 @@ ol, ul {
             margin-top: 6.5rem;
         }
 
-        &__category {
+        &__category,
+        &__brand {
             &__item {
                 width: 20%;
             }
@@ -1294,7 +1368,8 @@ ol, ul {
             }
         }
 
-        &__category {
+        &__category,
+        &__brand {
             &__item {
                 width: 50%;
             }
@@ -1418,6 +1493,13 @@ ol, ul {
                         &__button {
                             width: 100%;
                         } 
+                    }
+                }
+
+                &--result {
+                    .top-view-detail {
+                        display: block;
+                        font-size: 1.6rem;
                     }
                 }
             }

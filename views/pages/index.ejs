@@ -10,18 +10,117 @@
 </head>
 <body>
     <header><%- include('../components/header'); %></header>
-    
-    <section class="container shop">
 
-        <div class="container__category">
-            <div class="container__category__wrapper">
-                <ul class="container__category__list">
-                </ul>
+    <% if(category.length > 0) { %>
+        <section class="container slider">
+            <div class="container__category" current-slide="0">
+                <div class="container__category__title">Danh mục</div>
+                <div class="container__category__wrapper">
+                    <ul class="container__category__list">
+                        <% if(category.length > 20) { %>
+                            <% for(x in category){ %>
+                                <% if(x%2 == 0){ %>
+                                  <li class="container__category__item">
+                                    <div class="category__group">
+                                        <a href="/category-view/<%= category[x]._id %>" title="Danh mục <%= category[x].categoryName %>">
+                                            <div class="category__group__image">
+                                                <div class="category__group__image--circle">
+                                                    <ul class="circle__list">
+                                                        <li class="circle__item"></li>
+                                                        <li class="circle__item circle__item--second"></li>
+                                                        <li class="circle__item circle__item--third"></li>
+                                                        <li class="circle__item circle__item--fourth"></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="category__group__details">
+                                                <%= category[x].categoryName %>
+                                            </div>
+                                        </a>
+                                <% }else{ %>
+                                        <a href="/category-view/<%= category[x]._id %>" title="Danh mục <%= category[x].categoryName %>">
+                                            <div class="category__group__image">
+                                                <div class="category__group__image--circle">
+                                                    <ul class="circle__list">
+                                                        <li class="circle__item"></li>
+                                                        <li class="circle__item circle__item--second"></li>
+                                                        <li class="circle__item circle__item--third"></li>
+                                                        <li class="circle__item circle__item--fourth"></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="category__group__details">
+                                                <%= category[x].categoryName %>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </li>`;
+                                <% } %>
+                            <% } %> 
+                            
+                            <% if(category.length%2 != 0){ %>
+                                </div></li>
+                            <% } %>
+                        <% } else { %>
+                            <% for(x in category){ %>
+                                <li class="container__category__item">
+                                  <div class="category__group">
+                                      <a href="/category-view/<%= category[x]._id %>" title="Danh mục <%= category[x].categoryName %>">
+                                          <div class="category__group__image">
+                                              <div class="category__group__image--circle">
+                                                  <ul class="circle__list">
+                                                      <li class="circle__item"></li>
+                                                      <li class="circle__item circle__item--second"></li>
+                                                      <li class="circle__item circle__item--third"></li>
+                                                      <li class="circle__item circle__item--fourth"></li>
+                                                  </ul>
+                                              </div>
+                                          </div>
+                                          <div class="category__group__details">
+                                            <%= category[x].categoryName %>
+                                          </div>
+                                      </a>
+                                  </div>
+                                </li>
+                            <% } %>
+                        <% } %>
+                    </ul>
+                </div>
+                <div class="container__arrow container__arrow--prev"><</div>
+                <div class="container__arrow container__arrow--next">></div>
             </div>
-            <div class="container__arrow container__arrow--prev"><</div>
-            <div class="container__arrow container__arrow--next">></div>
-        </div>
-    </section>
+        </section>
+    <% } %>
+
+    <% if(brand.length > 0) { %>
+        <section class="container slider">
+            <div class="container__brand" current-slide="0">
+                <div class="container__brand__title">Thương hiệu</div>
+                <div class="container__brand__wrapper">
+                    <ul class="container__brand__list">
+                        <% for(x in brand){ %>
+                            <li class="container__brand__item">
+                                <div class="brand__group">
+                                    <a href="/brand-view/<%= brand[x]._id %>" title="Thương hiệu <%= brand[x].brandName %>">
+                                        <div class="brand__group__image">
+                                            <div class="brand__group__image--circle">
+                                                <img src="<%= brand[x].logo %>" alt="Thương hiệu <%= brand[x].brandName %>">
+                                            </div>
+                                        </div>
+                                        <div class="brand__group__details">
+                                          <%= brand[x].brandName %>
+                                        </div>
+                                    </a>
+                                </div>
+                              </li>
+                        <% } %>
+                    </ul>
+                </div>
+                <div class="container__arrow container__arrow--prev"><</div>
+                <div class="container__arrow container__arrow--next">></div>
+            </div>
+        </section>
+    <% } %>
 
     <section class="container shop">
         <div class="container__header">
