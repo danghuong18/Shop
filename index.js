@@ -94,10 +94,7 @@ app.get("/similar-product/:id", getUserInfo, async (req, res) => {
       }
     ]);
 
-    console.log(product);
-
     if(product.length > 0) {
-      console.log(product[0].brand);
       res.render("pages/all-product", { 
         login_info: req.login_info,
         isSimilar: true,

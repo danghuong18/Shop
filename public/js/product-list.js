@@ -217,7 +217,7 @@ $('#price-range').on('submit', () => {
     let from = $(".from-price").val();
     let to = $(".to-price").val();
 
-    if(from && to && !isNaN(from) && !isNaN(to)){
+    if((from || from == 0) && to && !isNaN(from) && !isNaN(to)){
         if(from <= to){
             reloadData(true, 1);
         }else{

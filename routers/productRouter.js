@@ -104,7 +104,7 @@ router.get("/", checkLogin, async (req, res) => {
 });
 
 router.get("/showProduct", async (req, res) => {
-  // try {
+  try {
     let sort = req.query.sort;
     let limit = (req.query.limit? req.query.limit: 1) * 1;
     let skip = ((req.query.page? req.query.page: 1) - 1) * limit;
@@ -137,7 +137,7 @@ router.get("/showProduct", async (req, res) => {
       sortby.createDate = -1;
     }
 
-    if(from_price && to_price && !isNaN(from_price) && !isNaN(to_price)){
+    if((from_price || from_price == 0)&& to_price && !isNaN(from_price) && !isNaN(to_price)){
       if(to_price >= from_price){
         price_range = 
         {
@@ -184,7 +184,7 @@ router.get("/showProduct", async (req, res) => {
     }
 
     if(q) {
-      query = {$text: {$search: q, $caseSensitive: true}};
+      query = {$text: {$search: q}};
     }
 
     let products = await ProductCodeModel.aggregate([
@@ -276,9 +276,9 @@ router.get("/showProduct", async (req, res) => {
         status: 400,
       });
     }
-  // } catch (error) {
-  //   res.json({ message: "Server error!", status: 500 });
-  // }
+  } catch (error) {
+    res.json({ message: "Server error!", status: 500 });
+  }
 });
 
 router.get("/item", checkLogin, async (req, res) => {

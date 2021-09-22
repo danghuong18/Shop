@@ -291,6 +291,8 @@ $(".avatar-profile .border-avatar img").on("load", function(){
 $(document).ready(()=>{
     let split_link = (document.URL).split("#");
     if(split_link.length == 2){
-        $("#" + split_link[1]).click();
+        if(split_link[1]){
+            $("#" + split_link[1]).click();
+        }
     }
 });

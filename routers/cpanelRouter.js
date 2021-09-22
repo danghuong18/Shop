@@ -102,7 +102,7 @@ router.get("/search", checkLogin, async (req, res)=>{
             let result = {};
             let query = req.query.q;
 
-            let search = await ProductCodeModel.find({$text: {$search: query, $caseSensitive: true}}).populate("brand", "brandName").limit(5);
+            let search = await ProductCodeModel.find({$text: {$search: query}}).populate("brand", "brandName").limit(5);
     
             if(search.length > 0){
                 res.json({message: "Successed", status: 200, data: search});
