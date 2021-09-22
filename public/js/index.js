@@ -73,6 +73,7 @@ function notification(prepend_class=null, status=200, action=null, delay=5000){
 
 $(".header__search-input").on("input", function(){
   let query = $(this).val();
+  $(".header__mobile-search-input").val(query);
   if(query.length >= 4){
       $(".header__search-history").css({"display": "block"});
       $.ajax({
@@ -134,6 +135,7 @@ $('#search-form').on('submit', () => {
 
 $(".header__mobile-search-input").on("input", function(){
   let query = $(this).val();
+  $(".header__search-input").val(query);
   if(query.length >= 4){
       $(".header__mobile-list--search-result").css({"display": "block"});
       $(".header__mobile-list--link").css({"display": "none"});
