@@ -104,7 +104,7 @@
                                 </label>
                                 <select name="brand" class="product-brand" required>
                                     <% brands.forEach(function(brand) {%>
-                                        <option value="<%= brand._id %>" <%= isEdit? (product.brand.includes(brand._id) ? 'selected': '') : '' %>><%= brand.brandName %></option>
+                                        <option value="<%= brand._id %>" <%= isEdit? (product.brand.toString().includes(brand._id) ? 'selected': '') : '' %>><%= brand.brandName %></option>
                                     <% }); %>
                                 </select>
                             </div>

@@ -34,6 +34,8 @@ router.get("/", checkLogin, async (req, res)=>{
             }else if(sort == "fail-asc"){
                 filter = {status: "fail"};
                 sortby = {createDate: 1};
+            }else{
+                sortby = {createDate: -1};
             }
     
             let orders = await OrderModel.find(filter).populate({path: "listProduct", populate: { path: "productID", populate: {path: "productCode"}}}).populate("userID", "username").skip(skip).limit(limit).sort(sortby);

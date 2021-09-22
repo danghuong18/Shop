@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShopProject</title>
+    <title>Trang Chủ | ShopProject</title>
+    <link rel="stylesheet" href="../../public/css/profile.css" />
     <link rel="stylesheet" href="../../public/css/base.css" />
     <link rel="stylesheet" href="../../public/css/grid.css" />
     <link rel="stylesheet" href="../../public/fonts/fontawesome/css/all.min.css"/>
@@ -13,11 +14,41 @@
 <body>
     <header><%- include('../components/header'); %></header>
     
-    <main>This is main!</main>
+    <section class="container shop">
+
+        <div class="container__category">
+            <div class="container__category__wrapper">
+                <ul class="container__category__list">
+                </ul>
+            </div>
+            <div class="container__arrow container__arrow--prev"><</div>
+            <div class="container__arrow container__arrow--next">></div>
+        </div>
+    </section>
+
+    <section class="container shop">
+        <div class="container__header">
+            <div class="container__header__title">
+                Gợi Ý Hôm Nay
+            </div>
+        </div>
+        <div class="container__product">
+            <ul class="container__product__list">
+                <span class="container__product__no-item">
+                    Không có sản phẩm nào hiển thị ở đây cả.
+                </span>
+            </ul>
+            <span class="container__product__more">
+                <a href="/all-product" class="see-more">Xem Thêm</a>
+            </span>
+        </div>
+
+    </section>
 
     <footer><%- include('../components/footer'); %></footer>
 
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="/public/js/index.js"></script>
+<script src="/public/js/home.js"></script>
 </html>

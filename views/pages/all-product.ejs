@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><% if(isSimilar) { %>Các sản phẩm tương tự sản phẩm <%= product.productName %> | <% } else { %> Tất cả sản phẩm | <% } %><% if(page) { %>Trang <%= page %> | <% } %>ShopProject</title>
+    <link rel="stylesheet" href="../../public/css/profile.css" />
+    <link rel="stylesheet" href="../../public/css/base.css" />
+    <link rel="stylesheet" href="../../public/css/grid.css" />
+    <link rel="stylesheet" href="../../public/fonts/fontawesome/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+    <header><%- include('../components/header'); %></header>
+
+    <section class="container shop">
+        <div class="container__product">
+            <% if(isSimilar) { %>
+                <% if(product) { %>
+                    <div class="container__product__top-view container__product__top-view--product" id="<%= product._id %>">
+                        <div class="top-view-detail">
+                            <div class="top-view-detail__left">
+                                <div class="top-view-detail__image">
+                                    <img src="<%= product.listImg[0] %>">
+                                </div>
+                            </div>
+                            <div class="top-view-detail__right">
+                                <div class="top-view-detail__name">
+                                    <%= product.productName %>
+                                </div>
+                                <div class="top-view-detail__cat">
+                                    <% if(product.categoryID.length > 0) { %>
+                                        <% product.categoryID.forEach(function(cat) { %>
+                                            <a href="/category-view/<%= cat._id %>" title="Danh mục <%= cat.categoryName %>" target="_blank"><%= cat.categoryName %></a>
+                                        <% }) %>
+                                    <% } %>
+                                </div>
+                                <div class="top-view-detail__brand">
+                                    <% if(product.brand.length > 0) { %>
+                                        <% product.brand.forEach(function(brd) { %>
+                                            <a href="/brand-view/<%= brd._id %>" title="Thương hiệu <%= brd.brandName %>" target="_blank"><%= brd.brandName %></a>
+                                        <% }) %>
+                                    <% } %>
+                                </div>
+                                <div class="top-view-detail__price">
+                                    <%= (product.min).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'}) %> - <%= (product.max).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'}) %>
+                                </div>
+                                <a href="/product/<%= product._id %>" class="top-view-detail__button">
+                                    Mua Ngay
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                <% } %>
+            <% } %>
+            <% if(isSimilar) { %>
+                <span class="container__product__title">Sản phẩm tương tự</span>
+            <% } else { %> 
+                <span class="container__product__title">Tất cả sản phẩm</span>
+            <% } %>
+            <ul class="container__product__list">
+                <span class="container__product__no-item">
+                    Không có sản phẩm nào hiển thị ở đây cả.
+                </span>
+            </ul>
+            <ul class="container__pagination">
+                <% if(page) { %>
+                    <li class="container__pagination__item" id="prev"><</li>
+                    <li class="container__pagination__item active" id="<%= page %>"><%= page %></li>
+                    <li class="container__pagination__item" id="next">></li>
+                <% } else { %>
+                    <li class="container__pagination__item" id="prev"><</li>
+                    <li class="container__pagination__item active" id="1">1</li>
+                    <li class="container__pagination__item" id="next">></li>
+                <% } %>
+            </ul>
+        </div>
+    </section>
+
+    <footer><%- include('../components/footer'); %></footer>
+
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="/public/js/index.js"></script>
+<script src="/public/js/product-list.js"></script>
+<script src="/public/js/all-product.js"></script>
+</html>

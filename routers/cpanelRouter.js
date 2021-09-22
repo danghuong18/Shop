@@ -76,13 +76,15 @@ router.get("/product/:id", checkAdminLogin, async (req, res)=>{
             });
         }else{
             res.render("pages/cpanel/not-found", {
-                name: "Không tìm thấy trang"
+                name: "Không tìm thấy trang",
+                isHome: false
             });
         }
         
     } catch (error) {
         res.render("pages/cpanel/not-found", {
-            name: "Không tìm thấy trang"
+            name: "Không tìm thấy trang",
+            isHome: false
         });
     }
 });
@@ -99,8 +101,8 @@ router.get("/search", checkLogin, async (req, res)=>{
         try {
             let result = {};
             let query = req.query.q;
-            // let search = await ProductCodeModel.find({productName: { $regex : query, $options : 'i' }});
-            let search = await ProductCodeModel.find({$text: {$search: query}}).populate("brand", "brandName").limit(5);
+
+            let search = await ProductCodeModel.find({$text: {$search: query, $caseSensitive: true}}).populate("brand", "brandName").limit(5);
     
             if(search.length > 0){
                 res.json({message: "Successed", status: 200, data: search});
@@ -117,7 +119,8 @@ router.get("/search", checkLogin, async (req, res)=>{
 
 router.use((req, res)=>{
     res.render("pages/cpanel/not-found", {
-        name: "Không tìm thấy trang"
+        name: "Không tìm thấy trang",
+        isHome: false
     });
 });
 

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><% if(isCategory) { %>Sản phẩm trong danh mục <%= category.categoryName %> | <% } else if(isBrand) { %> Sản phẩm của thương hiệu <%= brand.brandName %> | <% } else if(!isBrand && !isCategory) { %>Kết quả tìm kiếm "<%= query %>" | <% } %><% if(page) { %> Trang <%= page %> | <% } %>ShopProject</title>
+    <link rel="stylesheet" href="../../public/css/profile.css" />
+    <link rel="stylesheet" href="../../public/css/base.css" />
+    <link rel="stylesheet" href="../../public/css/grid.css" />
+    <link rel="stylesheet" href="../../public/fonts/fontawesome/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+    <header><%- include('../components/header'); %></header>
+
+    <section class="container shop">
+        <div class="container__product container__product--search">
+            <div class="container__product__sidebar">
+                <div class="container__product__sidebar__title">Bộ lọc tìm kiếm</div>
+                <div class="container__product__sidebar__body">
+                    <ul class="container__product__sidebar__list <%= isCategory? 'hide':'' %>">
+                        <li class="container__product__sidebar__item title">Theo danh mục</li>
+                        <% if(isCategory) { %>
+                            <% if(category) { %>
+                                <li class="container__product__sidebar__item">
+                                    <input type="checkbox" class="checkbox-category" id="cat-<%= category._id %>" checked disabled>
+                                    <span class="text-category"id="<%= category._id %>"><%= category.categoryName %></span>
+                                </li>
+                            <% } %>
+                        <% } else { %>
+                            <% if(category.length > 0) { %>
+                                <% category.forEach(function(cat) { %>
+                                    <li class="container__product__sidebar__item">
+                                        <input type="checkbox" class="checkbox-category" id="cat-<%= cat._id %>" <%= (category_query.includes(cat._id.toString()) ? 'checked': '') %>>
+                                        <span class="text-category"id="<%= cat._id %>"><%= cat.categoryName %></span>
+                                    </li>
+                                <% }); %>
+                            <% } %>
+                        <% } %>
+                    </ul>
+
+                    <ul class="container__product__sidebar__list <%= isBrand? 'hide':'' %>">
+                        <li class="container__product__sidebar__item title">Theo thương hiệu</li>
+                        <% if(isBrand) { %>
+                            <% if(brand) { %>
+                                <li class="container__product__sidebar__item">
+                                    <input type="checkbox" class="checkbox-brand" id="brand-<%= brand._id %>" checked disabled>
+                                    <span class="text-brand"id="<%= brand._id %>"><%= brand.brandName %></span>
+                                </li>
+                            <% } %>
+                        <% } else { %>
+                            <% if(brand.length > 0) { %>
+                                <% brand.forEach(function(brd) { %>
+                                    <li class="container__product__sidebar__item">
+                                        <input type="checkbox" class="checkbox-brand" id="brand-<%= brd._id %>" <%= (brand_query.includes(brd._id.toString()) ? 'checked': '') %>>
+                                        <span class="text-brand"id="<%= brd._id %>"><%= brd.brandName %></span>
+                                    </li>
+                                <% }); %>
+                            <% } %>
+                        <% } %>
+                    </ul>
+
+                    <div class="container__product__sidebar__price">
+                        <form action="#" id="price-range" method="post">
+                            <span class="price-range">
+                                <input type="number" class="from-price" placeholder="₫ TỪ" required value="<%= from? from : '' %>">
+                                <span class="between-price">-</span>
+                                <input type="number" class="to-price" placeholder="₫ ĐẾN" required value="<%= to? to : '' %>">
+                            </span>
+                            <button class="apply">Áp dụng</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="container__product__main">
+                <% if(isBrand) { %>
+                    <div class="container__product__top-view">
+                        <div class="top-view-detail">
+                            <div class="top-view-detail__left">
+                                <div class="top-view-detail__image">
+                                    <img src="<%= brand.logo %>">
+                                </div>
+                            </div>
+                            <div class="top-view-detail__right">
+                                <%= brand.brandName %>
+                            </div>
+                        </div>
+                    </div>
+                <% } %>
+
+                <% if(!isBrand && !isCategory) { %>
+                    <% if(query) { %>
+                        <div class="container__product__top-view container__product__top-view--result">
+                            <div class="top-view-detail">
+                                Có <span class="total-result">0</span> kết quả với từ khoá "<span class="query-result"><%= query %></span>"
+                            </div>
+                        </div>
+                    <% } %>
+                <% } %>
+                <div class="container__product__action">
+                    <span class="label-sort">
+                        Sắp xếp theo
+                    </span>
+                    <span class="newest-sort <%= (sort)? ((sort != "date-asc")? 'active': '' ) : 'active' %>">
+                        Mới nhất
+                    </span>
+                    <span class="oldest-sort <%= (sort)? ((sort == "date-asc")? 'active': '' ) : '' %>">
+                        Cũ nhất
+                    </span>
+                    <select class="action-sort">
+                        <option value="">Sắp xếp giá</option>
+                        <option value="price-desc" <%= (sortPrice)? ((sortPrice == "price-desc")? 'selected': '' ) : '' %>>Giá [Cao - Thấp]</option>
+                        <option value="price-asc" <%= (sortPrice)? ((sortPrice == "price-asc")? 'selected': '' ) : '' %>>Giá [Thấp - Cao]</option>
+                    </select>
+                </div>
+                <ul class="container__product__list">
+                    <span class="container__product__no-item">
+                        Không có sản phẩm nào hiển thị ở đây cả.
+                    </span>
+                </ul>
+                <ul class="container__pagination">
+                    <% if(page) { %>
+                        <li class="container__pagination__item" id="prev"><</li>
+                        <li class="container__pagination__item active" id="<%= page %>"><%= page %></li>
+                        <li class="container__pagination__item" id="next">></li>
+                    <% } else { %>
+                        <li class="container__pagination__item" id="prev"><</li>
+                        <li class="container__pagination__item active" id="1">1</li>
+                        <li class="container__pagination__item" id="next">></li>
+                    <% } %>
+                </ul>
+            </div>
+        </div>
+
+    </section>
+
+    <footer><%- include('../components/footer'); %></footer>
+
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="/public/js/index.js"></script>
+<script src="/public/js/product-list.js"></script>
+<% if(isCategory) { %> 
+    <script src="/public/js/category-view.js"></script>
+<% } else if(isBrand) { %>
+    <script src="/public/js/brand-view.js"></script>
+<% } %>
+
+<% if(!isBrand && !isCategory) { %> 
+    <script src="/public/js/search-view.js"></script>
+<% } %>
+</html>
