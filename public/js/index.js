@@ -150,6 +150,7 @@ $(".header__mobile-search-input").on("input", function(){
 
           if(data.status == 200){
               let search_droplist = ``
+              let search_droplist_mobile = ``
 
               for(x in data.data){
                   let thumb = ``;
