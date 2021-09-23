@@ -60,7 +60,7 @@ function getList(limit, page, isLoadPagination = false){
                                 <span class="body-item__details">
                                     <span class="body-item__details-product">
                                         <span class="multiplier">${data_item[i].quantity}</span> x 
-                                        <span class="title"><a href="#" target="_blank">Sản phẩm bị xoá</a></span>
+                                        <span class="title"><a href="#">Sản phẩm bị xoá</a></span>
                                         ${details_item}
                                     </span>
                                     <span class="body-item__details-price">

@@ -153,12 +153,23 @@ ol, ul {
 
         &__wrapper {
             overflow: hidden;
-            touch-action: pan-y;
+
+            &::-webkit-scrollbar {
+                width: 0;
+            }
+               
+            &::-webkit-scrollbar-track {
+            }
+               
+            &::-webkit-scrollbar-thumb {
+                background-color: 0;
+                outline: 0;
+            }
         }
 
         &__list {
             @include flex(flex-start, flex-start);
-            transition: all 500ms ease 0s;
+            transition: all 0.5s ease 0s;
         }
 
         &__item {
@@ -780,7 +791,7 @@ ol, ul {
             margin-bottom: 1rem;
             border-top-left-radius: 1rem;
             border-bottom-left-radius: 1rem;
-            transition: color 0.2s, background 0.2s;
+            transition: all 0.2s;
 
             &:hover {
                 color: $white_color;
@@ -955,7 +966,7 @@ ol, ul {
                         &:hover {
                             color: $white_color;
                             background: $primary_color;
-                            transition: color 0.2s, background 0.2s, border 0.2s;
+                            transition: all 0.2s;
                         }
                     }
                 }
@@ -1059,7 +1070,7 @@ ol, ul {
                     .set-default {
                         cursor: pointer;
                         padding: 0.5rem;
-                        transition: color 0.2s, background 0.2s;
+                        transition: all 0.2s;
 
                         &:hover {
                             color: $white_color;

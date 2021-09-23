@@ -22,7 +22,7 @@
                             <% if(category) { %>
                                 <li class="container__product__sidebar__item">
                                     <input type="checkbox" class="checkbox-category" id="cat-<%= category._id %>" checked disabled>
-                                    <span class="text-category"id="<%= category._id %>"><%= category.categoryName %></span>
+                                    <label class="text-category" for="cat-<%= category._id %>"><%= category.categoryName %></label>
                                 </li>
                             <% } %>
                         <% } else { %>
@@ -30,7 +30,7 @@
                                 <% category.forEach(function(cat) { %>
                                     <li class="container__product__sidebar__item">
                                         <input type="checkbox" class="checkbox-category" id="cat-<%= cat._id %>" <%= (category_query.includes(cat._id.toString()) ? 'checked': '') %>>
-                                        <span class="text-category"id="<%= cat._id %>"><%= cat.categoryName %></span>
+                                        <label class="text-category" for="cat-<%= cat._id %>"><%= cat.categoryName %></label>
                                     </li>
                                 <% }); %>
                             <% } %>
@@ -43,7 +43,7 @@
                             <% if(brand) { %>
                                 <li class="container__product__sidebar__item">
                                     <input type="checkbox" class="checkbox-brand" id="brand-<%= brand._id %>" checked disabled>
-                                    <span class="text-brand"id="<%= brand._id %>"><%= brand.brandName %></span>
+                                    <label class="text-brand" for="brand-<%= brand._id %>"><%= brand.brandName %></label>
                                 </li>
                             <% } %>
                         <% } else { %>
@@ -51,7 +51,7 @@
                                 <% brand.forEach(function(brd) { %>
                                     <li class="container__product__sidebar__item">
                                         <input type="checkbox" class="checkbox-brand" id="brand-<%= brd._id %>" <%= (brand_query.includes(brd._id.toString()) ? 'checked': '') %>>
-                                        <span class="text-brand"id="<%= brd._id %>"><%= brd.brandName %></span>
+                                        <label class="text-brand" for="brand-<%= brd._id %>"><%= brd.brandName %></label>
                                     </li>
                                 <% }); %>
                             <% } %>

@@ -12,7 +12,7 @@ function getList(limit, page, isLoadPagination = false){
                 <li class="main-body__container__item" id="item-${data.data[x]._id}">
                 <input type="checkbox" class="checkbox-item" value="${data.data[x]._id}">
                 <div class="body-item">
-                    <a href="#" class="body-item__title one-line">${data.data[x].categoryName}</a>
+                    <a href="/category-view/${data.data[x]._id}" class="body-item__title one-line" target="_blank">${data.data[x].categoryName}</a>
                 </div>
                 <div class="action-item">
                     <span class="action-item__delete" onclick="action('delete', '${data.data[x]._id}')">Xoá</span>

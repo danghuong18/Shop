@@ -42,7 +42,7 @@
                                             <li class="product-details-item" id="detail-<%= x %>">
                                                 <input type="text" name="detail-title" class="product-details-item-title" value="<%= product.detail[x].title %>"  placeholder="Tiêu đề">
                                                 <input type="text" name="detail-content" class="product-details-item-content" value="<%= product.detail[x].content %>"  placeholder="Nội dung">
-                                                <a class="minus-button" onclick="RemoveDetail(<%= x %>)">-</a>
+                                                <a class="minus-button" onclick="RemoveDetail('<%= x %>')">-</a>
                                             </li>
                                     <% }
                                     } else { %>
@@ -116,8 +116,7 @@
                             </div>
                         </div>
                     </div>
-                    <button class="submit-button" onclick="<% if(isEdit) { %>edit('<%= product._id %>')<% }else { %>add()<% } %>"><%= isEdit? 'Lưu Sản Phẩm' : 'Đăng Sản Phẩm' %></button>
-                    <!-- <a class="submit-button" onclick="<% if(isEdit) { %>edit('<%= product._id %>')<% }else { %>add()<% } %>"><%= isEdit? 'Lưu Sản Phẩm' : 'Đăng Sản Phẩm' %></a> -->
+                    <button class="submit-button" onclick="<%= isEdit? `edit('${product._id}')` : `add()` %>"><%= isEdit? 'Lưu Sản Phẩm' : 'Đăng Sản Phẩm' %></button>
                 </form>
             </div>
 
@@ -186,8 +185,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="modal-background">
         </div>
     </div>
     <%- include('../../components/cpanel/js_footer.ejs'); %>

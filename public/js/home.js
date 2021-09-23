@@ -44,13 +44,29 @@ function home_slide(__item = "category"){
   let device_width = $(window).width();
   let item_length = $(__class + "__item").length;
   let list_width = 0;
+  let slide_item_width = $(__class).attr("slide-width");
+  
+  if(slide_item_width){
+    let split_width = slide_item_width.split(",");
 
-  if(device_width < 480) {
-    list_width = 50*item_length;
-  } else if(device_width < 1024){
-    list_width = 20*item_length;
+    if(device_width < 480) {
+      $(__class + "__item").css({width: (split_width[0]? split_width[0] : 50) + "%"});
+      list_width = (split_width[0]? split_width[0] : 50)*item_length;
+    } else if(device_width < 1024){
+      $(__class + "__item").css({width: (split_width[1]? split_width[1] : 20) + "%"});
+      list_width = (split_width[1]? split_width[1] : 20)*item_length;
+    }else{
+      $(__class + "__item").css({width: (split_width[2]? split_width[2] : 10) + "%"});
+      list_width = (split_width[2]? split_width[2] : 10)*item_length;
+    }
   }else{
-    list_width = 10*item_length;
+    if(device_width < 480) {
+      list_width = 50*item_length;
+    } else if(device_width < 1024){
+      list_width = 20*item_length;
+    }else{
+      list_width = 10*item_length;
+    }
   }
 
   $(__class + "__list").css({"width": (list_width > 100? list_width : 100) + "%"});
@@ -90,37 +106,86 @@ function home_slide_resize(__item = "category"){
 
 function home_slide_js(__item = "category"){
   let __class = ".container__" + __item;
+  let status = $(__class).attr("slide-status");
+  let __auto = ``;
+
+  if(status){
+    if(status == "play"){
+      __auto = `
+      $(document).ready(()=>{
+        setInterval(function(){
+          let status = $("${__class}").attr("slide-status");
+          if(status){
+            if(status == "play"){
+              let arrow = $("${__class}").attr("slide-arrow");
+              if(arrow){
+                if($("${__class} .container__arrow--next").is(":visible") && arrow == "next"){
+                  arrow_next("${__item}");
+                }else if($("${__class} .container__arrow--prev").is(":visible") && arrow == "prev"){
+                  arrow_prev("${__item}");
+                }else{
+                  if(arrow == "next"){
+                    $("${__class}").attr("slide-arrow", "prev");
+                  }else{
+                    $("${__class}").attr("slide-arrow", "next");
+                  }
+                }
+              }
+            }
+          }
+        },3000);
+      });
   
+      $("${__class}").mouseenter(function(){
+        $(this).attr("slide-status", "pause");
+      }).mouseleave(function(){
+        $(this).attr("slide-status", "play");
+      });
+      `
+    }
+  }
 
   let script = `
   <script>
     $("${__class} .container__arrow--prev").on("click", function(){
-      let current_slide = Math.floor($("${__class}__item:first-child").offset()["left"]/$("${__class}").width()) + 1;
-      let translate = current_slide*$("${__class}").width();
-    
-      $("${__class}").attr("current-slide", current_slide);
-      $("${__class}__list").css({"transform": "translate(" + (translate < 0? translate : 0) + "px, 0px)"});
-    
-      setTimeout(function(){
-        home_slide("${__item}");
-      }, 1000);
+      arrow_prev("${__item}");
     });
     
     $("${__class} .container__arrow--next").on("click", function(){
-      let current_slide = Math.floor($("${__class}__item:first-child").offset()["left"]/$("${__class}").width()) - 1;
-      let max_translate = - ($("${__class}__list").width() - $("${__class}").width());
-      let translate = current_slide*$("${__class}").width();
-
-      $("${__class}").attr("current-slide", current_slide);
-      $("${__class}__list").css({"transform": "translate(" + (translate > max_translate ? translate : max_translate) + "px, 0px)"});
-    
-      setTimeout(function(){
-        home_slide("${__item}");
-      }, 1000);
+      arrow_next("${__item}");
     });
+    
+    ${__auto}
   </script>`;
   
   $(__class).append(script);
+}
+
+function arrow_prev(__item = "category"){
+  let __class = ".container__" + __item;
+  let current_slide = Math.floor($(__class + "__item:first-child").offset()["left"]/$(__class).width()) + 1;
+  let translate = current_slide*$(__class).width();
+
+  $(__class).attr("current-slide", current_slide);
+  $(__class + "__list").css({"transform": "translate(" + (translate < 0? translate : 0) + "px, 0px)"});
+
+  setTimeout(function(){
+    home_slide(__item);
+  }, 1000);
+}
+
+function arrow_next(__item = "category"){
+  let __class = ".container__" + __item;
+  let current_slide = Math.floor($(__class + "__item:first-child").offset()["left"]/$(__class).width()) - 1;
+  let max_translate = - ($(__class + "__list").width() - $(__class).width());
+  let translate = current_slide*$(__class).width();
+
+  $(__class).attr("current-slide", current_slide);
+  $(__class + "__list").css({"transform": "translate(" + (translate > max_translate ? translate : max_translate) + "px, 0px)"});
+
+  setTimeout(function(){
+    home_slide(__item);
+  }, 1000);
 }
   
 $(document).ready(()=>{
@@ -135,28 +200,3 @@ $(window).on("resize", function(){
   home_slide_resize();
   home_slide_resize("brand");
 });
-  
-// $(".container__arrow--prev").on("click", function(){
-//     let current_slide = Math.floor($(".container__category__item:first-child").offset()["left"]/$(".container__category").width()) + 1;
-//     let translate = current_slide*$(".container__category").width();
-  
-//     old_slide = Math.floor(current_slide);
-//     $(".container__category__list").css({"transform": "translate(" + (translate < 0? translate : 0) + "px, 0px)"});
-  
-//     setTimeout(function(){
-//       home_slide();
-//     }, 1000);
-// });
-  
-// $(".container__arrow--next").on("click", function(){
-//     let current_slide = Math.floor($(".container__category__item:first-child").offset()["left"]/$(".container__category").width()) - 1;
-//     let max_translate = - ($(".container__category__list").width() - $(".container__category").width());
-//     let translate = current_slide*$(".container__category").width();
-  
-//     old_slide = Math.floor(current_slide);
-//     $(".container__category__list").css({"transform": "translate(" + (translate > max_translate ? translate : max_translate) + "px, 0px)"});
-  
-//     setTimeout(function(){
-//       home_slide();
-//     }, 1000);
-// });

@@ -26,7 +26,7 @@ body {
 .header {
   margin-left: 25rem;
   background-color: #fff;
-  transition: margin-left 0.2s;
+  transition: all 0.2s;
   position: fixed;
   left: 0;
   right: 0;
@@ -212,7 +212,7 @@ body {
   background-color: #4c4743;
   color: #afb0ab;
   z-index: 1;
-  transition: width 0.2s;
+  transition: all 0.2s;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -227,7 +227,7 @@ body {
   background-color: #fe5e3a;
   color: #fff;
   z-index: 1;
-  transition: width 0.2s;
+  transition: all 0.2s;
   position: fixed;
   overflow: hidden;
 }
@@ -326,7 +326,7 @@ body {
   z-index: 1000;
   margin-top: 5rem;
   padding: 2rem;
-  transition: margin-left 0.2s;
+  transition: all 0.2s;
 }
 .main-body__statistic {
   margin-bottom: 2rem;
@@ -396,7 +396,7 @@ body {
 }
 .main-body__container__panel .split {
   width: calc(50% - 10px);
-  transition: width 0.2s;
+  transition: all 0.2s;
 }
 .main-body__container .form-group {
   margin-bottom: 1.5rem;
@@ -504,7 +504,7 @@ body {
   border: 2px solid #76c80e;
   margin-top: 0.5rem;
   margin-right: 0.5rem;
-  transition: border 0.2s;
+  transition: all 0.2s;
 }
 .main-body__container .form-group .product-images .product-images-item img {
   width: 100%;
@@ -525,7 +525,7 @@ body {
   position: absolute;
   right: 0;
   top: 0;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
 }
 .main-body__container .form-group .product-images .product-images-item:hover {
   border: 2px solid #fe5e3a;
@@ -611,6 +611,9 @@ body {
   color: #4c4743;
   font-weight: 600;
   margin-bottom: 1rem;
+}
+.main-body__container__item .body-item__title label {
+  cursor: pointer;
 }
 .main-body__container__item .body-item__title.one-line {
   margin-bottom: 0;
@@ -1044,7 +1047,7 @@ body {
   margin-bottom: 2rem;
   background-color: #fff;
   box-shadow: 0 1px 1px #d8d8d8;
-  transition: width 0.2s;
+  transition: all 0.2s;
 }
 .main-body__split-100 {
   width: 100%;
@@ -1156,7 +1159,7 @@ body {
 }
 .main-body__split-body .hot-product-item-background:hover {
   opacity: 0.45;
-  transition: opacity 0.4s;
+  transition: all 0.4s;
 }
 .main-body__split-body .hot-product-item-nonbackground {
   position: absolute;
@@ -1169,7 +1172,7 @@ body {
 }
 .main-body__split-body .hot-product-item-nonbackground:hover {
   opacity: 0.45;
-  transition: opacity 0.4s;
+  transition: all 0.4s;
 }
 .main-body__split-body .hot-product-item-position {
   display: flex;
@@ -1386,7 +1389,8 @@ body {
   bottom: 0;
   outline: 0;
   z-index: 1100;
-  animation: opacity_animation 0.5s;
+  animation: opacity_animation 0.3s;
+  background-color: #000000bd;
 }
 .modal.open {
   display: block;
@@ -1505,20 +1509,6 @@ body {
 .modal__container__content .modal-footer .modal-button:hover {
   opacity: 0.7;
 }
-.modal-background {
-  display: none;
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  background-color: #000000;
-  opacity: 0.8;
-  z-index: 1000;
-}
-.modal-background.open {
-  display: block;
-}
 .modal-open {
   overflow: hidden;
 }
@@ -1547,7 +1537,7 @@ body {
   border-radius: 75px;
   transform: rotate(-10deg);
   margin-bottom: 5rem;
-  transition: color 0.2s, transform 0.5s;
+  transition: all 0.2s;
 }
 .not-found__header:hover {
   color: #4c4743;
@@ -1574,7 +1564,7 @@ body {
   font-size: 2rem;
   font-weight: 600;
   color: #4c4743;
-  transition: font-size 0.2s;
+  transition: all 0.2s;
 }
 .not-found__return-home:hover {
   font-size: 5rem;
@@ -1679,7 +1669,7 @@ table {
     width: 100%;
     height: 100%;
     background: #fe5e3a;
-    transition: background 0.5s;
+    transition: all 0.5s;
     position: relative;
   }
   .graph td .tooltip {
@@ -1787,6 +1777,9 @@ table {
   }
   .header__item {
     width: 25%;
+  }
+  .header__item .dropdown-list {
+    width: calc(100% - 10px);
   }
   .header__item-bars {
     display: flex;

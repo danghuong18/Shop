@@ -178,18 +178,8 @@ $(".checkbox-category").on("click", function(){
     reloadData(true, 1);
 });
   
-$(".text-category").on("click", function(){
-    let id = $(this).attr("id");
-    $("#cat-" + id).click();
-});
-  
 $(".checkbox-brand").on("click", function(){
     reloadData(true, 1);
-});
-  
-$(".text-brand").on("click", function(){
-    let id = $(this).attr("id");
-    $("#brand-" + id).click();
 });
 
 $(".newest-sort").on("click", function(){

@@ -13,8 +13,8 @@
 
     <% if(category.length > 0) { %>
         <section class="container slider">
-            <div class="container__category" current-slide="0">
-                <div class="container__category__title">Danh mục</div>
+            <div class="container__category__title">Danh mục</div>
+            <div class="container__category" current-slide="0" slide-width="50,20,10" slide-status="play" slide-arrow="next">
                 <div class="container__category__wrapper">
                     <ul class="container__category__list">
                         <% if(category.length > 20) { %>
@@ -94,8 +94,8 @@
 
     <% if(brand.length > 0) { %>
         <section class="container slider">
-            <div class="container__brand" current-slide="0">
-                <div class="container__brand__title">Thương hiệu</div>
+            <div class="container__brand__title">Thương hiệu</div>
+            <div class="container__brand" current-slide="0" slide-width="100,50,25" slide-status="play" slide-arrow="next">
                 <div class="container__brand__wrapper">
                     <ul class="container__brand__list">
                         <% for(x in brand){ %>

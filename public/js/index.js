@@ -80,9 +80,9 @@ $(".header__search-input").on("input", function(){
           url: "/product/showProduct?limit=5&q=" + query,
           type: "GET"
       }).then((data)=>{
-
           if(data.status == 200){
               let search_droplist = ``
+              let search_droplist_mobile = ``
 
               for(x in data.data){
                   let thumb = ``;
@@ -95,15 +95,19 @@ $(".header__search-input").on("input", function(){
                   let price = (data.data[x].min)? ((data.data[x].min != data.data[x].max)? `${(data.data[x].min).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'})} - ${(data.data[x].max).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'})}`: (data.data[x].min).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'})) : (0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'});
 
                   search_droplist += `<li class="header__search-history-item"><a href="/product/${data.data[x]._id}"><span class="header__search-history-item__body"><span class="header__search-history-item__image"><img src="${thumb}"></span><span class="header__search-history-item__detail"><label>${data.data[x].productName}</label><span class="price">${price}</span></span></span></a></li>`
+                  search_droplist_mobile +=  `<li class="header__mobile-item"><a href="/product/${data.data[x]._id}" class="header__mobile-link"><span class="header__search-history-item__body"><span class="header__search-history-item__image"><img src="${thumb}"></span><span class="header__search-history-item__detail"><label>${data.data[x].productName}</label><span class="price">${price}</span></span></span></a></li>`
               }
 
               if(data.pages > 1){
                 search_droplist += `<li class="header__search-history-item"><a href="/search-result?q=${query}">Xem thêm kết quả</a></li>`
+                search_droplist_mobile += `<li class="header__mobile-item"><a href="/search-result?q=${query}" class="header__mobile-link">Xem thêm kết quả</a></li>`
               }
 
               $(".header__search-history-list").html(search_droplist);
+              $(".header__mobile-list--search-result").html(search_droplist_mobile);
           }else if(data.status == 400){
               $(".header__search-history-list").html(`<li class="header__search-history-item"><a>Không có gì để hiển thị cả.</a></li>`);
+              $(".header__mobile-list--search-result").html(`<li class="header__mobile-item"><a class="header__mobile-link">Không có gì để hiển thị cả.</a></li>`);
           }
       });
   }else{
@@ -157,16 +161,20 @@ $(".header__mobile-search-input").on("input", function(){
 
                   let price = (data.data[x].min)? ((data.data[x].min != data.data[x].max)? `${(data.data[x].min).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'})} - ${(data.data[x].max).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'})}`: (data.data[x].min).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'})) : (0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'});
 
-                  search_droplist += `<li class="header__mobile-item"><a href="/product/${data.data[x]._id}" class="header__mobile-link"><span class="header__search-history-item__body"><span class="header__search-history-item__image"><img src="${thumb}"></span><span class="header__search-history-item__detail"><label>${data.data[x].productName}</label><span class="price">${price}</span></span></span></a></li>`
+                  search_droplist += `<li class="header__search-history-item"><a href="/product/${data.data[x]._id}"><span class="header__search-history-item__body"><span class="header__search-history-item__image"><img src="${thumb}"></span><span class="header__search-history-item__detail"><label>${data.data[x].productName}</label><span class="price">${price}</span></span></span></a></li>`
+                  search_droplist_mobile +=  `<li class="header__mobile-item"><a href="/product/${data.data[x]._id}" class="header__mobile-link"><span class="header__search-history-item__body"><span class="header__search-history-item__image"><img src="${thumb}"></span><span class="header__search-history-item__detail"><label>${data.data[x].productName}</label><span class="price">${price}</span></span></span></a></li>`
               }
 
               if(data.pages > 1){
-                search_droplist += `<li class="header__mobile-item"><a href="/search-result?q=${query}" class="header__mobile-link">Xem thêm kết quả</a></li>`
+                search_droplist += `<li class="header__search-history-item"><a href="/search-result?q=${query}">Xem thêm kết quả</a></li>`
+                search_droplist_mobile += `<li class="header__mobile-item"><a href="/search-result?q=${query}" class="header__mobile-link">Xem thêm kết quả</a></li>`
               }
 
-              $(".header__mobile-list--search-result").html(search_droplist);
+              $(".header__search-history-list").html(search_droplist);
+              $(".header__mobile-list--search-result").html(search_droplist_mobile);
           }else if(data.status == 400){
-              $(".header__mobile-list--search-result").html(`<li class="header__mobile-item"><a class="header__mobile-link">Không có gì để hiển thị cả.</a></li>`);
+            $(".header__search-history-list").html(`<li class="header__search-history-item"><a>Không có gì để hiển thị cả.</a></li>`);
+            $(".header__mobile-list--search-result").html(`<li class="header__mobile-item"><a class="header__mobile-link">Không có gì để hiển thị cả.</a></li>`);
           }
       });
   }else{
@@ -190,8 +198,6 @@ $("#mobile-search-form").on("clickout", function(){
 
 $('#mobile-search-form').on('submit', () => {
   let q = $(".header__mobile-search-input").val();
-
-  console.log(q);
 
   if(q){
     window.location.href = "/search-result?q=" + q;
