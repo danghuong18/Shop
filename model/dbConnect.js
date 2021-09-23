@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-mongoose.connect(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.l2cjr.mongodb.net/${process.env.DB_DBNAME}?retryWrites=true&w=majority`,{
+mongoose.connect(`mongodb://localhost:27017/ShopDatabase`,{
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,

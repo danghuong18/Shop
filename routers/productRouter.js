@@ -179,7 +179,10 @@ router.get("/showProduct", async (req, res) => {
       let product = await ProductCodeModel.findOne({_id: similar_query});
       if(product){
         q = product.productName;
-        similar = {_id: {$ne: mongoose.Types.ObjectId(similar_query)}};
+        similar = {$and: [
+          {_id: {$ne: mongoose.Types.ObjectId(similar_query)}},
+          {categoryID: {$in: product.categoryID}}
+        ]};
       }
     }
 
