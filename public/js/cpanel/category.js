@@ -196,6 +196,12 @@ function action(action="create", item_id=null){
 
 $(document).ready(()=>{
     reloadData(true);
+    let split_link = (document.URL).split("#");
+    if(split_link.length == 2){
+        if(split_link[1]){
+            $("#" + split_link[1]).click();
+        }
+    }
 });
 
 $(".action__task").on("change", function(){
