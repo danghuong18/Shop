@@ -119,9 +119,9 @@ router.get("/logon", getUserInfo, (req, res) => {
 });
 
 router.get("/profile", getUserInfo, (req, res) => {
-  if(req.login_info){
+  if (req.login_info) {
     res.render("pages/profile", { login_info: req.login_info });
-  }else{
+  } else {
     res.render("pages/login", { login_info: req.login_info });
   }
 });
@@ -132,29 +132,36 @@ router.get("/cart", getUserInfo, (req, res) => {
   });
 });
 
+router.get("/checkout", getUserInfo, (req, res) => {
+  res.render("pages/checkout", {
+    login_info: req.login_info,
+  });
+});
+
 router.post("/", async (req, res) => {
   try {
     let now = new Date();
-    let username = (req.body.username).toLowerCase();
+    let username = req.body.username.toLowerCase();
     let password = req.body.password;
     let fullName = req.body.fullName;
-    let email = (req.body.email).toLowerCase();
+    let email = req.body.email.toLowerCase();
     let phone = req.body.phone;
-    let gender = req.body.gender != ""? req.body.gender : "male";
+    let gender = req.body.gender != "" ? req.body.gender : "male";
     let createDate = now;
     let dob = now;
 
     const checkExist = await UserModel.find({
-      $or: [
-      {username: username },
-      {email: email }]
+      $or: [{ username: username }, { email: email }],
     });
 
     if (checkExist.length > 0) {
-      res.json({status: 400, message: "Username hoặc email đã tồn tại, vui lòng chọn lại."});
+      res.json({
+        status: 400,
+        message: "Username hoặc email đã tồn tại, vui lòng chọn lại.",
+      });
     } else {
-      let createCart = await CartModel.create({listProduct: []});
-      if(createCart){
+      let createCart = await CartModel.create({ listProduct: [] });
+      if (createCart) {
         password = await bcrypt.hash(password, 10);
 
         let createUser = await UserModel.create({
@@ -167,32 +174,32 @@ router.post("/", async (req, res) => {
           DOB: dob,
           cartID: createCart._id,
           addressList: [],
-          createDate: createDate
+          createDate: createDate,
         });
 
-        if(createUser){
-          res.json({status: 200, message: "Tạo tài khoản thành công!" });
-        }else{
-          await CartModel.deleteOne({_id: createCart._id});
-          res.json({status: 400, message: "Tạo tài khoản không thành công." });
+        if (createUser) {
+          res.json({ status: 200, message: "Tạo tài khoản thành công!" });
+        } else {
+          await CartModel.deleteOne({ _id: createCart._id });
+          res.json({ status: 400, message: "Tạo tài khoản không thành công." });
         }
-      }else{
-        res.json({status: 400, message: "Lỗi tạo giỏ hàng, không thể tạo tài khoản." });
+      } else {
+        res.json({
+          status: 400,
+          message: "Lỗi tạo giỏ hàng, không thể tạo tài khoản.",
+        });
       }
-
     }
   } catch (error) {
-    res.json({status: 500, message: "Server error!", error});
+    res.json({ status: 500, message: "Server error!", error });
   }
 });
 
 router.post("/login", async (req, res) => {
   try {
-    let username = (req.body.username).toLowerCase();
+    let username = req.body.username.toLowerCase();
     const user = await UserModel.findOne({
-      $or: [
-      {username: username },
-      {email: username }]
+      $or: [{ username: username }, { email: username }],
     });
 
     if (user) {
@@ -203,13 +210,15 @@ router.post("/login", async (req, res) => {
 
       if (checkPassword) {
         const token = jwt.sign({ id: user._id }, "thai");
-        res.json({ status: 200, message: "Đăng nhập thành công!", token});
+        res.json({ status: 200, message: "Đăng nhập thành công!", token });
       } else {
         res.json({ status: 400, message: "Sai password, mời nhập lại." });
       }
-
     } else {
-      res.json({ status: 400, message: "Sai username hoặc email, mời nhập lại." });
+      res.json({
+        status: 400,
+        message: "Sai username hoặc email, mời nhập lại.",
+      });
     }
   } catch (error) {
     res.json({ status: 500, message: "Server error!", error });
@@ -218,11 +227,9 @@ router.post("/login", async (req, res) => {
 
 router.post("/loginCpanel", async (req, res) => {
   try {
-    let username = (req.body.username).toLowerCase();
+    let username = req.body.username.toLowerCase();
     const user = await UserModel.findOne({
-      $or: [
-      {username: username },
-      {email: username }]
+      $or: [{ username: username }, { email: username }],
     });
     if (user) {
       const checkPassword = await bcrypt.compare(
@@ -504,7 +511,7 @@ router.delete("/cart/delete", checkLogin, async function (req, res) {
   }
 });
 
-router.post("/editProfile", checkLogin, async (req, res)=>{
+router.post("/editProfile", checkLogin, async (req, res) => {
   upload.single("avatar")(req, res, async (err) => {
     if (err) {
       if (err == "ErrorType") {
@@ -531,7 +538,7 @@ router.post("/editProfile", checkLogin, async (req, res)=>{
         let updateDate = new Date();
         let id = req.login_info._id;
         let fullName = req.body["full-name"];
-        let email = (req.body.email).toLowerCase();
+        let email = req.body.email.toLowerCase();
         let phone = req.body.phone;
         let dob = req.body.year + "-" + req.body.month + "-" + req.body.day;
         let gender = req.body.gender;
@@ -539,17 +546,18 @@ router.post("/editProfile", checkLogin, async (req, res)=>{
         let set_data = {};
 
         const checkExist = await UserModel.findOne({
-          $and: [
-          {_id: {$ne: id} },
-          {email: email }]
+          $and: [{ _id: { $ne: id } }, { email: email }],
         });
 
-        if(checkExist){
+        if (checkExist) {
           if (req.file) {
             DeleteFile([avatar]);
           }
-          res.json({ message: "Email đã có người sử dụng mời nhập lại.", status: 400 });
-        }else{
+          res.json({
+            message: "Email đã có người sử dụng mời nhập lại.",
+            status: 400,
+          });
+        } else {
           if (req.file) {
             set_data = {
               avatar: avatar,
@@ -570,13 +578,13 @@ router.post("/editProfile", checkLogin, async (req, res)=>{
               updateDate: updateDate,
             };
           }
-  
+
           let edit_profile = await UserModel.findOneAndUpdate(
             { _id: id },
             { $set: set_data },
             { returnOriginal: false }
           );
-  
+
           if (edit_profile) {
             if (req.file) {
               DeleteFile(list_file);
@@ -603,105 +611,158 @@ router.post("/editProfile", checkLogin, async (req, res)=>{
   });
 });
 
-router.post("/addAddress", checkLogin, async (req, res)=>{
+router.post("/addAddress", checkLogin, async (req, res) => {
   try {
     let updateDate = new Date();
     let address = req.body.address;
-    let addAddress = await UserModel.findOneAndUpdate({_id: req.login_info._id}, {$push: {addressList: {address: address, active: false}}, $set: {updateDate: updateDate}}, {returnOriginal: false});
+    let addAddress = await UserModel.findOneAndUpdate(
+      { _id: req.login_info._id },
+      {
+        $push: { addressList: { address: address, active: false } },
+        $set: { updateDate: updateDate },
+      },
+      { returnOriginal: false }
+    );
 
-    if(addAddress){
-      res.json({ message: "Thêm địa chỉ thành công!", status: 200, data: addAddress});
-    }else{
-      res.json({ message: "Thêm địa chỉ không thành công.", status: 400});
+    if (addAddress) {
+      res.json({
+        message: "Thêm địa chỉ thành công!",
+        status: 200,
+        data: addAddress,
+      });
+    } else {
+      res.json({ message: "Thêm địa chỉ không thành công.", status: 400 });
     }
   } catch (error) {
     res.json({ message: "Server error!", status: 500, error });
   }
 });
 
-router.post("/editAddress", checkLogin, async (req, res)=>{
+router.post("/editAddress", checkLogin, async (req, res) => {
   try {
     let updateDate = new Date();
     let id_address = req.body.id;
     let address = req.body.address;
-    let editAddress = await UserModel.findOneAndUpdate({_id: req.login_info._id, "addressList._id": id_address}, {$set: {"addressList.$.address": address, updateDate: updateDate}}, {returnOriginal: false});
+    let editAddress = await UserModel.findOneAndUpdate(
+      { _id: req.login_info._id, "addressList._id": id_address },
+      { $set: { "addressList.$.address": address, updateDate: updateDate } },
+      { returnOriginal: false }
+    );
 
     console.log(editAddress);
-    if(editAddress){
-      res.json({ message: "Sửa địa chỉ thành công!", status: 200, data: editAddress});
-    }else{
-      res.json({ message: "Sửa địa chỉ không thành công.", status: 400});
+    if (editAddress) {
+      res.json({
+        message: "Sửa địa chỉ thành công!",
+        status: 200,
+        data: editAddress,
+      });
+    } else {
+      res.json({ message: "Sửa địa chỉ không thành công.", status: 400 });
     }
   } catch (error) {
     res.json({ message: "Server error!", status: 500, error });
   }
 });
 
-router.post("/deleteAddress", checkLogin, async (req, res)=>{
+router.post("/deleteAddress", checkLogin, async (req, res) => {
   try {
     let updateDate = new Date();
     let id_address = req.body.id;
-    let deleteAddress = await UserModel.findOneAndUpdate({_id: req.login_info._id}, {$pull: {addressList: {_id: id_address}}, $set: {updateDate: updateDate}}, {returnOriginal: false});
+    let deleteAddress = await UserModel.findOneAndUpdate(
+      { _id: req.login_info._id },
+      {
+        $pull: { addressList: { _id: id_address } },
+        $set: { updateDate: updateDate },
+      },
+      { returnOriginal: false }
+    );
 
-    if(deleteAddress){
-      res.json({ message: "Xoá địa chỉ thành công!", status: 200, data: deleteAddress});
-    }else{
-      res.json({ message: "Xoá địa chỉ không thành công.", status: 400});
+    if (deleteAddress) {
+      res.json({
+        message: "Xoá địa chỉ thành công!",
+        status: 200,
+        data: deleteAddress,
+      });
+    } else {
+      res.json({ message: "Xoá địa chỉ không thành công.", status: 400 });
     }
   } catch (error) {
     res.json({ message: "Server error!", status: 500, error });
   }
 });
 
-router.post("/setDefaultAddress", checkLogin, async (req, res)=>{
+router.post("/setDefaultAddress", checkLogin, async (req, res) => {
   try {
     let updateDate = new Date();
     let id_address = req.body.id;
-    await UserModel.findOneAndUpdate({_id: req.login_info._id, "addressList.active": true}, {$set: {"addressList.$[].active": false, updateDate: updateDate}}, {returnOriginal: false});
-    let defaultAddress = await UserModel.findOneAndUpdate({_id: req.login_info._id, "addressList._id": id_address}, {$set: {"addressList.$.active": true, updateDate: updateDate}}, {returnOriginal: false});
-    
-    if(defaultAddress){
-      res.json({ message: "Đã đặt làm địa chỉ mặc định!", status: 200, data: defaultAddress});
-    }else{
-      res.json({ message: "Đặt địa chỉ mặc định xảy ra lỗi.", status: 400});
+    await UserModel.findOneAndUpdate(
+      { _id: req.login_info._id, "addressList.active": true },
+      { $set: { "addressList.$[].active": false, updateDate: updateDate } },
+      { returnOriginal: false }
+    );
+    let defaultAddress = await UserModel.findOneAndUpdate(
+      { _id: req.login_info._id, "addressList._id": id_address },
+      { $set: { "addressList.$.active": true, updateDate: updateDate } },
+      { returnOriginal: false }
+    );
+
+    if (defaultAddress) {
+      res.json({
+        message: "Đã đặt làm địa chỉ mặc định!",
+        status: 200,
+        data: defaultAddress,
+      });
+    } else {
+      res.json({ message: "Đặt địa chỉ mặc định xảy ra lỗi.", status: 400 });
     }
   } catch (error) {
     res.json({ message: "Server error!", status: 500, error });
   }
 });
 
-router.post("/editPassword", checkLogin, async (req, res)=>{
+router.post("/editPassword", checkLogin, async (req, res) => {
   try {
     let updateDate = new Date();
     let current_password = req.body.current_password;
     let new_password = req.body.new_password;
     let confirm_password = req.body.confirm_password;
 
-    if(confirm_password != new_password){
-      res.json({ message: "Mật khẩu mới và mật khẩu xác minh không trùng khớp.", status: 400});
-    }else{
+    if (confirm_password != new_password) {
+      res.json({
+        message: "Mật khẩu mới và mật khẩu xác minh không trùng khớp.",
+        status: 400,
+      });
+    } else {
+      const user = await UserModel.findOne({ _id: req.login_info._id });
 
-      const user = await UserModel.findOne({_id: req.login_info._id});
-
-      if(user) {
+      if (user) {
         const checkPassword = await bcrypt.compare(
           current_password,
           user.password
         );
 
-        if(checkPassword){
+        if (checkPassword) {
           new_password = await bcrypt.hash(new_password, 10);
-          const updatePass = await UserModel.updateOne({_id: req.login_info._id}, {$set: {password: new_password, updateDate: updateDate}});
-          if(updatePass.nModified){
-            res.json({ message: "Đổi mật khẩu thành công!", status: 200});
-          }else{
-            res.json({ message: "Đổi mật khẩu không thành công.", status: 400});
+          const updatePass = await UserModel.updateOne(
+            { _id: req.login_info._id },
+            { $set: { password: new_password, updateDate: updateDate } }
+          );
+          if (updatePass.nModified) {
+            res.json({ message: "Đổi mật khẩu thành công!", status: 200 });
+          } else {
+            res.json({
+              message: "Đổi mật khẩu không thành công.",
+              status: 400,
+            });
           }
-        }else{
-          res.json({ message: "Mật khẩu hiện tại không đúng, mời nhập lại.", status: 400});
+        } else {
+          res.json({
+            message: "Mật khẩu hiện tại không đúng, mời nhập lại.",
+            status: 400,
+          });
         }
-      }else{
-        res.json({ message: "Có lỗi trong quá trình tìm user.", status: 400});
+      } else {
+        res.json({ message: "Có lỗi trong quá trình tìm user.", status: 400 });
       }
     }
   } catch (error) {
