@@ -7,39 +7,34 @@
     <title>Giỏ hàng</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
-    <link rel="stylesheet" href="../../public/css/cart.css" />
+    <link rel="stylesheet" href="/public/css/cart.css" />
     <%- include('../components/head'); %>
   </head>
   <body>
-    <header><%- include('../components/header'); %></header>
-    <main>
-      <div class="cart-container">
-        <div class="cart-header">
-          <input type="checkbox" class="cart-checkbox cart-check-all" />
-          <div class="cart-header-1 cart-header-text">Sản Phẩm</div>
-          <div class="cart-header-2 cart-header-text">Đơn Giá</div>
-          <div class="cart-header-3 cart-header-text">Số Lượng</div>
-          <div class="cart-header-4 cart-header-text">Giá Tiền</div>
-          <div class="cart-header-5 cart-header-text">Thao Tác</div>
-        </div>
-        <div class="cart-item-container"></div>
-        <div class="cart-select-zone">
-          <input type="checkbox" class="cart-checkbox cart-check-all">
-          <span class="cart-header-text cart-select-zone-1">Chọn tất cả (0)</span>
-          <span class="cart-header-text cart-select-zone-2">Xóa</span>
-          <span class="cart-header-text cart-select-zone-3">Bỏ sản phẩm hết hàng</span>
-          <span class="cart-header-text cart-select-zone-4">Tổng thanh toán (0 sản phẩm)</span>
-          <span class="cart-header-text cart-select-zone-5">0đ</span>
-          <button class="cart-header-text cart-select-zone-6">Mua hàng</button>
-        </div>
+    <%- include('../components/header'); %>
+    <section class="cart-container">
+      <div class="cart-header">
+        <input type="checkbox" class="cart-checkbox cart-check-all" />
+        <div class="cart-header-1 cart-header-text">Sản Phẩm</div>
+        <div class="cart-header-2 cart-header-text">Đơn Giá</div>
+        <div class="cart-header-3 cart-header-text">Số Lượng</div>
+        <div class="cart-header-4 cart-header-text">Giá Tiền</div>
+        <div class="cart-header-5 cart-header-text">Thao Tác</div>
       </div>
-    </main>
-    <footer><%- include('../components/footer'); %></footer>
+      <div class="cart-item-container"></div>
+      <div class="cart-select-zone">
+        <input type="checkbox" class="cart-checkbox cart-check-all">
+        <span class="cart-header-text cart-select-zone-1">Chọn tất cả (0)</span>
+        <span class="cart-header-text cart-select-zone-2">Xóa</span>
+        <span class="cart-header-text cart-select-zone-3">Bỏ sản phẩm hết hàng</span>
+        <span class="cart-header-text cart-select-zone-4">Tổng thanh toán (0 sản phẩm)</span>
+        <span class="cart-header-text cart-select-zone-5">0đ</span>
+        <button class="cart-header-text cart-select-zone-6">Mua hàng</button>
+      </div>
+    </section>
+    <%- include('../components/footer'); %>
   </body>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <%- include('../components/footer_js'); %>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-  <script src="/public/js/cpanel/jquery-clickout.min.js"></script>
-  <script src="../../public/js/cart.js"></script>
-  <script src="../../public/js/header.js"></script>
-  <script src="../../public/js/index.js"></script>
+  <script src="/public/js/cart.js"></script>
 </html>
