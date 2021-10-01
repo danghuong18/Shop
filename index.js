@@ -2,10 +2,10 @@ const express = require("express");
 const path = require("path");
 // const UserModel = require("./model/userModel");
 // const CartModel = require("./model/cartModel");
-// const BrandModel = require("./model/brandModel");
+const BrandModel = require("./model/brandModel");
 // const CategoryModel = require("./model/categoryModel");
 // const ProductModel = require("./model/productModel");
-// const ProductCodeModel = require("./model/productCodeModel");
+const ProductCodeModel = require("./model/productCodeModel");
 const cookieParser = require("cookie-parser");
 const userRouter = require("./routers/userRouter");
 const cpanelRouter = require("./routers/cpanelRouter");
@@ -50,7 +50,7 @@ app.get("/filter", async (req, res) => {
     const filterInput = {};
     console.log(brand);
     if (brand) {
-      let brandList = brand.split(",");
+      var brandList = brand.split(",");
       filterInput.brand = { $in: brandList };
     }
 
@@ -85,7 +85,7 @@ app.get("/filter", async (req, res) => {
       });
       res.render("pages/filter", { brandList, data: result, brand: brand });
     }
-    const brandList = await BrandModel.find();
+    brandList = await BrandModel.find();
     console.log(filter[0].productID);
     res.render("pages/filter", { brandList, data: filter, brand: brand });
   } catch (error) {
