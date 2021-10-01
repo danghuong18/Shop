@@ -1,12 +1,12 @@
-const mongoose = require('./model/dbConnect');
+const mongoose = require("./model/dbConnect");
 const express = require("express");
 const path = require("path");
 // const UserModel = require("./model/userModel");
 // const CartModel = require("./model/cartModel");
-const BrandModel = require("./model/brandModel");
+// const BrandModel = require("./model/brandModel");
 // const CategoryModel = require("./model/categoryModel");
 // const ProductModel = require("./model/productModel");
-const ProductCodeModel = require("./model/productCodeModel");
+// const ProductCodeModel = require("./model/productCodeModel");
 const cookieParser = require("cookie-parser");
 const userRouter = require("./routers/userRouter");
 const cpanelRouter = require("./routers/cpanelRouter");
@@ -36,12 +36,12 @@ app.use("/statistic", statisticRouter);
 app.use("/public", express.static(path.join(__dirname, "./public")));
 
 app.get("/", getUserInfo, async (req, res) => {
-  let brand = await BrandModel.find({}).sort({brandName: 1});
-  let category = await CategoryModel.find({}).sort({categoryName: 1});
-  res.render("pages/index", { 
+  let brand = await BrandModel.find({}).sort({ brandName: 1 });
+  let category = await CategoryModel.find({}).sort({ categoryName: 1 });
+  res.render("pages/index", {
     login_info: req.login_info,
     brand: brand,
-    category: category
+    category: category,
   });
 });
 
@@ -108,7 +108,7 @@ app.get("/all-product", getUserInfo, (req, res) => {
   res.render("pages/all-product", {
     login_info: req.login_info,
     isSimilar: false,
-    page: req.query.page
+    page: req.query.page,
   });
 });
 
@@ -116,130 +116,136 @@ app.get("/similar-product/:id", getUserInfo, async (req, res) => {
   try {
     let product = await ProductCodeModel.aggregate([
       {
-        $match: {_id: mongoose.Types.ObjectId(req.params.id)}
+        $match: { _id: mongoose.Types.ObjectId(req.params.id) },
       },
-      { $lookup: {
-        from: "product",
-        foreignField: "_id",
-        localField: "productID",
-        as: "productID"
-      }},
-      { $lookup: {
-        from: "category",
-        foreignField: "_id",
-        localField: "categoryID",
-        as: "categoryID"
-      }},
-      { $lookup: {
-        from: "brand",
-        foreignField: "_id",
-        localField: "brand",
-        as: "brand"
-      }},
+      {
+        $lookup: {
+          from: "product",
+          foreignField: "_id",
+          localField: "productID",
+          as: "productID",
+        },
+      },
+      {
+        $lookup: {
+          from: "category",
+          foreignField: "_id",
+          localField: "categoryID",
+          as: "categoryID",
+        },
+      },
+      {
+        $lookup: {
+          from: "brand",
+          foreignField: "_id",
+          localField: "brand",
+          as: "brand",
+        },
+      },
       {
         $project: {
           _id: 1,
           productName: 1,
           listImg: 1,
-          productID: 1, 
+          productID: 1,
           categoryID: 1,
           brand: 1,
-          min: {$min: "$productID.price"},
-          max: {$max: "$productID.price"},
+          min: { $min: "$productID.price" },
+          max: { $max: "$productID.price" },
           createDate: 1,
-        }
-      }
+        },
+      },
     ]);
 
-    if(product.length > 0) {
-      res.render("pages/all-product", { 
+    if (product.length > 0) {
+      res.render("pages/all-product", {
         login_info: req.login_info,
         isSimilar: true,
         product: product[0],
-        page: req.query.page
+        page: req.query.page,
       });
-    }else{
+    } else {
       res.render("pages/cpanel/not-found", {
-          name: "Không tìm thấy trang",
-          isHome: true
+        name: "Không tìm thấy trang",
+        isHome: true,
       });
     }
   } catch (error) {
     res.render("pages/cpanel/not-found", {
-        name: "Không tìm thấy trang",
-        isHome: true
+      name: "Không tìm thấy trang",
+      isHome: true,
     });
   }
 });
 
 app.get("/category-view/:id", getUserInfo, async (req, res) => {
   try {
-    let category = await CategoryModel.findOne({_id: req.params.id});
-    if(category){
-        let brand = await BrandModel.find({}).sort({brandName: 1});
-        let brand_query = req.query.brand? (req.query.brand).split(",") : [];
+    let category = await CategoryModel.findOne({ _id: req.params.id });
+    if (category) {
+      let brand = await BrandModel.find({}).sort({ brandName: 1 });
+      let brand_query = req.query.brand ? req.query.brand.split(",") : [];
 
-        res.render("pages/list-product", {
-          login_info: req.login_info,
-          isCategory: true,
-          isBrand: false,
-          brand: brand,
-          category: category,
-          brand_query: brand_query,
-          category_query: category._id,
-          sort: req.query.sort,
-          sortPrice: req.query.sortPrice,
-          from: req.query.from,
-          to: req.query.to,
-          page: req.query.page
-        });
-    }else{
-        res.render("pages/cpanel/not-found", {
-            name: "Không tìm thấy trang",
-            isHome: true
-        });
+      res.render("pages/list-product", {
+        login_info: req.login_info,
+        isCategory: true,
+        isBrand: false,
+        brand: brand,
+        category: category,
+        brand_query: brand_query,
+        category_query: category._id,
+        sort: req.query.sort,
+        sortPrice: req.query.sortPrice,
+        from: req.query.from,
+        to: req.query.to,
+        page: req.query.page,
+      });
+    } else {
+      res.render("pages/cpanel/not-found", {
+        name: "Không tìm thấy trang",
+        isHome: true,
+      });
     }
-    
   } catch (error) {
     res.render("pages/cpanel/not-found", {
-        name: "Không tìm thấy trang",
-        isHome: true
+      name: "Không tìm thấy trang",
+      isHome: true,
     });
   }
 });
 
 app.get("/brand-view/:id", getUserInfo, async (req, res) => {
   try {
-    let brand = await BrandModel.findOne({_id: req.params.id});
-    if(brand){
-        let category = await CategoryModel.find({}).sort({categoryName: 1});
-        let category_query = req.query.category? (req.query.category).split(",") : [];
+    let brand = await BrandModel.findOne({ _id: req.params.id });
+    if (brand) {
+      let category = await CategoryModel.find({}).sort({ categoryName: 1 });
+      let category_query = req.query.category
+        ? req.query.category.split(",")
+        : [];
 
-        res.render("pages/list-product", {
-          login_info: req.login_info,
-          isCategory: false,
-          isBrand: true,
-          brand: brand,
-          category: category,
-          brand_query: brand._id,
-          category_query: category_query,
-          sort: req.query.sort,
-          sortPrice: req.query.sortPrice,
-          from: req.query.from,
-          to: req.query.to,
-          page: req.query.page
-        });
-    }else{
-        res.render("pages/cpanel/not-found", {
-            name: "Không tìm thấy trang",
-            isHome: true
-        });
+      res.render("pages/list-product", {
+        login_info: req.login_info,
+        isCategory: false,
+        isBrand: true,
+        brand: brand,
+        category: category,
+        brand_query: brand._id,
+        category_query: category_query,
+        sort: req.query.sort,
+        sortPrice: req.query.sortPrice,
+        from: req.query.from,
+        to: req.query.to,
+        page: req.query.page,
+      });
+    } else {
+      res.render("pages/cpanel/not-found", {
+        name: "Không tìm thấy trang",
+        isHome: true,
+      });
     }
-    
   } catch (error) {
     res.render("pages/cpanel/not-found", {
-        name: "Không tìm thấy trang",
-        isHome: true
+      name: "Không tìm thấy trang",
+      isHome: true,
     });
   }
 });
@@ -247,11 +253,13 @@ app.get("/brand-view/:id", getUserInfo, async (req, res) => {
 app.get("/search-result", getUserInfo, async (req, res) => {
   try {
     let query = req.query.q;
-    if(query && query.length > 0){
-      let brand = await BrandModel.find({}).sort({brandName: 1});
-      let category = await CategoryModel.find({}).sort({categoryName: 1});
-      let brand_query = req.query.brand? (req.query.brand).split(",") : [];
-      let category_query = req.query.category? (req.query.category).split(",") : [];
+    if (query && query.length > 0) {
+      let brand = await BrandModel.find({}).sort({ brandName: 1 });
+      let category = await CategoryModel.find({}).sort({ categoryName: 1 });
+      let brand_query = req.query.brand ? req.query.brand.split(",") : [];
+      let category_query = req.query.category
+        ? req.query.category.split(",")
+        : [];
       res.render("pages/list-product", {
         login_info: req.login_info,
         isCategory: false,
@@ -265,18 +273,18 @@ app.get("/search-result", getUserInfo, async (req, res) => {
         sortPrice: req.query.sortPrice,
         from: req.query.from,
         to: req.query.to,
-        page: req.query.page
+        page: req.query.page,
       });
-    }else{
+    } else {
       res.render("pages/cpanel/not-found", {
         name: "Không tìm thấy trang",
-        isHome: true
+        isHome: true,
       });
     }
   } catch (error) {
     res.render("pages/cpanel/not-found", {
       name: "Không tìm thấy trang",
-      isHome: true
+      isHome: true,
     });
   }
 });
