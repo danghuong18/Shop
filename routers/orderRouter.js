@@ -1,7 +1,10 @@
 const router = require("express").Router();
 const OrderModel = require("../model/orderModel");
 const { checkLogin } = require("../middleWare/checkAuth");
+<<<<<<< HEAD
+=======
 
+>>>>>>> 90ad567a1a4909f64caa35a657efae5b9d3f983e
 router.get("/", checkLogin, async (req, res) => {
   if (req.login_info.role === "admin") {
     try {
@@ -34,6 +37,8 @@ router.get("/", checkLogin, async (req, res) => {
       } else if (sort == "fail-asc") {
         filter = { status: "fail" };
         sortby = { createDate: 1 };
+      } else {
+        sortby = { createDate: -1 };
       }
 
       let orders = await OrderModel.find(filter)
@@ -93,6 +98,24 @@ router.post("/confirmOrder", checkLogin, async (req, res) => {
   } else {
     res.json({ message: "Bạn không có quyền ở đây.", status: 400 });
   }
+});
+
+router.post("/create", checkLogin, async (req, res) => {
+  let totalPrice = 0;
+  console.log(req.body);
+  for (let i = 0; i < req.body.listProduct.length; i++) {
+    totalPrice += req.body.listProduct[i].price;
+  }
+  let data = await OrderModel.create({
+    listProduct: req.body.listProduct,
+    userID: req.login_info._id,
+    address: req.body.address,
+    phone: req.body.phone,
+    price: totalPrice,
+    status: 1,
+    createDate: Date,
+  });
+  console.log(data);
 });
 
 module.exports = router;

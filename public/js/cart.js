@@ -29,7 +29,7 @@ $(document).ready(function () {
       } else {
         for (let i = 0; i < data.data.length; i++) {
           $(".cart-item-container").prepend(`
-                <div class="cart-item" id="${data.data[i]._id}">
+                <div class="cart-item ${i}" id="${data.data[i]._id}">
                   <input type="checkbox" class="cart-checkbox cart-item-check" />
                   <a
                     href="/product/${data.data[i].productCodeID}"
@@ -69,7 +69,6 @@ $(document).ready(function () {
     .catch(function (err) {
       console.log(err);
     });
-  console.log("trigger");
 });
 
 $(document).on("change", ".cart-item-quantity-input", function () {
@@ -147,4 +146,19 @@ $(document).on("click", ".cart-item-action", function () {
     .catch(function (err) {
       toastr[err.toastr](err.mess);
     });
+});
+
+//buy
+$(".cart-buy").on("click", function () {
+  let data = [];
+  for (let i = 0; i < $(".cart-item").length; i++) {
+    data.push($(".cart-item." + i).attr("id"));
+  }
+  $.ajax({
+    url: "/user/addcheckout",
+    type: "POST",
+    data: { addcheckout: data },
+  }).then(function (data) {
+    console.log(data);
+  });
 });

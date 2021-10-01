@@ -80,8 +80,8 @@ router.get("/", checkLogin, async (req, res) => {
         sortby = { createDate: -1 };
       } else if (sort == "date-asc") {
         sortby = { createDate: 1 };
-      }else{
-        sortby = {createDate: -1};
+      } else {
+        sortby = { createDate: -1 };
       }
 
       let users = await UserModel.find({}).skip(skip).limit(limit).sort(sortby);
@@ -138,6 +138,33 @@ router.get("/checkout", getUserInfo, (req, res) => {
   res.render("pages/checkout", {
     login_info: req.login_info,
   });
+});
+
+router.post("/addcheckout", getUserInfo, async (req, res) => {
+  console.log(req.body["addcheckout[]"]);
+  try {
+    for (let i = 0; i < req.body.addcheckout.length; i++) {
+      let data = await CartModel.updateOne(
+        {
+          _id: req.login_info.cartID,
+          listProduct: { $elemMatch: { productID: req.body.addcheckout[i] } },
+        },
+        { selected: 1 }
+      );
+      console.log(data);
+    }
+    res.json(data);
+  } catch (err) {
+    console.log(err);
+    res.json(err);
+  }
+});
+
+router.post("/getcheckout", getUserInfo, async (req, res) => {
+  try {
+    let data = await CartModel.findOne({ _id: req.login_info.cartID });
+    res.json(data);
+  } catch (err) {}
 });
 
 router.post("/", async (req, res) => {
@@ -479,6 +506,7 @@ router.post("/cart", checkLogin, async function (req, res) {
       mess: "lay data thanh cong",
     });
   } catch (err) {
+    console.log(err);
     res.json({
       status: 500,
       err: err,
