@@ -253,6 +253,9 @@ function reOrder(id){
             if(data.status == 200){
                 notification(".content", data.status, data.message);
                 loadCart();
+                $([document.documentElement, document.body]).animate({
+                    scrollTop: $(".header__cart-list").offset().top
+                }, 500);
             }else{
                 notification(".content", data.status, data.message);
             }
