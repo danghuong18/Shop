@@ -5,11 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trang Chủ | ShopProject</title>
-    <link rel="stylesheet" href="../../public/css/profile.css" />
+    <link rel="stylesheet" href="/public/css/profile.css" />
     <%- include('../components/head'); %>
 </head>
 <body>
-    <header><%- include('../components/header'); %></header>
+    <%- include('../components/header'); %>
 
     <% if(category.length > 0) { %>
         <section class="container slider">
@@ -141,11 +141,15 @@
 
     </section>
 
-    <footer><%- include('../components/footer'); %></footer>
+    <%- include('../components/footer'); %>
 
 </body>
+<<<<<<< HEAD
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="/public/js/cpanel/jquery-clickout.min.js"></script>
 <script src="/public/js/index.js"></script>
+=======
+<%- include('../components/footer_js'); %>
+>>>>>>> 90ad567a1a4909f64caa35a657efae5b9d3f983e
 <script src="/public/js/home.js"></script>
 </html>

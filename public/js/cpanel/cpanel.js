@@ -45,6 +45,8 @@ function modal(isOpen=true, title=null, body=null, button=null, buttonfunc=null)
         if(buttonfunc != null){
             $(".modal-button-confirm").attr("onclick", buttonfunc);
         }
+
+        $(".modal__container").css({"margin-top": $(this).height()/2 - $(".modal__container").height()/2});
     }else{
         $("body").removeClass("modal-open");
         $(".modal").removeClass("open");
@@ -112,6 +114,7 @@ function validateEmail(email) {
 
 $(window).on("resize", function(){
     dropdown();
+    $(".modal__container").css({"margin-top": $(this).height()/2 - $(".modal__container").height()/2});
 });
 
 $(".log-out").on("click", function(){

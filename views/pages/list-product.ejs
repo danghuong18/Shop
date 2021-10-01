@@ -5,12 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><% if(isCategory) { %>Sản phẩm trong danh mục <%= category.categoryName %> | <% } else if(isBrand) { %> Sản phẩm của thương hiệu <%= brand.brandName %> | <% } else if(!isBrand && !isCategory) { %>Kết quả tìm kiếm "<%= query %>" | <% } %><% if(page) { %> Trang <%= page %> | <% } %>ShopProject</title>
-    <link rel="stylesheet" href="../../public/css/profile.css" />
+    <link rel="stylesheet" href="/public/css/profile.css" />
     <%- include('../components/head'); %>
 </head>
 <body>
-    <header><%- include('../components/header'); %></header>
-
+    <%- include('../components/header'); %>
     <section class="container shop">
         <div class="container__product container__product--search">
             <div class="container__product__sidebar">
@@ -132,12 +131,10 @@
 
     </section>
 
-    <footer><%- include('../components/footer'); %></footer>
+    <%- include('../components/footer'); %>
 
 </body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="/public/js/cpanel/jquery-clickout.min.js"></script>
-<script src="/public/js/index.js"></script>
+<%- include('../components/footer_js'); %>
 <script src="/public/js/product-list.js"></script>
 <% if(isCategory) { %> 
     <script src="/public/js/category-view.js"></script>
