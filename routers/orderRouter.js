@@ -36,6 +36,8 @@ router.get("/", checkLogin, async (req, res) => {
       } else if (sort == "fail-asc") {
         filter = { status: "fail" };
         sortby = { createDate: 1 };
+      } else {
+        sortby = { createDate: -1 };
       }
 
       let orders = await OrderModel.find(filter)
@@ -243,6 +245,24 @@ router.post("/cancelOrder", checkLogin, async (req, res) => {
   } catch (error) {
     res.json({ message: "Server error!", status: 500 });
   }
+});
+
+router.post("/create", checkLogin, async (req, res) => {
+  let totalPrice = 0;
+  console.log(req.body);
+  for (let i = 0; i < req.body.listProduct.length; i++) {
+    totalPrice += req.body.listProduct[i].price;
+  }
+  let data = await OrderModel.create({
+    listProduct: req.body.listProduct,
+    userID: req.login_info._id,
+    address: req.body.address,
+    phone: req.body.phone,
+    price: totalPrice,
+    status: 1,
+    createDate: Date,
+  });
+  console.log(data);
 });
 
 module.exports = router;
