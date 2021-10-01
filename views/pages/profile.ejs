@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hồ sơ của tôi | ShopProject</title>
+  <title>Thông tin của tôi | ShopProject</title>
   <link rel="stylesheet" href="/public/css/profile.css" />
   <%- include('../components/head'); %>
 </head>
@@ -30,6 +30,9 @@
                 </li>
                 <li class="sidebar__item" id="password">
                     Đổi mật khẩu
+                </li>
+                <li class="sidebar__item" id="order">
+                    Lịch sử mua hàng
                 </li>
             </ul>
         </div>
@@ -296,6 +299,32 @@
                     </div>
                 </div>
             </form>
+
+            <div id="order-form" style="display: none;">
+                <div class="content__title">
+                    <div class="content__title--left">
+                        Lịch Sử Mua Hàng
+                    </div>
+                    <div class="content__title--right">
+                        <select class="action-filter">
+                            <option value="all">Tất cả</option>
+                            <option value="success">Thành công</option>
+                            <option value="pending">Đang chờ</option>
+                            <option value="fail">Thất bại</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="content__order">
+                    <ul class="order__list">
+                        <li class="order__item__empty">
+                            Không có đơn hàng nào hiển thị ở đây cả
+                        </li>
+                    </ul>
+                    <div class="order__footer">
+
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
   <% } %>

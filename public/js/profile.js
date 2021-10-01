@@ -75,6 +75,210 @@ function reloadAddress(data){
     }
 }
 
+function loadOrder(isLoad = false, page = 1, limit = 10){
+    let filter = $(".action-filter").val();
+    $.ajax({
+        url: "/order/myOrder?limit=" + limit + "&page=" + page + "&sort=" + filter,
+        type: "GET"
+    }).then((data)=>{
+        if(data.status == 200){
+            let list = ``
+
+            for(x in data.data){
+                let list_item = ``;
+                let button = ``;
+                let status = ``;
+                let all_products = ``;
+
+                if(data.data[x].listProduct.length > 0) {
+                    let data_item = data.data[x].listProduct;
+                    for(i in data_item){
+                        let details_item = ``
+                        if(data_item[i].productID){
+                            if(data_item[i].productID.color && data_item[i].productID.size){
+                                details_item = `<div class="order__detail__classify">Phân loại: ${data_item[i].productID.color}, ${data_item[i].productID.size}</div>`;
+                            }else{
+                                if(data_item[i].productID.color) {
+                                    details_item = `<div class="order__detail__classify">Phân loại: ${data_item[i].productID.color}</div>`;
+                                }else if(data_item[i].productID.size){
+                                    details_item = `<div class="order__detail__classify">Phân loại: ${data_item[i].productID.size}</div>`;
+                                }
+                            }
+    
+                            if(i > 0){
+                                all_products += `, ` + data_item[i].productID.productCode.productName;
+                            }else{
+                                all_products += data_item[i].productID.productCode.productName;
+                            }
+    
+                            list_item += `
+                            <li class="order__detail__item">
+                                <span class="order__detail__left">
+                                    <div class="order__detail__image">
+                                        <img src="${data_item[i].productID.thumb}" alt="${data_item[i].productID.productCode.productName}">
+                                    </div>
+                                    <div class="order__detail__content">
+                                        <div class="order__detail__title"><a href="/product/${data_item[i].productID.productCode._id}" target="_blank">${data_item[i].productID.productCode.productName}</a></div>
+                                        ${details_item}
+                                        <div class="order__detail__amount">x${data_item[i].quantity}</div>
+                                    </div>
+                                </span>
+                                <span class="order__detail__right">
+                                    ${(data_item[i].quantity * data_item[i].productID.price).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'})}
+                                </span>
+                            </li>`;
+                        }else{
+
+                            if(i > 0){
+                                all_products += `, Sản phẩm bị xoá`;
+                            }else{
+                                all_products += `Sản phẩm bị xoá`;
+                            }
+
+                            list_item += `
+                            <li class="order__detail__item">
+                                <span class="order__detail__left">
+                                    <div class="order__detail__image">
+                                        <img src="/public/upload/no-image.jpg">
+                                    </div>
+                                    <div class="order__detail__content">
+                                        <div class="order__detail__title">Sản phẩm bị xoá</div>
+                                        <div class="order__detail__amount">x${data_item[i].quantity}</div>
+                                    </div>
+                                </span>
+                                <span class="order__detail__right">
+                                    Không xác định
+                                </span>
+                            </li>`;
+                        }
+                    }
+                }
+
+                if(data.data[x].status == "pending"){
+                    button = `<span class="cancel-button" onclick="cancelOrder('${data.data[x]._id}')">Huỷ Đơn</span>`;
+                }else{
+                    button = `<span class="reorder-button" onclick="reOrder('${data.data[x]._id}')">Đặt Lại</span>`;
+                }
+
+                if(data.data[x].status == "success"){
+                    status = `<div class="order__status order__status--success">Thành công</div>`;
+                }else if(data.data[x].status == "pending"){
+                    status = `<div class="order__status order__status--pending">Đang chờ</div>`;
+                }else if(data.data[x].status == "fail"){
+                    status = `<div class="order__status order__status--fail">Thất bại</div>`;
+                }
+
+                list += `
+                <li class="order__item">
+                    ${status}
+                    <div class="order__body" order-id="${data.data[x]._id}">
+                        <span class="order__body__title">${all_products}</span>
+                        <span class="order__body__price">${(data.data[x].price).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'})}</span>
+                    </div>
+                    <ul class="order__detail" id="order-${data.data[x]._id}" style="display: none">
+                        ${list_item}
+                        <li class="order__detail__info">
+                            <span class="info-title">Thông Tin Đặt Hàng</span>
+                            <span class="info-full-name">${data.data[x].userID.fullName}</span>
+                            <span class="info-phone-number">${data.data[x].phone}</span>
+                            <span class="info-address">${data.data[x].address}</span>
+                        </li>
+                        <li class="order__detail__footer">
+                            ${button}
+                        </li>
+                    </ul>
+                </li>`;
+            }
+
+            let load = ``
+
+            if(page < data.pages){
+                load = `<span class="see-more" page="${parseInt(page) + 1}">Xem Thêm</span>`
+            }
+
+            let script = `
+            <script>
+                $(document).ready(function() {
+                    $(".order__body").off("click");
+                    $(".order__body").on("click", function(){
+                        let id = $(this).attr("order-id");
+                        if($(this).hasClass("active")){
+                            $("#order-" + id).slideUp();
+                            $(this).removeClass("active");
+                        }else{
+                            $("#order-" + id).slideDown();
+                            $(this).addClass("active");
+                        }
+                    });
+
+                    $(".see-more").on("click", function(){
+                        let page = $(this).attr("page");
+
+                        if(page){
+                            loadOrder(true, page);
+                        }
+                    });
+                });
+            </script>`;
+
+            if(isLoad){
+                $(".order__list").append(list);
+            }else{
+                $(".order__list").html(list);
+            }
+            $(".order__footer").html(load);
+            $(".content__order").append(script);
+        }else if (data.status == 400){
+            let list = `
+            <li class="order__item__empty">
+                Không có đơn hàng nào hiển thị ở đây cả
+            </li>`;
+            $(".order__list").html(list);
+            $(".order__footer").html(``);
+        }else{
+            console.log(data);
+        }
+    })
+}
+
+function reOrder(id){
+    if(id != undefined && id != ""){
+        $.ajax({
+            url: "/order/reOrder",
+            type: "POST",
+            data: {
+                id: id
+            }
+        }).then((data)=>{
+            if(data.status == 200){
+                notification(".content", data.status, data.message);
+                loadCart();
+            }else{
+                notification(".content", data.status, data.message);
+            }
+        })
+    }
+}
+
+function cancelOrder(id){
+    if(id != undefined && id != ""){
+        $.ajax({
+            url: "/order/cancelOrder",
+            type: "POST",
+            data: {
+                id: id
+            }
+        }).then((data)=>{
+            if(data.status == 200){
+                notification(".content", data.status, data.message);
+                loadOrder();
+            }else{
+                notification(".content", data.status, data.message);
+            }
+        })
+    }
+}
+
 function readImage(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
@@ -268,6 +472,7 @@ $(".sidebar__item").on("click", function(){
         $("#profile-form").hide();
         $("#address-form").hide();
         $("#password-form").hide();
+        $("#order-form").hide();
         $("#" + id + "-form").show();
     }
 });
@@ -288,7 +493,15 @@ $(".avatar-profile .border-avatar img").on("load", function(){
     }
 });
 
+$(".action-filter").on("change", function(){
+    let filter = $(this).val();
+    if(filter != null && filter != "" && filter != undefined){
+        loadOrder();
+    }
+});
+
 $(document).ready(()=>{
+    loadOrder();
     let split_link = (document.URL).split("#");
     if(split_link.length == 2){
         if(split_link[1]){

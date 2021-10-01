@@ -1,5 +1,4 @@
 node_modules
 package-lock.json
-public/upload/*
+public/upload/
 .prettierignore
-!public/upload/default-avatar.jpg
