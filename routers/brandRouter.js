@@ -62,6 +62,8 @@ router.get("/", checkLogin, async (req, res)=> {
                 sortby = {createDate: -1};
             }else if(sort == "date-asc"){
                 sortby = {createDate: 1};
+            }else{
+                sortby = {createDate: -1};
             }
     
             let brands = await BrandModel.find({}).skip(skip).limit(limit).sort(sortby);

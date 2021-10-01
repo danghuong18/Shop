@@ -9,7 +9,11 @@
         <section class="not-found">
             <span class="not-found__header">404</span>
             <span class="not-found__body"><%= name %></span>
-            <a href="/cpanel"><span class="not-found__return-home">VỀ CPANEL</span></a>
+            <% if(isHome) { %>
+                <a href="/"><span class="not-found__return-home">VỀ TRANG CHỦ</span></a>
+            <% } else { %>
+                <a href="/cpanel"><span class="not-found__return-home">VỀ CPANEL</span></a>
+            <% } %>
         </section>
     </div>
 </body>

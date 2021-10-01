@@ -130,10 +130,18 @@ function loadOrderData(){
                 if(data.data[x].listProduct.length > 0) {
                     let data_item = data.data[x].listProduct;
                     for(i in data_item){
-                        if(i > 0){
-                            all_products += `, ` + data_item[i].productID.productCode.productName;
+                        if(data_item[i].productID){
+                            if(i > 0){
+                                all_products += `, ` + data_item[i].productID.productCode.productName;
+                            }else{
+                                all_products += data_item[i].productID.productCode.productName;
+                            }
                         }else{
-                            all_products += data_item[i].productID.productCode.productName;
+                            if(i > 0){
+                                all_products += `, Sản phẩm đã bị xoá`;
+                            }else{
+                                all_products += `Sản phẩm đã bị xoá`;
+                            }
                         }
                     }
                 }

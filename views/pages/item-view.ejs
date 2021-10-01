@@ -5,95 +5,66 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ShopProject</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"
-    />
-    <link rel="stylesheet" href="../../public/css/item-view.css" />
-    <link rel="stylesheet" href="../../public/css/base.css" />
-    <link rel="stylesheet" href="../../public/css/grid.css" />
-    <link
-      rel="stylesheet"
-      href="../../public/fonts/fontawesome/css/all.min.css"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"/>
+    <link rel="stylesheet" href="/public/css/item-view.css" />
+    <%- include('../components/head'); %>
   </head>
   <body>
     <div class="id"><%=id%></div>
-    <header><%- include('../components/header'); %></header>
-    <main>
-      <div class="app">
-        <div class="background">
-          <div class="main">
-            <div class="item-category"></div>
-            <div class="item-overview">
-              <div class="owl-one owl-carousel owl-theme"></div>
-              <div class="item-overview-no-img">
-                <div class="item-title"></div>
-                <div class="item-price">
-                  <span class="lowestprice"></span
-                  ><span class="spaceprice"> - </span>
-                  <span class="highestprice"></span>
-                </div>
-                <div class="item-select-prop">
-                  <div class="item-select-prop-margin item-color">
-                    <span>Màu sắc</span>
-                  </div>
-                  <div class="item-select-prop-margin item-size">
-                    <span>Kích cỡ</span>
-                  </div>
-                  <div class="item-select-prop-margin item-quantity-frame">
-                    <span>Số lượng</span>
-                    <input type="number" class="item-quantity" />
-                    <span class="item-left">Sản phẩm có sẵn</span>
-                  </div>
-                </div>
-                <div class="item-action">
-                  <button class="item-add-to-cart item-select-prop-margin">
-                    Thêm vào giỏ hàng
-                  </button>
-                  <button class="item-buy-now">Mua ngay</button>
-                </div>
-              </div>
+    <%- include('../components/header'); %>
+    <section class="main">
+      <div class="item-category"></div>
+      <div class="item-overview">
+        <div class="owl-one owl-carousel owl-theme"></div>
+        <div class="item-overview-no-img">
+          <div class="item-title"></div>
+          <div class="item-price">
+            <span class="lowestprice"></span
+            ><span class="spaceprice"> - </span>
+            <span class="highestprice"></span>
+          </div>
+          <div class="item-select-prop">
+            <div class="item-select-prop-margin item-color">
+              <span>Màu sắc</span>
             </div>
-            <div class="item-detail-decs">
-              <div class="item-detail">
-                <div class="detail-decs-title">CHI TIẾT SẢN PHẨM</div>
-              </div>
-              <div class="item-decs">
-                <div class="detail-decs-title">MÔ TẢ SẢN PHẨM</div>
-                <p class="item-decs-p"></p>
-              </div>
+            <div class="item-select-prop-margin item-size">
+              <span>Kích cỡ</span>
             </div>
-            <div class="related-item">
-              <div class="carousel-header">SẢN PHẨM CÙNG LOẠI</div>
-              <div class="owl-two owl-carousel owl-theme"></div>
+            <div class="item-select-prop-margin item-quantity-frame">
+              <span>Số lượng</span>
+              <input type="number" class="item-quantity" />
+              <span class="item-left">Sản phẩm có sẵn</span>
             </div>
+          </div>
+          <div class="item-action">
+            <button class="item-add-to-cart item-select-prop-margin">
+              Thêm vào giỏ hàng
+            </button>
+            <button class="item-buy-now">Mua ngay</button>
           </div>
         </div>
       </div>
-    </main>
-    <footer><%- include('../components/footer'); %></footer>
+      <div class="item-detail-decs">
+        <div class="item-detail">
+          <div class="detail-decs-title">CHI TIẾT SẢN PHẨM</div>
+        </div>
+        <div class="item-decs">
+          <div class="detail-decs-title">MÔ TẢ SẢN PHẨM</div>
+          <p class="item-decs-p"></p>
+        </div>
+      </div>
+      <div class="related-item">
+        <div class="carousel-header">SẢN PHẨM CÙNG LOẠI</div>
+        <div class="owl-two owl-carousel owl-theme"></div>
+      </div>
+    </section>
+    <%- include('../components/footer'); %>
   </body>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <%- include('../components/footer_js'); %>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-  <script src="../../public/js/item-view.js"></script>
-  <script src="../../public/js/header.js"></script>
-  <script src="../../public/js/index.js"></script>
+  <script src="/public/js/item-view.js"></script>
 </html>

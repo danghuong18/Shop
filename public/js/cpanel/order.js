@@ -17,35 +17,58 @@ function getList(limit, page, isLoadPagination = false){
                     let data_item = data.data[x].listProduct;
                     for(i in data_item){
                         let details_item = ``
-                        if(data_item[i].productID.color && data_item[i].productID.size){
-                            details_item = `<span class="details">(Màu sắc: ${data_item[i].productID.color}, Size: ${data_item[i].productID.size})</span>`;
-                        }else{
-                            if(data_item[i].productID.color) {
-                                details_item = `<span class="details">(Màu sắc: ${data_item[i].productID.color})</span>`;
-                            }else if(data_item[i].productID.size){
-                                details_item = `<span class="details">(Màu sắc: ${data_item[i].productID.size})</span>`;
+                        if(data_item[i].productID){
+                            if(data_item[i].productID.color && data_item[i].productID.size){
+                                details_item = `<span class="details">(Màu sắc: ${data_item[i].productID.color}, Size: ${data_item[i].productID.size})</span>`;
+                            }else{
+                                if(data_item[i].productID.color) {
+                                    details_item = `<span class="details">(Màu sắc: ${data_item[i].productID.color})</span>`;
+                                }else if(data_item[i].productID.size){
+                                    details_item = `<span class="details">(Màu sắc: ${data_item[i].productID.size})</span>`;
+                                }
                             }
-                        }
-
-                        if(i > 0){
-                            all_products += `, ` + data_item[i].productID.productCode.productName;
+    
+                            if(i > 0){
+                                all_products += `, ` + data_item[i].productID.productCode.productName;
+                            }else{
+                                all_products += data_item[i].productID.productCode.productName;
+                            }
+    
+                            list_item += `
+                            <div class="body-item">
+                                <span class="body-item__details">
+                                    <span class="body-item__details-product">
+                                        <span class="multiplier">${data_item[i].quantity}</span> x 
+                                        <span class="title"><a href="/product/${data_item[i].productID.productCode._id}" target="_blank">${data_item[i].productID.productCode.productName}</a></span>
+                                        ${details_item}
+                                    </span>
+                                    <span class="body-item__details-price">
+                                        ${(data_item[i].quantity * data_item[i].productID.price).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'})}
+                                    </span>
+                                </span>
+                            </div>`;
                         }else{
-                            all_products += data_item[i].productID.productCode.productName;
-                        }
 
-                        list_item += `
-                        <div class="body-item">
-                            <span class="body-item__details">
-                                <span class="body-item__details-product">
-                                    <span class="multiplier">${data_item[i].quantity}</span> x 
-                                    <span class="title"><a href="/product/${data_item[i].productID.productCode._id}" target="_blank">${data_item[i].productID.productCode.productName}</a></span>
-                                    ${details_item}
+                            if(i > 0){
+                                all_products += `, Sản phẩm bị xoá`;
+                            }else{
+                                all_products += `Sản phẩm bị xoá`;
+                            }
+
+                            list_item += `
+                            <div class="body-item">
+                                <span class="body-item__details">
+                                    <span class="body-item__details-product">
+                                        <span class="multiplier">${data_item[i].quantity}</span> x 
+                                        <span class="title"><a href="#">Sản phẩm bị xoá</a></span>
+                                        ${details_item}
+                                    </span>
+                                    <span class="body-item__details-price">
+                                        Không xác định
+                                    </span>
                                 </span>
-                                <span class="body-item__details-price">
-                                    ${(data_item[i].quantity * data_item[i].productID.price).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'})}
-                                </span>
-                            </span>
-                        </div>`;
+                            </div>`;
+                        }
                     }
                 }
 

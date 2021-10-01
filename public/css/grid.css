@@ -401,9 +401,9 @@
 
 /* > PC low resolution */
 @media (min-width: 1024px) and (max-width: 1239px) {
-    .wide {
+    /* .wide {
         width: 984px;
-    }
+    } */
     .wide .row {
         margin-left: -12px;
         margin-right: -12px;

@@ -1,5 +1,6 @@
 const mongoose = require("./dbConnect");
-
+const Schema = mongoose.Schema;
+const ObjectId = Schema.ObjectId;
 const ProductCodeSchema = mongoose.Schema(
   {
     detail: [
@@ -13,16 +14,18 @@ const ProductCodeSchema = mongoose.Schema(
     listImg: [{ type: String }],
     productID: [
       {
-        type: String,
+        type: ObjectId,
         ref: "product",
       },
     ],
-    categoryID: {
-      type: String,
-      ref: "category",
-    },
+    categoryID: [
+      {
+        type: ObjectId,
+        ref: "category",
+      },
+    ],
     brand: {
-      type: String,
+      type: ObjectId,
       ref: "brand",
     },
     createDate: Date,
@@ -31,9 +34,12 @@ const ProductCodeSchema = mongoose.Schema(
   { collection: "productCode" }
 );
 
-ProductCodeSchema.index({ "$**": "text" });
-// ProductCodeSchema.index({name: 'text', 'description': 'text'});
+// ProductCodeSchema.index({'$**': 'text'});
+// console.log(ProductCodeSchema.index());
+ProductCodeSchema.set("autoIndex", false);
+// ProductCodeSchema.index({productName: 'text'});
 
 const ProductCodeModel = mongoose.model("productCode", ProductCodeSchema);
+ProductCodeModel.createIndexes({ productName: "text" });
 
 module.exports = ProductCodeModel;

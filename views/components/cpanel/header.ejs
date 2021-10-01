@@ -46,11 +46,17 @@
             </ul>
         </li>
         <li class="header__item header__item-tasks">
-            <i class="fas fa-tasks"></i>
+            <i class="fas fa-plus"></i>
 
             <ul class="dropdown-list">
                 <li class="dropdown-item">
-                    <a>Không có gì để hiển thị cả.</a>
+                    <a href="/cpanel/product/create">Thêm sản phẩm</a>
+                </li>
+                <li class="dropdown-item">
+                    <a href="/cpanel/category#add">Thêm danh mục</a>
+                </li>
+                <li class="dropdown-item">
+                    <a href="/cpanel/brand#add">Thêm thương hiệu</a>
                 </li>
             </ul>
         </li>
@@ -58,16 +64,6 @@
             <% if(login_info){ %>
                 <span class="avatar">
                     <img src="<%= (login_info.avatar)? login_info.avatar : '/public/upload/default-avatar.jpg' %>">
-                    <!-- <script>
-                        $(document).ready(()=>{
-                            var header_avatar =  $(".header__item-profile .avatar img");
-                            if($(header_avatar[0]).height() < $(header_avatar[0]).width()) {
-                                $(header_avatar[0]).css({"height": "100%", "width" : "auto"});
-                            }else{
-                                $(header_avatar[0]).css({"height": "auto", "width" : "100%"});
-                            }
-                        });
-                    </script> -->
                 </span>
                 <label><%= login_info.username %></label>
                 <i class="fas fa-caret-down"></i>

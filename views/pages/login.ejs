@@ -1,36 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <title>Đăng Nhập</title>
-    <link rel="stylesheet" href="../../public/css/profile.css" />
-    <link rel="stylesheet" href="../../public/css/base.css" />
-    <link rel="stylesheet" href="../../public/css/grid.css" />
-    <link rel="stylesheet" href="../../public/fonts/fontawesome/css/all.min.css"/>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet"/>
-  </head>
-  <body>
-    <header><%- include('../components/header'); %></header>
-    <section class="container">
-      <div class="container__title">Đăng Nhập</div>
-      <div class="container__login">
-        <form action="#" method="post" id="login-form">
-          <div class="form-group">
-            <input type="text" id="username" placeholder="Nhập vào username hoặc email" required>
-          </div>
-          <div class="form-group">
-            <input type="password" id="password" placeholder="Nhập vào mật khẩu" required>
-          </div>
-          <button class="login-button">Đăng nhập</button>
-        </form>
-        <div class="container__notice">Nếu chưa có tài khoản, đăng ký <a href="/logon">tại đây</a>.</div>
-      </div>
-    </section>
-    <footer><%- include('../components/footer'); %></footer>
-  </body>
-  <script src="/public/js/login.js"></script>
-  <script src="/public/js/index.js"></script>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Đăng Nhập</title>
+  <link rel="stylesheet" href="/public/css/profile.css" />
+  <%- include('../components/head'); %>
+</head>
+<body>
+  <%- include('../components/header'); %>
+  <section class="container">
+    <div class="container__title">Đăng Nhập</div>
+    <div class="container__login">
+      <form action="#" method="post" id="login-form">
+        <div class="form-group">
+          <input type="text" id="username" placeholder="Nhập vào username hoặc email" required>
+        </div>
+        <div class="form-group">
+          <input type="password" id="password" placeholder="Nhập vào mật khẩu" required>
+        </div>
+        <button class="login-button">Đăng nhập</button>
+      </form>
+      <div class="container__notice">Nếu chưa có tài khoản, đăng ký <a href="/logon">tại đây</a>.</div>
+    </div>
+  </section>
+  <%- include('../components/footer'); %>
+</body>
+<%- include('../components/footer_js'); %>
+<script src="/public/js/login.js"></script>
 </html>

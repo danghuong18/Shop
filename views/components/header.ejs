@@ -1,5 +1,4 @@
 <!-- header -->
-<link rel="stylesheet" href="../../public/css/header.css" />
 <header class="header">
   <div class="grid wide">
     <!-- header navbar -->
@@ -124,29 +123,56 @@
         id="header-bars-input"
       />
       <div class="header__mobile">
-        <!-- <div class="header__mobile-search-wrap">
-                            <div class="header__mobile-search">
-                                <input type="text" class="header__mobile-search-btn" placeholder="Tìm kiếm sản phẩm...">
-                                <button class="header__search-moblie-btn">
-                                    <i class="fas fa-search header__search-mobile-btn-icon"></i>
-                                </button>
-                            </div>
-                        </div> -->
-        <ul class="header__mobile-list">
+        <div class="header__mobile-search-wrap">
+          <div class="header__mobile-search">
+            <form action="#" id="mobile-search-form" method="post">
+              <button class="header__search-moblie-btn">
+                <i class="fas fa-search header__search-mobile-btn-icon"></i>
+              </button>
+              <input type="text" class="header__mobile-search-input" placeholder="Tìm kiếm sản phẩm...">
+            </form>
+          </div>
+        </div>
+        <ul class="header__mobile-list header__mobile-list--link">
           <li class="header__mobile-item">
-            <a href="" class="header__mobile-link">Trang chủ</a>
+            <a href="/" class="header__mobile-link">Trang chủ</a>
           </li>
+          <% if(login_info){ %>
+            <li class="header__mobile-item">
+              <a href="/user/cart" class="header__mobile-link">Giỏ hàng</a>
+            </li>
+  
+            <li class="header__mobile-item">
+              <a href="/user/profile" class="header__mobile-link">Tài khoản của tôi</a>
+            </li>
+  
+            <li class="header__mobile-item">
+              <a href="/user/profile#address" class="header__mobile-link">Địa chỉ của tôi</a>
+            </li>
 
-          <li class="header__mobile-item">
-            <a href="" class="header__mobile-link">Giỏ hàng</a>
-          </li>
+            <% if(login_info.role == "admin") { %>
+              <li class="header__mobile-item">
+                <a href="/cpanel" class="header__mobile-link">Admin Cpanel</a>
+              </li>
+            <% } %>
 
-          <li class="header__mobile-item">
-            <a href="" class="header__mobile-link">Đăng ký</a>
-          </li>
+            <li class="header__mobile-item">
+              <a href="#" id="logout-mobile" class="header__mobile-link">Đăng xuất</a>
+            </li>
 
+          <% } else { %>
+            <li class="header__mobile-item">
+              <a href="/user/logon" class="header__mobile-link">Đăng ký</a>
+            </li>
+  
+            <li class="header__mobile-item">
+              <a href="/user/login" class="header__mobile-link">Đăng nhập</a>
+            </li>
+          <% } %>
+        </ul>
+        <ul class="header__mobile-list header__mobile-list--search-result">
           <li class="header__mobile-item">
-            <a href="" class="header__mobile-link">Đăng nhập</a>
+            <a class="header__mobile-link">Không có gì để hiển thị cả.</a>
           </li>
         </ul>
         <label for="header-bars-input">
@@ -159,7 +185,7 @@
       </label>
       <!-- logo -->
       <div class="header__logo">
-        <a href="#" class="header__logo-link">
+        <a href="/" class="header__logo-link">
           <img
             class="header__logo-img"
             src="../../public/img/logo.png"
@@ -172,16 +198,22 @@
 
       <!-- search -->
       <div class="header__search hide-on-mobile">
-        <div class="header__search-input-wrap">
-          <input
-            type="text"
-            class="header__search-input"
-            placeholder="Tìm kiếm sản phẩm tại đây"
-          />
-        </div>
-        <button class="header__search-btn">
-          <i class="fas fa-search header__search-btn-icon"></i>
-        </button>
+        <form action="#" id="search-form" method="post">
+          <div class="header__search-input-wrap">
+            <input type="text" class="header__search-input" placeholder="Tìm kiếm sản phẩm tại đây"/>
+  
+            <div class="header__search-history">
+              <h3 class="header__search-history-heading">Kết quả tìm kiếm</h3>
+              <ul class="header__search-history-list">
+                <li class="header__search-history-item"><a>Không có gì để hiển thị cả.</a></li>
+              </ul>
+            </div>
+          </div>
+  
+          <button class="header__search-btn">
+            <i class="fas fa-search header__search-btn-icon"></i>
+          </button>
+        </form>
       </div>
       <!--end search -->
 
@@ -210,7 +242,7 @@
     <% } %>
     <!--end header-search -->
   </div>
-  <ul class="header__sort-bar">
+  <!-- <ul class="header__sort-bar">
     <li class="header__sort-item">
       <a href="#" class="header__sort-link">Liên quan</a>
     </li>
@@ -226,6 +258,6 @@
     <li class="header__sort-item">
       <a href="#" class="header__sort-link">Giá</a>
     </li>
-  </ul>
+  </ul> -->
 </header>
 <!--end header -->

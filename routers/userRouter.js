@@ -80,6 +80,8 @@ router.get("/", checkLogin, async (req, res) => {
         sortby = { createDate: -1 };
       } else if (sort == "date-asc") {
         sortby = { createDate: 1 };
+      }else{
+        sortby = {createDate: -1};
       }
 
       let users = await UserModel.find({}).skip(skip).limit(limit).sort(sortby);
@@ -128,6 +130,12 @@ router.get("/profile", getUserInfo, (req, res) => {
 
 router.get("/cart", getUserInfo, (req, res) => {
   res.render("pages/cart", {
+    login_info: req.login_info,
+  });
+});
+
+router.get("/checkout", getUserInfo, (req, res) => {
+  res.render("pages/checkout", {
     login_info: req.login_info,
   });
 });

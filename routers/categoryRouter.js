@@ -2,41 +2,39 @@ const router = require("express").Router();
 const { checkLogin } = require("../middleWare/checkAuth");
 const CategoryModel = require("../model/categoryModel");
 
-router.get("/", checkLogin, async (req, res)=> {
-    if(req.login_info.role === "admin"){
-        try {
-            let sort = req.query.sort;
-            let limit = req.query.limit*1;
-            let skip = (req.query.page - 1)*limit;
-            let pages = 1;
-            let sortby = {};
-            
-            if(sort == "name-az"){
-                sortby = {categoryName: 1};
-            }else if(sort == "name-za"){
-                sortby = {categoryName: -1};
-            }else if(sort == "date-desc"){
-                sortby = {createDate: -1};
-            }else if(sort == "date-asc"){
-                sortby = {createDate: 1};
-            }
-    
-            let categories = await CategoryModel.find({}).skip(skip).limit(limit).sort(sortby);
-            let all_categories = await CategoryModel.find({});
-            if(all_categories.length > 0){
-                pages = Math.ceil(all_categories.length/limit);
-            }
-            if(categories.length > 0){
-                res.json({message: "Succcessed", status: 200, data: categories, pages: pages});
-            }else{
-                res.json({message: "Không có danh mục nào để hiển thị cả.", status: 400});
-            }
-    
-        } catch(error){
-            res.json({message: "Server error!", status: 500, error});
+router.get("/", async (req, res)=> {
+    try {
+        let sort = req.query.sort;
+        let limit = req.query.limit*1;
+        let skip = (req.query.page - 1)*limit;
+        let pages = 1;
+        let sortby = {};
+        
+        if(sort == "name-az"){
+            sortby = {categoryName: 1};
+        }else if(sort == "name-za"){
+            sortby = {categoryName: -1};
+        }else if(sort == "date-desc"){
+            sortby = {createDate: -1};
+        }else if(sort == "date-asc"){
+            sortby = {createDate: 1};
+        }else{
+            sortby = {createDate: -1};
         }
-    }else{
-        res.json({message: "Bạn không có quyền ở đây.", status: 400});
+
+        let categories = await CategoryModel.find({}).skip(skip).limit(limit).sort(sortby);
+        let all_categories = await CategoryModel.find({});
+        if(all_categories.length > 0){
+            pages = Math.ceil(all_categories.length/limit);
+        }
+        if(categories.length > 0){
+            res.json({message: "Succcessed", status: 200, data: categories, pages: pages});
+        }else{
+            res.json({message: "Không có danh mục nào để hiển thị cả.", status: 400});
+        }
+
+    } catch(error){
+        res.json({message: "Server error!", status: 500, error});
     }
 });
 

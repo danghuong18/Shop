@@ -1,0 +1,136 @@
+main {
+  width: 70%;
+  margin: 15px 15%;
+  font-size: 14px;
+}
+
+button {
+  border: 1px solid #ccc;
+  padding: 4px 12px;
+  margin: 0px 8px 8px 0px;
+  background: transparent;
+  cursor: pointer;
+}
+
+button:hover {
+  color: rgb(238, 77, 45);
+  border-color: rgb(238, 77, 45);
+}
+
+.border {
+  width: 100%;
+  border-bottom: 1px solid #eee;
+  margin: 5px 0px;
+}
+
+.block-title {
+  width: 55%;
+  font-size: 20px;
+}
+.user-address-block,
+.checkout-item-block {
+  background: white;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  padding: 20px;
+  margin-bottom: 15px;
+}
+
+.user-address-title {
+  color: #ee4d2d;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.user-address-list {
+  padding: 0px 10px;
+}
+
+.user-address-item {
+  margin-bottom: 10px;
+}
+
+.user-address-item-checkbox {
+  margin-right: 10px;
+}
+
+.user-address-span {
+  font-size: 15px;
+}
+
+.checkout-item-header {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.checkout-item-header-2 {
+  width: 15%;
+  color: #aaa;
+}
+
+.checkout-item-header-3 {
+  width: 15%;
+  color: #aaa;
+}
+
+.checkout-item-header-4 {
+  width: 15%;
+  color: #aaa;
+}
+
+.checkout-item {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  margin: 20px 10px;
+}
+
+.checkout-item-thumb {
+  width: 40px;
+  margin-right: 10px;
+}
+
+.checkout-item-name {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  width: 30%;
+}
+
+.checkout-item-choose {
+  color: #aaa;
+  margin-left: 10px;
+  width: calc(14% - 10px);
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+}
+
+.checkout-item-unitprice {
+  width: 17.5%;
+  text-align: center;
+}
+
+.checkout-item-quantity {
+  width: 14%;
+  text-align: center;
+}
+
+.checkout-item-totalprice {
+  width: 18%;
+  text-align: center;
+}
+
+.checkout-block {
+  background: white;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  padding: 20px;
+  margin-bottom: 15px;
+}
