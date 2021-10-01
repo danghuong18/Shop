@@ -12,7 +12,7 @@ function getList(limit, page, isLoadPagination = false){
                 <li class="main-body__container__item" id="item-${data.data[x]._id}">
                 <input type="checkbox" class="checkbox-item" value="${data.data[x]._id}">
                 <div class="body-item">
-                    <a href="#" class="body-item__title one-line">
+                    <a href="/brand-view/${data.data[x]._id}" class="body-item__title one-line" target="_blank">
                         <span><img src="${data.data[x].logo}" alt="Logo ${data.data[x].brandName}"></span>
                         <label>${data.data[x].brandName}</label>
                     </a>
@@ -216,6 +216,12 @@ function action(action="create", item_id=null){
 
 $(document).ready(()=>{
     reloadData(true);
+    let split_link = (document.URL).split("#");
+    if(split_link.length == 2){
+        if(split_link[1]){
+            $("#" + split_link[1]).click();
+        }
+    }
 });
 
 $(".action__task").on("change", function(){

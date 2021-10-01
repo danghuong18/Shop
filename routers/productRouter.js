@@ -1,3 +1,4 @@
+const mongoose = require('../model/dbConnect');
 const router = require("express").Router();
 const ProductCodeModel = require("../model/productCodeModel");
 const ProductModel = require("../model/productModel");
@@ -67,6 +68,8 @@ router.get("/", checkLogin, async (req, res) => {
         sortby = { createDate: -1 };
       } else if (sort == "date-asc") {
         sortby = { createDate: 1 };
+      }else{
+        sortby = {createDate: -1};
       }
 
       let products = await ProductCodeModel.find({})
@@ -100,6 +103,187 @@ router.get("/", checkLogin, async (req, res) => {
   }
 });
 
+router.get("/showProduct", async (req, res) => {
+  try {
+    let sort = req.query.sort;
+    let limit = (req.query.limit? req.query.limit: 1) * 1;
+    let skip = ((req.query.page? req.query.page: 1) - 1) * limit;
+    let from_price = req.query.from * 1;
+    let to_price = req.query.to * 1;
+    let sortPrice = req.query.sortPrice;
+
+    let q = req.query.q;
+    let category = req.query.category;
+    let brand = req.query.brand;
+    let similar_query = req.query.similar;
+
+    let pages = 1;
+    let sortby = {};
+    let price_range = {};
+    let query = {};
+    let categories = {};
+    let brands = {};
+    let similar = {};
+
+    if (sortPrice == "price-desc") {
+      sortby.min = -1;
+    } else if (sortPrice == "price-asc") {
+      sortby.min = 1 ;
+    }
+
+    if (sort == "date-asc") {
+      sortby.createDate = 1;
+    } else {
+      sortby.createDate = -1;
+    }
+
+    if((from_price || from_price == 0)&& to_price && !isNaN(from_price) && !isNaN(to_price)){
+      if(to_price >= from_price){
+        price_range = 
+        {
+          $or: [
+            {
+              $and: [
+                { min: {$gte : from_price}},
+                { min: {$lte : to_price}}
+              ]
+            },
+            {
+              $and: [
+                { max: {$gte : from_price}},
+                { max: {$lte : to_price}}
+              ]
+            },
+            {
+              $and: [
+                { min: {$lt : from_price}},
+                { max: {$gt : to_price}}
+              ]
+            }
+          ]
+        };
+      }
+    }
+
+    if(category) {
+      let category_array = (category.split(",")).map(s => mongoose.Types.ObjectId(s));
+      categories = {categoryID: {$in: category_array}};
+    }
+
+    if(brand) {
+      let brand_array = (brand.split(",")).map(s => mongoose.Types.ObjectId(s));
+      brands = {brand: {$in: brand_array}};
+    }
+
+    if(similar_query){
+      let product = await ProductCodeModel.findOne({_id: similar_query});
+      if(product){
+        q = product.productName;
+        similar = {$and: [
+          {_id: {$ne: mongoose.Types.ObjectId(similar_query)}},
+          {categoryID: {$in: product.categoryID}}
+        ]};
+      }
+    }
+
+    if(q) {
+      query = {$text: {$search: q}};
+    }
+
+    let products = await ProductCodeModel.aggregate([
+      {
+        $match: query
+      },
+      {
+        $match: similar
+      },
+      { $lookup: {
+        from: "product",
+        foreignField: "_id",
+        localField: "productID",
+        as: "productID"
+      }},
+      {
+        $project: {
+          _id: 1,
+          productName: 1,
+          listImg: 1,
+          productID: 1, 
+          categoryID: 1,
+          brand: 1,
+          min: {$min: "$productID.price"},
+          max: {$max: "$productID.price"},
+          createDate: 1,
+        }
+      },
+      {
+        $match: {
+          $and: [
+            categories,
+            brands,
+            price_range
+          ]
+        }
+      },
+      {
+        $sort: sortby
+      },
+      {
+        $group: {
+          _id: null,
+          total: {
+            $sum: 1,
+          },
+          root: {
+            $push: "$$ROOT",
+          },
+        },
+      },
+      {
+        $unwind: {
+          path: "$root",
+        },
+      },
+      { $skip: skip },
+      { $limit: limit },
+      {$group: {
+        _id: null,
+        total: { $first: "$total" },
+        root: {$push: "$root"}
+      }}
+    ]);
+
+    if (products.length > 0) {
+      if(products[0].root) {
+        let all_products = products[0].total;
+        if (all_products > 0) {
+          pages = Math.ceil(all_products / limit);
+        }
+  
+        res.json({
+          message: "Succcessed",
+          status: 200,
+          data: products[0].root,
+          pages: pages,
+          total: products[0].total
+        });
+      }else{
+        res.json({
+          message: "Không có sản phẩm nào để hiển thị cả.",
+          status: 400,
+        });
+      }
+    } else {
+      res.json({
+        message: "Không có sản phẩm nào để hiển thị cả.",
+        status: 400,
+      });
+    }
+  } catch (error) {
+    res.json({ message: "Server error!", status: 500 });
+  }
+});
+
 router.get("/item", checkLogin, async (req, res) => {
   if (req.login_info.role === "admin") {
     try {
@@ -122,7 +306,10 @@ router.get("/item", checkLogin, async (req, res) => {
         sortby = { createDate: -1 };
       } else if (sort == "date-asc") {
         sortby = { createDate: 1 };
+      }else{
+        sortby = {createDate: -1};
       }
+
       let product = await ProductCodeModel.findOne({ _id: id }).populate(
         "productID",
         null,
@@ -602,6 +789,7 @@ router.post("/delete-product-item", checkLogin, async (req, res) => {
     try {
       let product_id = req.body.product_id;
       let list_item = req.body["list_item[]"];
+      console.log(list_item);
       let list_file = await GetListFile(list_item);
       let update_product = await ProductCodeModel.updateOne(
         { _id: product_id },

@@ -26,7 +26,7 @@ body {
 .header {
   margin-left: 25rem;
   background-color: #fff;
-  transition: margin-left 0.2s;
+  transition: all 0.2s;
   position: fixed;
   left: 0;
   right: 0;
@@ -44,7 +44,7 @@ body {
 }
 .header__item {
   position: relative;
-  padding: 2rem;
+  padding: 1rem;
   height: 5rem;
   width: 10%;
   font-size: 1.4rem;
@@ -176,6 +176,7 @@ body {
   height: 3rem;
   overflow: hidden;
   border-radius: 100%;
+  border: 1px solid #fe5e3a;
 }
 .header__item-profile .avatar img {
   width: 100%;
@@ -189,6 +190,7 @@ body {
 }
 .header__input {
   width: 100%;
+  height: 100%;
   flex-grow: 1;
   border: 0;
   outline: none;
@@ -210,7 +212,7 @@ body {
   background-color: #4c4743;
   color: #afb0ab;
   z-index: 1;
-  transition: width 0.2s;
+  transition: all 0.2s;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -225,7 +227,7 @@ body {
   background-color: #fe5e3a;
   color: #fff;
   z-index: 1;
-  transition: width 0.2s;
+  transition: all 0.2s;
   position: fixed;
   overflow: hidden;
 }
@@ -324,7 +326,7 @@ body {
   z-index: 1000;
   margin-top: 5rem;
   padding: 2rem;
-  transition: margin-left 0.2s;
+  transition: all 0.2s;
 }
 .main-body__statistic {
   margin-bottom: 2rem;
@@ -394,7 +396,7 @@ body {
 }
 .main-body__container__panel .split {
   width: calc(50% - 10px);
-  transition: width 0.2s;
+  transition: all 0.2s;
 }
 .main-body__container .form-group {
   margin-bottom: 1.5rem;
@@ -502,7 +504,7 @@ body {
   border: 2px solid #76c80e;
   margin-top: 0.5rem;
   margin-right: 0.5rem;
-  transition: border 0.2s;
+  transition: all 0.2s;
 }
 .main-body__container .form-group .product-images .product-images-item img {
   width: 100%;
@@ -523,7 +525,7 @@ body {
   position: absolute;
   right: 0;
   top: 0;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
 }
 .main-body__container .form-group .product-images .product-images-item:hover {
   border: 2px solid #fe5e3a;
@@ -593,6 +595,7 @@ body {
   justify-content: flex-start;
   flex-wrap: nowrap;
   flex-direction: row;
+  animation: opacity_animation 0.2s;
 }
 .main-body__container__item .checkbox-item {
   width: 5rem;
@@ -608,6 +611,9 @@ body {
   color: #4c4743;
   font-weight: 600;
   margin-bottom: 1rem;
+}
+.main-body__container__item .body-item__title label {
+  cursor: pointer;
 }
 .main-body__container__item .body-item__title.one-line {
   margin-bottom: 0;
@@ -1041,7 +1047,7 @@ body {
   margin-bottom: 2rem;
   background-color: #fff;
   box-shadow: 0 1px 1px #d8d8d8;
-  transition: width 0.2s;
+  transition: all 0.2s;
 }
 .main-body__split-100 {
   width: 100%;
@@ -1153,7 +1159,7 @@ body {
 }
 .main-body__split-body .hot-product-item-background:hover {
   opacity: 0.45;
-  transition: opacity 0.4s;
+  transition: all 0.4s;
 }
 .main-body__split-body .hot-product-item-nonbackground {
   position: absolute;
@@ -1166,7 +1172,7 @@ body {
 }
 .main-body__split-body .hot-product-item-nonbackground:hover {
   opacity: 0.45;
-  transition: opacity 0.4s;
+  transition: all 0.4s;
 }
 .main-body__split-body .hot-product-item-position {
   display: flex;
@@ -1383,7 +1389,8 @@ body {
   bottom: 0;
   outline: 0;
   z-index: 1100;
-  animation: opacity_animation 0.5s;
+  animation: opacity_animation 0.3s;
+  background-color: #000000bd;
 }
 .modal.open {
   display: block;
@@ -1502,20 +1509,6 @@ body {
 .modal__container__content .modal-footer .modal-button:hover {
   opacity: 0.7;
 }
-.modal-background {
-  display: none;
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  background-color: #000000;
-  opacity: 0.8;
-  z-index: 1000;
-}
-.modal-background.open {
-  display: block;
-}
 .modal-open {
   overflow: hidden;
 }
@@ -1544,7 +1537,7 @@ body {
   border-radius: 75px;
   transform: rotate(-10deg);
   margin-bottom: 5rem;
-  transition: color 0.2s, transform 0.5s;
+  transition: all 0.2s;
 }
 .not-found__header:hover {
   color: #4c4743;
@@ -1571,7 +1564,7 @@ body {
   font-size: 2rem;
   font-weight: 600;
   color: #4c4743;
-  transition: font-size 0.2s;
+  transition: all 0.2s;
 }
 .not-found__return-home:hover {
   font-size: 5rem;
@@ -1604,10 +1597,10 @@ table {
 
 .graph {
   margin-bottom: 1em;
-  font: normal 100%/150% arial, helvetica, sans-serif;
+  font: normal 100%/150% "Roboto";
 }
 .graph caption {
-  font: bold 150%/120% arial, helvetica, sans-serif;
+  font: bold 150%/120% "Roboto";
   padding-bottom: 0.33em;
 }
 .graph tbody th {
@@ -1617,7 +1610,7 @@ table {
 @supports (display: grid) {
   .graph {
     display: block;
-    width: 95%;
+    width: 99%;
     height: 200px;
   }
   .graph caption {
@@ -1630,10 +1623,10 @@ table {
     position: relative;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(2em, 1fr));
-    column-gap: 2.5%;
+    column-gap: 2%;
     align-items: end;
     height: 100%;
-    margin: 4em 0 1em 2.8em;
+    margin: 4em 0 1em 0.8em;
     padding: 0 1em;
     border-bottom: 1px dotted rgba(0, 0, 0, 0.5);
     background: repeating-linear-gradient(180deg, rgba(170, 170, 170, 0.7) 0, rgba(170, 170, 170, 0.7) 1px, transparent 1px, transparent 20%);
@@ -1654,10 +1647,10 @@ table {
   }
   .graph tbody:before, .graph tbody:after {
     position: absolute;
-    left: -3.2em;
-    width: 2.8em;
+    left: -1.2em;
+    width: 0.8em;
     text-align: right;
-    font: bold 80%/120% arial, helvetica, sans-serif;
+    font: bold 80%/120% "Roboto";
   }
   .graph tr {
     position: relative;
@@ -1676,7 +1669,7 @@ table {
     width: 100%;
     height: 100%;
     background: #fe5e3a;
-    transition: background 0.5s;
+    transition: all 0.5s;
     position: relative;
   }
   .graph td .tooltip {
@@ -1785,6 +1778,9 @@ table {
   .header__item {
     width: 25%;
   }
+  .header__item .dropdown-list {
+    width: calc(100% - 10px);
+  }
   .header__item-bars {
     display: flex;
   }
@@ -1799,7 +1795,6 @@ table {
     display: none;
   }
   .header__input {
-    margin-top: -0.5rem;
     display: none;
   }
   .header.toggled {
@@ -1872,6 +1867,24 @@ table {
   }
 }
 @media screen and (max-width: 479px) {
+  table {
+    font-size: 1.2rem;
+  }
+
+  .header__item {
+    padding: 0.5rem;
+  }
+
+  .main-body {
+    padding: 1rem;
+  }
+  .main-body__statistic__item {
+    margin-bottom: 1rem;
+  }
+  .main-body__container {
+    margin-bottom: 1rem;
+    padding: 1rem;
+  }
   .main-body__container__action {
     display: flex;
     align-items: center;
@@ -1934,12 +1947,18 @@ table {
     font-size: 1.6rem;
     -webkit-line-clamp: 3;
   }
+  .main-body__split-body {
+    padding: 1rem;
+  }
   .main-body__split-body .hot-product-item {
     width: 100%;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
   }
   .main-body__split-body .hot-product-item:last-child {
     margin-bottom: 0;
+  }
+  .main-body__split-100, .main-body__split-60, .main-body__split-40 {
+    margin-bottom: 1rem;
   }
 
   .pagination {
@@ -1964,6 +1983,11 @@ table {
     border-radius: 3.5rem;
     background: none;
     margin-bottom: 0;
+  }
+}
+@media screen and (max-width: 359px) {
+  table {
+    font-size: 1rem;
   }
 }
 @keyframes opacity_animation {

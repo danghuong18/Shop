@@ -99,14 +99,14 @@ $(".submit-button").on("click", async function(){
         let day = $(".day").val();
         let month = $(".month").val();
         let year = $(".year").val();
-        let dob = new Date(year + "-" + month + "-" + day);
+        let dob = new Date(year + "/" + month + "/" + day);
 
 
         if(dob.getDate() != day){
             let status = `Ngày tháng năm sinh bị sai, mời chọn lại.`;
             notification(".content", 400, status);
         }else if(fullName != "" && fullName != undefined && email != "" && email != undefined
-        && phone != "" && phone != undefined){
+        && validateEmail(email) && phone != "" && phone != undefined){
 
         var createForm = $("#profile-form");
         var formData = new FormData(createForm[0]);
@@ -128,6 +128,11 @@ $(".submit-button").on("click", async function(){
           }else{
             notification(".content", res.status, res.message);
           }
+        }else{
+            if(!validateEmail(email)){
+                let message = `Sai địa chỉ email mời chọn lại.`;
+                notification(".content", 400, message);
+            }
         }
     
     } catch (error) {
@@ -154,6 +159,7 @@ $(".add-address-button").on("click", async function(){
           
             if (res.status == 200) {
                 $('#add-address').slideUp();
+                $(".new-address").val("");
                 reloadAddress(res.data);
                 notification(".content", res.status, res.message);
             }else{
@@ -285,6 +291,8 @@ $(".avatar-profile .border-avatar img").on("load", function(){
 $(document).ready(()=>{
     let split_link = (document.URL).split("#");
     if(split_link.length == 2){
-        $("#" + split_link[1]).click();
+        if(split_link[1]){
+            $("#" + split_link[1]).click();
+        }
     }
 });
