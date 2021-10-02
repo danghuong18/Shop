@@ -985,7 +985,8 @@ header {
   border-color: transparent transparent var(--white-color) transparent;
 }
 .header__cart-no-cart-img {
-  width: 60%;
+  width: 100%;
+  padding: 1rem;
 }
 
 .header__cart-list--no-cart {
@@ -1013,6 +1014,7 @@ header {
   color: var(--text-color);
   padding-top: 12px;
   display: block;
+  text-align: center;
 }
 
 .header__cart-list--no-cart .header__cart-no-cart-img,

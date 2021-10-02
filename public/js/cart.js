@@ -32,35 +32,26 @@ $(document).ready(function () {
           total = total + data.data[i].price * data.data[i].quantity;
           $(".cart-item-container").prepend(`
                 <div class="cart-item ${i}" id="${data.data[i]._id}">
-                  <input type="checkbox" class="cart-checkbox cart-item-check" />
-                  <a
-                    href="/product/${data.data[i].productCodeID}"
-                  >
-                    <img src="${
-                      data.data[i].thumb
-                    }" alt="" class="cart-item-img" />
-                  </a>
-                  <div class="cart-item-title">
-                    <a
-                      href="/product/${data.data[i].productCodeID}"
-                      >${data.data[i].title}</a
-                    >
+                  <input type="checkbox" class="cart-checkbox cart-item-check"/>
+                  <div class="cart-item-content">
+                    <a href="/product/${data.data[i].productCodeID}" class="cart-item-img">
+                      <img src="${data.data[i].thumb}"/>
+                    </a>
+                    <div class="cart-item-detail">
+                      <span class="cart-item-title">
+                        <a href="/product/${data.data[i].productCodeID}">${data.data[i].title}</a>
+                      </span>
+                      <span class="cart-item-choose">
+                        Phân Loại Hàng: ${data.data[i].color} - ${data.data[i].size}
+                      </span>
+                    </div>
                   </div>
-                  <div class="cart-item-choose">
-                    Phân Loại Hàng: <br />
-                    ${data.data[i].color} - ${data.data[i].size}
-                  </div>
-                  <div class="cart-item-price">₫${data.data[i].price}</div>
+                  <div class="cart-item-price">${(data.data[i].price).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'})}</div>
                   <div class="cart-item-quantity">
-                    <input
-                      type="number"
-                      class="cart-item-quantity-input"
-                      value="${data.data[i].quantity}"
-                      old="${data.data[i].quantity}"
-                    />
+                    <input type="number" class="cart-item-quantity-input" value="${data.data[i].quantity}" old="${data.data[i].quantity}"/>
                   </div>
                   <div class="cart-item-total-price">
-                    ₫${data.data[i].price * data.data[i].quantity}
+                    ${(data.data[i].price * data.data[i].quantity).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'})}
                   </div>
                   <div class="cart-item-action">Xóa</div>
                 </div>    
@@ -82,7 +73,7 @@ $(document).on("change", ".cart-item-quantity-input", function () {
   let productID = $(this).parent().parent().attr("id");
   let newQuantity = parseInt($(this).val());
   let price = parseInt(
-    $(this).parent().parent().children(".cart-item-price").text().split("₫")[1]
+    $(this).parent().parent().children(".cart-item-price").text().replace(/[^0-9.-]+/g,"").replaceAll(".", "")
   );
   let thisEle = $(this);
   oldQuantity = parseInt(thisEle.attr("old"));
@@ -90,6 +81,7 @@ $(document).on("change", ".cart-item-quantity-input", function () {
     .parent()
     .parent()
     .children(".cart-item-total-price");
+    console.log(newQuantity, oldQuantity);
   if (newQuantity - oldQuantity == 0) {
     $.ajax({
       url: "/user/cart/delete",
@@ -99,6 +91,7 @@ $(document).on("change", ".cart-item-quantity-input", function () {
       },
     })
       .then(function (data) {
+        loadCart();
         toastr[data.toastr](data.mess);
         thisEle.parent().parent().remove();
       })
@@ -116,8 +109,10 @@ $(document).on("change", ".cart-item-quantity-input", function () {
     })
       .then(function (data) {
         toastr[data.toastr](data.mess[1]);
-        totalPriceEle.text("₫" + price * newQuantity);
-        if (data.status == 400) {
+        if(data.status == 200){
+          loadCart();
+          totalPriceEle.text((price * newQuantity).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'}));
+        }else if (data.status == 400) {
           thisEle.val(oldQuantity);
         }
         thisEle.attr("old", parseInt(thisEle.val()));
@@ -147,6 +142,7 @@ $(document).on("click", ".cart-item-action", function () {
     },
   })
     .then(function (data) {
+      loadCart();
       toastr[data.toastr](data.mess);
       parentEle.remove();
     })
