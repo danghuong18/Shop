@@ -24,10 +24,12 @@ $(document).ready(function () {
     type: "POST",
   })
     .then(function (data) {
+      let total = 0;
       if (data.logged_in == false) {
         window.location.href = "/user/login";
       } else {
         for (let i = 0; i < data.data.length; i++) {
+          total = total + data.data[i].price * data.data[i].quantity;
           $(".cart-item-container").prepend(`
                 <div class="cart-item ${i}" id="${data.data[i]._id}">
                   <input type="checkbox" class="cart-checkbox cart-item-check" />
@@ -63,6 +65,11 @@ $(document).ready(function () {
                   <div class="cart-item-action">Xóa</div>
                 </div>    
                 `);
+          $(".cart-total-quantity").text(
+            "Tổng thanh toán (" + (i + 1) + " sản phẩm)"
+          );
+          console.log(total);
+          $(".cart-total-price").text("₫" + total);
         }
       }
     })
@@ -148,17 +155,48 @@ $(document).on("click", ".cart-item-action", function () {
     });
 });
 
+// $(".cart-delete").on("click", function () {
+//   let delete = "";
+//   for (let i = 0; i <$(".cart-item").length; i++){
+//     delete = $(".cart-item."+i).attr("id");
+//     $.ajax({
+//       url: "/user/cart/delete",
+//       type: "DELETE",
+//       data: {
+//         productID: parentEle.attr("id"),
+//       },
+//     })
+//       .then(function (data) {
+//         toastr[data.toastr](data.mess);
+//         parentEle.remove();
+//       })
+//       .catch(function (err) {
+//         toastr[err.toastr](err.mess);
+//       });
+//   }
+// });
+
 //buy
 $(".cart-buy").on("click", function () {
   let data = [];
   for (let i = 0; i < $(".cart-item").length; i++) {
-    data.push($(".cart-item." + i).attr("id"));
+    if (
+      $(".cart-item." + i)
+        .children(".cart-checkbox")
+        .prop("checked") == true
+    ) {
+      data.push($(".cart-item." + i).attr("id"));
+    }
   }
   $.ajax({
     url: "/user/addcheckout",
     type: "POST",
     data: { addcheckout: data },
-  }).then(function (data) {
-    console.log(data);
-  });
+  })
+    .then(function (data) {
+      window.location.href = "/user/checkout";
+    })
+    .catch(function (err) {
+      toastr[err.toastr](err.mess);
+    });
 });
