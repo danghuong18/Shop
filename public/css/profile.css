@@ -1288,6 +1288,12 @@ ol, ul {
   border: 1px solid #fc5837;
 }
 
+@media screen and (max-width: 1219px) {
+  .container.profile {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+}
 @media screen and (max-width: 1199px) {
   .container.slider {
     padding: 0;

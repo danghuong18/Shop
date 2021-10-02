@@ -257,9 +257,10 @@ button:hover {
   display: none;
 }
 
-@media screen and (max-width: 1209px) {
+@media screen and (max-width: 1219px) {
   .container {
-    margin: 0 1rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
   }
 }
 
