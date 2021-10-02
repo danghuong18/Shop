@@ -684,7 +684,7 @@ body {
             padding: 1rem;
             margin-bottom: 1rem;
             position: relative;
-            @include flex(center, flex-start);
+            @include flex(center, space-between);
             animation: opacity_animation 0.2s;
 
             .checkbox-item {
@@ -693,6 +693,7 @@ body {
 
             .body-item {
                 @include flex(center, flex-start, wrap);
+                width: calc(100% - 6rem);
 
                 &__title {
                     // width: 100%;
@@ -773,7 +774,7 @@ body {
                     width: 100%;
                     &-image {
                         .list-image {
-                            @include flex(center, flex-start);
+                            @include flex(center, flex-start, wrap);
                         }
 
                         .item-image {
@@ -783,6 +784,7 @@ body {
                             overflow: hidden;
                             border: 1px solid $shadow_color;
                             margin-right: 0.5rem;
+                            margin-bottom: 0.5rem;
                             img {
                                 width: 100%;
                             }
@@ -1349,7 +1351,7 @@ body {
 .pagination {
     @include flex(center, flex-start);
     &__list {
-        @include flex(center, flex-start);
+        @include flex(center, flex-start, wrap);
     }
 
     &__item {
@@ -2151,10 +2153,26 @@ table {
             }
 
             &__item {
+                .checkbox-item {
+                    width: 2rem;
+                }
+                
                 .body-item {
+                    width: calc(100% - 3rem);
                     &__width-70,
                     &__width-30 {
                         width: 100%;
+                    }
+
+                    &__details {
+                        &-size,
+                        &-color,
+                        &-amount,
+                        &-category,
+                        &-brand {
+                            height: 1.5rem;
+                            font-size: 1.4rem;
+                        }
                     }
                 }
 
