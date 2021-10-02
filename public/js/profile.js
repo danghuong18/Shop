@@ -477,6 +477,8 @@ $(".sidebar__item").on("click", function(){
         $("#password-form").hide();
         $("#order-form").hide();
         $("#" + id + "-form").show();
+
+        history.pushState(null, "", "?tab=" + id);
     }
 });
 

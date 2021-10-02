@@ -112,31 +112,38 @@ router.get("/", checkLogin, async (req, res) => {
 
 router.get("/login", getUserInfo, (req, res) => {
   res.render("pages/login", {
-    login_info: req.login_info,
+    login_info: req.login_info
   });
 });
 
 router.get("/logon", getUserInfo, (req, res) => {
-  res.render("pages/logon", { login_info: req.login_info });
+  res.render("pages/logon", {
+    login_info: req.login_info
+  });
 });
 
 router.get("/profile", getUserInfo, (req, res) => {
   if (req.login_info) {
-    res.render("pages/profile", { login_info: req.login_info });
+    res.render("pages/profile", {
+      login_info: req.login_info ,
+      tab: req.query.tab
+    });
   } else {
-    res.render("pages/login", { login_info: req.login_info });
+    res.render("pages/login", {
+      login_info: req.login_info
+    });
   }
 });
 
 router.get("/cart", getUserInfo, (req, res) => {
   res.render("pages/cart", {
-    login_info: req.login_info,
+    login_info: req.login_info
   });
 });
 
 router.get("/checkout", getUserInfo, (req, res) => {
   res.render("pages/checkout", {
-    login_info: req.login_info,
+    login_info: req.login_info
   });
 });
 

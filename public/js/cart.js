@@ -30,35 +30,26 @@ $(document).ready(function () {
         for (let i = 0; i < data.data.length; i++) {
           $(".cart-item-container").prepend(`
                 <div class="cart-item ${i}" id="${data.data[i]._id}">
-                  <input type="checkbox" class="cart-checkbox cart-item-check" />
-                  <a
-                    href="/product/${data.data[i].productCodeID}"
-                  >
-                    <img src="${
-                      data.data[i].thumb
-                    }" alt="" class="cart-item-img" />
-                  </a>
-                  <div class="cart-item-title">
-                    <a
-                      href="/product/${data.data[i].productCodeID}"
-                      >${data.data[i].title}</a
-                    >
+                  <input type="checkbox" class="cart-checkbox cart-item-check"/>
+                  <div class="cart-item-content">
+                    <a href="/product/${data.data[i].productCodeID}" class="cart-item-img">
+                      <img src="${data.data[i].thumb}"/>
+                    </a>
+                    <div class="cart-item-detail">
+                      <span class="cart-item-title">
+                        <a href="/product/${data.data[i].productCodeID}">${data.data[i].title}</a>
+                      </span>
+                      <span class="cart-item-choose">
+                        Phân Loại Hàng: ${data.data[i].color} - ${data.data[i].size}
+                      </span>
+                    </div>
                   </div>
-                  <div class="cart-item-choose">
-                    Phân Loại Hàng: <br />
-                    ${data.data[i].color} - ${data.data[i].size}
-                  </div>
-                  <div class="cart-item-price">₫${data.data[i].price}</div>
+                  <div class="cart-item-price">${(data.data[i].price).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'})}</div>
                   <div class="cart-item-quantity">
-                    <input
-                      type="number"
-                      class="cart-item-quantity-input"
-                      value="${data.data[i].quantity}"
-                      old="${data.data[i].quantity}"
-                    />
+                    <input type="number" class="cart-item-quantity-input" value="${data.data[i].quantity}" old="${data.data[i].quantity}"/>
                   </div>
                   <div class="cart-item-total-price">
-                    ₫${data.data[i].price * data.data[i].quantity}
+                    ${(data.data[i].price * data.data[i].quantity).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'})}
                   </div>
                   <div class="cart-item-action">Xóa</div>
                 </div>    
