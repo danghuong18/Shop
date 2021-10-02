@@ -43,3 +43,13 @@ $("#access-cpanel").on("click", function(){
         }
     });
 });
+
+$(window).on("resize", function(){
+    $(".login").css({"margin-top": $(this).height()/2 - $(".login").height()/2});
+    $(".notice-login").css({"margin-top": $(this).height()/2 - $(".notice-login").height()/2});
+});
+
+$(document).ready(()=>{
+    $(".login").css({"margin-top": $(this).height()/2 - $(".login").height()/2});
+    $(".notice-login").css({"margin-top": $(this).height()/2 - $(".notice-login").height()/2});
+});

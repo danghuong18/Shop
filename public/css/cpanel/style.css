@@ -1772,6 +1772,10 @@ table {
   }
 }
 @media screen and (max-width: 767px) {
+  .notice-login {
+    width: 90%;
+  }
+
   .header {
     margin-left: 0;
   }
@@ -1869,6 +1873,10 @@ table {
 @media screen and (max-width: 479px) {
   table {
     font-size: 1.2rem;
+  }
+
+  .login {
+    width: 90%;
   }
 
   .header__item {

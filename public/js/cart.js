@@ -74,6 +74,7 @@ $(document).on("change", ".cart-item-quantity-input", function () {
     .parent()
     .parent()
     .children(".cart-item-total-price");
+    console.log(newQuantity, oldQuantity);
   if (newQuantity - oldQuantity == 0) {
     $.ajax({
       url: "/user/cart/delete",
@@ -100,10 +101,11 @@ $(document).on("change", ".cart-item-quantity-input", function () {
       },
     })
       .then(function (data) {
-        loadCart();
         toastr[data.toastr](data.mess[1]);
-        totalPriceEle.text((price * newQuantity).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'}));
-        if (data.status == 400) {
+        if(data.status == 200){
+          loadCart();
+          totalPriceEle.text((price * newQuantity).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'}));
+        }else if (data.status == 400) {
           thisEle.val(oldQuantity);
         }
         thisEle.attr("old", parseInt(thisEle.val()));
