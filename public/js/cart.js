@@ -83,6 +83,7 @@ $(document).on("change", ".cart-item-quantity-input", function () {
       },
     })
       .then(function (data) {
+        loadCart();
         toastr[data.toastr](data.mess);
         thisEle.parent().parent().remove();
       })
@@ -99,6 +100,7 @@ $(document).on("change", ".cart-item-quantity-input", function () {
       },
     })
       .then(function (data) {
+        loadCart();
         toastr[data.toastr](data.mess[1]);
         totalPriceEle.text("₫" + price * newQuantity);
         if (data.status == 400) {
@@ -131,6 +133,7 @@ $(document).on("click", ".cart-item-action", function () {
     },
   })
     .then(function (data) {
+      loadCart();
       toastr[data.toastr](data.mess);
       parentEle.remove();
     })

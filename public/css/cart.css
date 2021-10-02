@@ -286,6 +286,10 @@
   .cart-item-detail {
     width: calc(100% - 5.5rem);
   }
+
+  .cart-select-zone-5 {
+    font-size: 14px;
+  }
 }
 
 @media screen and (max-width: 479px) {

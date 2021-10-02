@@ -12,9 +12,7 @@
 	.header__cart-list{
 		position: fixed;
 		top: calc(var(--header-height) - 9px);
-		width: 100%;
-		padding: 0 calc((100% - 644px) / 2);
-		left: 0;
+		right: 10px;
 	}
 
 	.header {
@@ -123,5 +121,7 @@
 	}
 	.header__cart-list {
     	top: calc(var(--header-height) - 12px);
+		width: 100%;
+		left: 0;
 	}
 }
