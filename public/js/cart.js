@@ -66,7 +66,7 @@ $(document).on("change", ".cart-item-quantity-input", function () {
   let productID = $(this).parent().parent().attr("id");
   let newQuantity = parseInt($(this).val());
   let price = parseInt(
-    $(this).parent().parent().children(".cart-item-price").text().split("₫")[1]
+    $(this).parent().parent().children(".cart-item-price").text().replace(/[^0-9.-]+/g,"").replaceAll(".", "")
   );
   let thisEle = $(this);
   oldQuantity = parseInt(thisEle.attr("old"));
@@ -102,7 +102,7 @@ $(document).on("change", ".cart-item-quantity-input", function () {
       .then(function (data) {
         loadCart();
         toastr[data.toastr](data.mess[1]);
-        totalPriceEle.text("₫" + price * newQuantity);
+        totalPriceEle.text((price * newQuantity).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'}));
         if (data.status == 400) {
           thisEle.val(oldQuantity);
         }
