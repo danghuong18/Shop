@@ -133,7 +133,7 @@ body {
                 }
 
                 &__body {
-                    @include flex(center, flex-start);
+                    @include flex(center, space-between);
                     cursor: pointer;
                 }
 
@@ -142,7 +142,6 @@ body {
                     width: 3.5rem;
                     height: 3.5rem;
                     overflow: hidden;
-                    margin-right: 1rem;
 
                     img {
                         width: 100%;
@@ -201,6 +200,7 @@ body {
                         -webkit-box-orient: vertical;
                         -webkit-line-clamp: 2;
                         overflow: hidden;
+                        width: calc(100% - 4.5rem);
                     }
                 }
             }
@@ -2156,7 +2156,7 @@ table {
                 .checkbox-item {
                     width: 2rem;
                 }
-                
+
                 .body-item {
                     width: calc(100% - 3rem);
                     &__width-70,

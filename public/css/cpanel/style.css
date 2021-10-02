@@ -83,7 +83,7 @@ body {
 .header__item .dropdown-list .dropdown-item__body {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   flex-wrap: nowrap;
   flex-direction: row;
   cursor: pointer;
@@ -97,7 +97,6 @@ body {
   width: 3.5rem;
   height: 3.5rem;
   overflow: hidden;
-  margin-right: 1rem;
 }
 .header__item .dropdown-list .dropdown-item__image img {
   width: 100%;
@@ -147,6 +146,7 @@ body {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
+  width: calc(100% - 4.5rem);
 }
 .header__item-notification {
   cursor: pointer;
