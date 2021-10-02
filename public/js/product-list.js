@@ -161,7 +161,7 @@ function loadQueryProduct(page, isCategory = false, isBrand = false){
     if(page && !isNaN(page)){
         if(!isNaN(page)){
             query += `&page=` + page;
-            if(page > 1){
+            if(page > 1 || category_query.length <= 2){
                 category_query +=  `&page=` + page;
             }
         }

@@ -283,53 +283,50 @@ $.ajax({
     }
   });
 
-  //output related items
-  let category;
-  for (let i = 0; i < data.data.categoryID.length; i++) {
-    category = data.data.categoryID[i]._id + "-";
-  }
   $.ajax({
-    type: "POST",
-    url: "/product/related/" + category,
+    type: "GET",
+    url: "/product/showProduct?limit=12&similar=" + id,
   })
     .then(function (data) {
-      console.log(data);
-      for (let i = 0; i < data.data.length; i++) {
-        let append = `
-      <a href="/product/${data.data[i]._id}" class="owl-carousel-item">
-        <div class="carousel-item-product">
-          <img src="${data.data[i].listImg[0]}" alt="" class="carousel-item-img"/>
-        </div>
-        <div class="carousel-content-container">
-          <span class="carousel-title">${data.data[i].productName}</span>
-          <div class="carousel-price">${(data.data[i].productID[0].price).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'})}</div>
-        </div>
-      </a>
-      `;
-        $(".owl-two").append(append);
+      if(data.status == 200){
+        for (let i = 0; i < data.data.length; i++) {
+          let price = (data.data[i].min)? ((data.data[i].min != data.data[i].max)? `${(data.data[i].min).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'})} - ${(data.data[i].max).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'})}`: (data.data[i].min).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'})) : (0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'});
+          let append = `
+        <a href="/product/${data.data[i]._id}" class="owl-carousel-item">
+          <div class="carousel-item-product">
+            <img src="${data.data[i].listImg[0]}" alt="" class="carousel-item-img"/>
+          </div>
+          <div class="carousel-content-container">
+            <span class="carousel-title">${data.data[i].productName}</span>
+            <div class="carousel-price">${price}</div>
+          </div>
+        </a>
+        `;
+          $(".owl-two").append(append);
+        }
+        $(".owl-two").owlCarousel({
+          loop: true,
+          margin: 10,
+          nav: true,
+          responsive: {
+            0: {
+              items: 1,
+            },
+            360: {
+              items: 2,
+            },
+            780: {
+              items: 3,
+            },
+            1024: {
+              items: 4,
+            },
+            1200: {
+              items: 6,
+            },
+          },
+        });
       }
-      $(".owl-two").owlCarousel({
-        loop: true,
-        margin: 10,
-        nav: true,
-        responsive: {
-          0: {
-            items: 1,
-          },
-          360: {
-            items: 2,
-          },
-          780: {
-            items: 3,
-          },
-          1024: {
-            items: 4,
-          },
-          1200: {
-            items: 6,
-          },
-        },
-      });
     })
     .catch(function (err) {
       toastr["error"]("Đã xảy ra lỗi, vui lòng thử lại");
