@@ -278,28 +278,36 @@ router.post("/create", checkLogin, async (req, res) => {
         quantity: orderProductInfo.listProduct[i].quantity,
       });
     }
-    let data = await OrderModel.create({
-      listProduct: listProduct,
-      userID: req.login_info._id,
-      address: req.body.address,
-      phone: req.login_info.phone,
-      price: totalPrice,
-      createDate: new Date(),
-    });
-    orderProductInfo = await CartModel.updateOne(
-      {
-        _id: req.login_info.cartID,
-      },
-      {
-        $pull: { listProduct: { selected: 1 } },
-      }
-    );
-    res.json({
-      mess: "Tạo đơn hàng thành công",
-      status: 200,
-      data: data,
-      toastr: "success",
-    });
+    if (req.body.address == false) {
+      res.json({
+        mess: "Vui lòng chọn địa chỉ",
+        status: 400,
+        toastr: "warning",
+      });
+    } else {
+      let data = await OrderModel.create({
+        listProduct: listProduct,
+        userID: req.login_info._id,
+        address: req.body.address,
+        phone: req.login_info.phone,
+        price: totalPrice,
+        createDate: new Date(),
+      });
+      orderProductInfo = await CartModel.updateOne(
+        {
+          _id: req.login_info.cartID,
+        },
+        {
+          $pull: { listProduct: { selected: 1 } },
+        }
+      );
+      res.json({
+        mess: "Tạo đơn hàng thành công",
+        status: 200,
+        data: data,
+        toastr: "success",
+      });
+    }
   } catch (err) {
     console.log(err);
     res.json({

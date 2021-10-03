@@ -123,9 +123,11 @@ $(".buy-btn").on("click", function () {
   })
     .then(function (data) {
       toastr[data.toastr](data.mess);
-      setTimeout(function () {
-        window.location.href = "/user/profile?tab=order";
-      }, 2000);
+      if (data.status == 200) {
+        setTimeout(function () {
+          window.location.href = "/user/profile?tab=order";
+        }, 2000);
+      }
     })
     .catch(function (err) {
       toastr[err.toastr](err.mess);
