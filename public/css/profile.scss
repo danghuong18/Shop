@@ -1324,9 +1324,12 @@ ol, ul {
 
 @media screen and (max-width: 1219px) {
     .container {
-        &.profile {
-            margin-left: 1rem;
-            margin-right: 1rem;
+        margin-left: 1rem;
+        margin-right: 1rem;
+        &.slider,
+        &.shop {
+            margin-left: 0;
+            margin-right: 0;
         }
     }
 }
