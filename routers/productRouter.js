@@ -197,17 +197,17 @@ router.get("/showProduct", async (req, res) => {
 
     let products = await ProductCodeModel.aggregate([
       {
-        $match: query,
+        $match: query
       },
       {
-        $match: similar,
+        $match: similar
       },
       {
         $lookup: {
           from: "product",
           foreignField: "_id",
           localField: "productID",
-          as: "productID",
+          as: "productID"
         },
       },
       {
@@ -220,31 +220,31 @@ router.get("/showProduct", async (req, res) => {
           brand: 1,
           min: { $min: "$productID.price" },
           max: { $max: "$productID.price" },
-          createDate: 1,
+          createDate: 1
         },
       },
       {
         $match: {
-          $and: [categories, brands, price_range],
+          $and: [categories, brands, price_range]
         },
       },
       {
-        $sort: sortby,
+        $sort: sortby
       },
       {
         $group: {
           _id: null,
           total: {
-            $sum: 1,
+            $sum: 1
           },
           root: {
-            $push: "$$ROOT",
+            $push: "$$ROOT"
           },
         },
       },
       {
         $unwind: {
-          path: "$root",
+          path: "$root"
         },
       },
       { $skip: skip },
@@ -253,7 +253,7 @@ router.get("/showProduct", async (req, res) => {
         $group: {
           _id: null,
           total: { $first: "$total" },
-          root: { $push: "$root" },
+          root: { $push: "$root" }
         },
       },
     ]);
@@ -270,18 +270,18 @@ router.get("/showProduct", async (req, res) => {
           status: 200,
           data: products[0].root,
           pages: pages,
-          total: products[0].total,
+          total: products[0].total
         });
       } else {
         res.json({
           message: "Không có sản phẩm nào để hiển thị cả.",
-          status: 400,
+          status: 400
         });
       }
     } else {
       res.json({
         message: "Không có sản phẩm nào để hiển thị cả.",
-        status: 400,
+        status: 400
       });
     }
   } catch (error) {
@@ -333,12 +333,12 @@ router.get("/item", checkLogin, async (req, res) => {
             message: "Successed",
             status: 200,
             data: items,
-            pages: pages,
+            pages: pages
           });
         } else {
           res.json({
             message: "Không tìm thấy item sản phẩm nào cả.",
-            status: 400,
+            status: 400
           });
         }
       } else {
@@ -512,7 +512,7 @@ router.post("/create-product-item", checkLogin, async (req, res) => {
                 thumb: thumb,
                 productCode: product_id,
                 createDate: createDate,
-                updateDate: createDate,
+                updateDate: createDate
               });
 
               if (create) {
@@ -523,20 +523,20 @@ router.post("/create-product-item", checkLogin, async (req, res) => {
                 res.json({
                   message: "Đăng item sản phẩm thành công!",
                   status: 200,
-                  data: create._id,
+                  data: create._id
                 });
               } else {
                 DeleteFile([thumb]);
                 res.json({
                   message: "Không thể tạo item sản phẩm trên.",
-                  status: 400,
+                  status: 400
                 });
               }
             } else {
               DeleteFile([thumb]);
               res.json({
                 message: "Không tìm được sản phẩm để tạo item trên.",
-                status: 400,
+                status: 400
               });
             }
           } catch (error) {
@@ -544,13 +544,13 @@ router.post("/create-product-item", checkLogin, async (req, res) => {
             res.json({
               message: "Không tìm được sản phẩm để tạo item trên.",
               status: 400,
-              error,
+              error
             });
           }
         } else {
           res.json({
             message: "Lỗi upload hình, vui lòng thử lại.",
-            status: 400,
+            status: 400
           });
         }
       }
@@ -568,12 +568,12 @@ router.post("/edit", checkLogin, (req, res) => {
           res.json({
             message:
               "Hình tải lên không hỗ trợ, phải là file *.png, *.jpg, *.gif.",
-            status: 406,
+            status: 406
           });
         } else {
           res.json({
             message: "Lỗi trong quá trình upload hình ảnh.",
-            status: 400,
+            status: 400
           });
         }
       } else {
@@ -636,9 +636,9 @@ router.post("/edit", checkLogin, (req, res) => {
                 categoryID: list_category,
                 brand: brand,
                 description: description,
-                updateDate: updateDate,
+                updateDate: updateDate
               },
-              $push: { listImg: { $each: list_image } },
+              $push: { listImg: { $each: list_image } }
             },
             { returnOriginal: false }
           );
@@ -647,7 +647,7 @@ router.post("/edit", checkLogin, (req, res) => {
             res.json({
               message: "Update thông tin sản phẩm thành công!",
               status: 200,
-              data: edit,
+              data: edit
             });
           } else {
             if (req.files.length > 0) {
@@ -655,7 +655,7 @@ router.post("/edit", checkLogin, (req, res) => {
             }
             res.json({
               message: "Không thể update thông tin sản phẩm.",
-              status: 400,
+              status: 400
             });
           }
         } catch (error) {
@@ -679,12 +679,12 @@ router.post("/edit-product-item", checkLogin, async (req, res) => {
           res.json({
             message:
               "Hình ảnh tải lên không hỗ trợ, phải là file *.png, *.jpg, *.gif.",
-            status: 406,
+            status: 406
           });
         } else {
           res.json({
             message: "Lỗi trong quá trình upload hình ảnh.",
-            status: 400,
+            status: 400
           });
         }
       } else {
@@ -704,14 +704,14 @@ router.post("/edit-product-item", checkLogin, async (req, res) => {
               size: size,
               price: price,
               quantity: quantity,
-              thumb: thumb,
+              thumb: thumb
             };
           } else {
             set_data = {
               color: color,
               size: size,
               price: price,
-              quantity: quantity,
+              quantity: quantity
             };
           }
 
@@ -732,7 +732,7 @@ router.post("/edit-product-item", checkLogin, async (req, res) => {
             }
             res.json({
               message: "Sửa item sản phẩm không thành công.",
-              status: 400,
+              status: 400
             });
           }
         } catch (error) {
@@ -811,7 +811,7 @@ router.post("/delete-product-item", checkLogin, async (req, res) => {
       } else {
         res.json({
           message: "Quá trình xoá item sản phẩm xảy ra lỗi.",
-          status: 400,
+          status: 400
         });
       }
     } catch (error) {
@@ -835,12 +835,12 @@ router.post("/delete-image", checkLogin, async (req, res) => {
         DeleteFile([image_url]);
         res.json({
           message: "Xoá hình ảnh của sản phẩm thành công!",
-          status: 200,
+          status: 200
         });
       } else {
         res.json({
           message: "Không thể xoá hình ảnh của sản phẩm!",
-          status: 400,
+          status: 400
         });
       }
     } catch (error) {
@@ -855,13 +855,13 @@ router.get("/:id", getUserInfo, (req, res) => {
   try {
     res.render("pages/item-view", {
       id: req.params.id,
-      login_info: req.login_info,
+      login_info: req.login_info
     });
   } catch (err) {
     res.json({
       mess: "Đã xảy ra lỗi, vui lòng thử lại",
       status: 500,
-      err,
+      err
     });
   }
 });
@@ -877,7 +877,7 @@ router.post("/:productID", async (req, res) => {
     res.json({
       mess: "lay data thanh cong",
       data,
-      status: 200,
+      status: 200
     });
   } catch (err) {
     res.json({
@@ -902,14 +902,14 @@ router.post("/related/:categoryID", async (req, res) => {
     res.json({
       mess: "lay data thanh cong",
       data: data,
-      status: 200,
+      status: 200
     });
   } catch (err) {
     console.log(err);
     res.json({
       mess: "Đã xảy ra lỗi, vui lòng thử lại",
       err: "err",
-      status: 500,
+      status: 500
     });
   }
 });
