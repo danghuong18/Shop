@@ -1735,7 +1735,7 @@ table {
 .recent-order {
     td,
     th {
-        text-align: left;
+        text-align: center;
         padding: 1rem 0.5rem;
     }
 
@@ -1751,6 +1751,7 @@ table {
         padding: 0;
         overflow: hidden;
         font-weight: 600;
+        text-align: left;
     }
 }
 

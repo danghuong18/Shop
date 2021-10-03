@@ -1592,7 +1592,7 @@ table {
 
 .recent-order td,
 .recent-order th {
-  text-align: left;
+  text-align: center;
   padding: 1rem 0.5rem;
 }
 .recent-order th {
@@ -1606,6 +1606,7 @@ table {
   padding: 0;
   overflow: hidden;
   font-weight: 600;
+  text-align: left;
 }
 
 .graph {
