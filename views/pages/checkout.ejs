@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShopProject</title>
+    <title>Đặt hàng</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
     <link rel="stylesheet" href="/public/css/checkout.css"/>
     <%- include('../components/head'); %>
 </head>
@@ -40,12 +41,22 @@
             </div>
         </div>
         <div class="checkout-block">
-            <span class="block-title">Phương thức thanh toán</span>
-            <div class="border"></div>
+            <div class="checkout-line-1">
+                <span class="block-title checkout-block-title">Tổng tiền</span>
+                <div class=""></div>
+                <span class="checkout-block-total">0đ</span>
+            </div>
+            <div class="checkout-line-2">
+                <span class="checkout-block-dieukhoan-span">Nhấn "Đặt hàng" đồng nghĩa với việc bạn đồng ý tuân theo <a class="checkout-block-dieukhoan" href="#">Điều khoản C-Shop</a></span>
+                <div class=""></div>
+                <button class="buy-btn">Mua hàng</button>
+            </div>
         </div>
+        
     </main>
     <%- include('../components/footer'); %>
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="/public/js/checkout.js"></script>
 <%- include('../components/footer_js'); %>
 </html>

@@ -1,4 +1,4 @@
-const mongoose = require('../model/dbConnect');
+const mongoose = require("../model/dbConnect");
 const router = require("express").Router();
 const ProductCodeModel = require("../model/productCodeModel");
 const ProductModel = require("../model/productModel");
@@ -68,8 +68,8 @@ router.get("/", checkLogin, async (req, res) => {
         sortby = { createDate: -1 };
       } else if (sort == "date-asc") {
         sortby = { createDate: 1 };
-      }else{
-        sortby = {createDate: -1};
+      } else {
+        sortby = { createDate: -1 };
       }
 
       let products = await ProductCodeModel.find({})
@@ -106,8 +106,8 @@ router.get("/", checkLogin, async (req, res) => {
 router.get("/showProduct", async (req, res) => {
   try {
     let sort = req.query.sort;
-    let limit = (req.query.limit? req.query.limit: 1) * 1;
-    let skip = ((req.query.page? req.query.page: 1) - 1) * limit;
+    let limit = (req.query.limit ? req.query.limit : 1) * 1;
+    let skip = ((req.query.page ? req.query.page : 1) - 1) * limit;
     let from_price = req.query.from * 1;
     let to_price = req.query.to * 1;
     let sortPrice = req.query.sortPrice;
@@ -128,7 +128,7 @@ router.get("/showProduct", async (req, res) => {
     if (sortPrice == "price-desc") {
       sortby.min = -1;
     } else if (sortPrice == "price-asc") {
-      sortby.min = 1 ;
+      sortby.min = 1;
     }
 
     if (sort == "date-asc") {
@@ -137,96 +137,99 @@ router.get("/showProduct", async (req, res) => {
       sortby.createDate = -1;
     }
 
-    if((from_price || from_price == 0)&& to_price && !isNaN(from_price) && !isNaN(to_price)){
-      if(to_price >= from_price){
-        price_range = 
-        {
+    if (
+      (from_price || from_price == 0) &&
+      to_price &&
+      !isNaN(from_price) &&
+      !isNaN(to_price)
+    ) {
+      if (to_price >= from_price) {
+        price_range = {
           $or: [
             {
               $and: [
-                { min: {$gte : from_price}},
-                { min: {$lte : to_price}}
-              ]
+                { min: { $gte: from_price } },
+                { min: { $lte: to_price } },
+              ],
             },
             {
               $and: [
-                { max: {$gte : from_price}},
-                { max: {$lte : to_price}}
-              ]
+                { max: { $gte: from_price } },
+                { max: { $lte: to_price } },
+              ],
             },
             {
-              $and: [
-                { min: {$lt : from_price}},
-                { max: {$gt : to_price}}
-              ]
-            }
-          ]
+              $and: [{ min: { $lt: from_price } }, { max: { $gt: to_price } }],
+            },
+          ],
         };
       }
     }
 
-    if(category) {
-      let category_array = (category.split(",")).map(s => mongoose.Types.ObjectId(s));
-      categories = {categoryID: {$in: category_array}};
+    if (category) {
+      let category_array = category
+        .split(",")
+        .map((s) => mongoose.Types.ObjectId(s));
+      categories = { categoryID: { $in: category_array } };
     }
 
-    if(brand) {
-      let brand_array = (brand.split(",")).map(s => mongoose.Types.ObjectId(s));
-      brands = {brand: {$in: brand_array}};
+    if (brand) {
+      let brand_array = brand.split(",").map((s) => mongoose.Types.ObjectId(s));
+      brands = { brand: { $in: brand_array } };
     }
 
-    if(similar_query){
-      let product = await ProductCodeModel.findOne({_id: similar_query});
-      if(product){
+    if (similar_query) {
+      let product = await ProductCodeModel.findOne({ _id: similar_query });
+      if (product) {
         q = product.productName;
-        similar = {$and: [
-          {_id: {$ne: mongoose.Types.ObjectId(similar_query)}},
-          {categoryID: {$in: product.categoryID}}
-        ]};
+        similar = {
+          $and: [
+            { _id: { $ne: mongoose.Types.ObjectId(similar_query) } },
+            { categoryID: { $in: product.categoryID } },
+          ],
+        };
       }
     }
 
-    if(q) {
-      query = {$text: {$search: q}};
+    if (q) {
+      query = { $text: { $search: q } };
     }
 
     let products = await ProductCodeModel.aggregate([
       {
-        $match: query
+        $match: query,
       },
       {
-        $match: similar
+        $match: similar,
       },
-      { $lookup: {
-        from: "product",
-        foreignField: "_id",
-        localField: "productID",
-        as: "productID"
-      }},
+      {
+        $lookup: {
+          from: "product",
+          foreignField: "_id",
+          localField: "productID",
+          as: "productID",
+        },
+      },
       {
         $project: {
           _id: 1,
           productName: 1,
           listImg: 1,
-          productID: 1, 
+          productID: 1,
           categoryID: 1,
           brand: 1,
-          min: {$min: "$productID.price"},
-          max: {$max: "$productID.price"},
+          min: { $min: "$productID.price" },
+          max: { $max: "$productID.price" },
           createDate: 1,
-        }
+        },
       },
       {
         $match: {
-          $and: [
-            categories,
-            brands,
-            price_range
-          ]
-        }
+          $and: [categories, brands, price_range],
+        },
       },
       {
-        $sort: sortby
+        $sort: sortby,
       },
       {
         $group: {
@@ -246,28 +249,30 @@ router.get("/showProduct", async (req, res) => {
       },
       { $skip: skip },
       { $limit: limit },
-      {$group: {
-        _id: null,
-        total: { $first: "$total" },
-        root: {$push: "$root"}
-      }}
+      {
+        $group: {
+          _id: null,
+          total: { $first: "$total" },
+          root: { $push: "$root" },
+        },
+      },
     ]);
 
     if (products.length > 0) {
-      if(products[0].root) {
+      if (products[0].root) {
         let all_products = products[0].total;
         if (all_products > 0) {
           pages = Math.ceil(all_products / limit);
         }
-  
+
         res.json({
           message: "Succcessed",
           status: 200,
           data: products[0].root,
           pages: pages,
-          total: products[0].total
+          total: products[0].total,
         });
-      }else{
+      } else {
         res.json({
           message: "Không có sản phẩm nào để hiển thị cả.",
           status: 400,
@@ -306,8 +311,8 @@ router.get("/item", checkLogin, async (req, res) => {
         sortby = { createDate: -1 };
       } else if (sort == "date-asc") {
         sortby = { createDate: 1 };
-      }else{
-        sortby = {createDate: -1};
+      } else {
+        sortby = { createDate: -1 };
       }
 
       let product = await ProductCodeModel.findOne({ _id: id }).populate(
@@ -498,7 +503,7 @@ router.post("/create-product-item", checkLogin, async (req, res) => {
               let price = req.body.price;
               let quantity = req.body.quantity;
               let createDate = new Date();
-              
+
               let create = await ProductModel.create({
                 color: color,
                 size: size,
@@ -854,7 +859,7 @@ router.get("/:id", getUserInfo, (req, res) => {
     });
   } catch (err) {
     res.json({
-      mess: "loi server",
+      mess: "Đã xảy ra lỗi, vui lòng thử lại",
       status: 500,
       err,
     });
@@ -876,7 +881,7 @@ router.post("/:productID", async (req, res) => {
     });
   } catch (err) {
     res.json({
-      mess: "loi server",
+      mess: "Đã xảy ra lỗi, vui lòng thử lại",
       data: err,
       status: 500,
     });
@@ -902,7 +907,7 @@ router.post("/related/:categoryID", async (req, res) => {
   } catch (err) {
     console.log(err);
     res.json({
-      mess: "loi server",
+      mess: "Đã xảy ra lỗi, vui lòng thử lại",
       err: "err",
       status: 500,
     });

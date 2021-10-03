@@ -112,52 +112,53 @@ router.get("/", checkLogin, async (req, res) => {
 
 router.get("/login", getUserInfo, (req, res) => {
   res.render("pages/login", {
-    login_info: req.login_info
+    login_info: req.login_info,
   });
 });
 
 router.get("/logon", getUserInfo, (req, res) => {
   res.render("pages/logon", {
-    login_info: req.login_info
+    login_info: req.login_info,
   });
 });
 
 router.get("/profile", getUserInfo, (req, res) => {
   if (req.login_info) {
     res.render("pages/profile", {
-      login_info: req.login_info ,
-      tab: req.query.tab
+      login_info: req.login_info,
+      tab: req.query.tab,
     });
   } else {
     res.render("pages/login", {
-      login_info: req.login_info
+      login_info: req.login_info,
     });
   }
 });
 
 router.get("/cart", getUserInfo, (req, res) => {
   res.render("pages/cart", {
-    login_info: req.login_info
+    login_info: req.login_info,
   });
 });
 
 router.get("/checkout", getUserInfo, (req, res) => {
   res.render("pages/checkout", {
-    login_info: req.login_info
+    login_info: req.login_info,
   });
 });
 
-router.post("/getuserinfo", getUserInfo, (req, res) => {
+router.post("/getuserinfo", checkLogin, (req, res) => {
   res.json({
     status: 200,
     UserInfo: req.login_info,
-    mess: "Xóa sản phẩm thành công",
+    mess: "Lấy data thành công",
     toastr: "success",
   });
 });
 
 router.post("/addcart", checkLogin, async (req, res) => {
   try {
+    let oldItemQuantity;
     let token = req.cookies.cookie;
     let userID = jwt.verify(token, "thai").id;
     let productID = req.body.productID;
@@ -170,13 +171,21 @@ router.post("/addcart", checkLogin, async (req, res) => {
       _id: cartID,
       listProduct: { $elemMatch: { productID: productID } },
     });
-    if (quantity > left) {
+    if (oldItem) {
+      oldItemQuantity = oldItem.listProduct;
+      oldItemQuantity = oldItemQuantity.filter(function (a, b) {
+        if (a.productID == productID) {
+          return true;
+        }
+      });
+      oldItemQuantity = oldItemQuantity[0].quantity;
+    } else if (quantity > left) {
       res.json({
         status: 400,
         mess: ["Không đủ hàng", "Không đủ hàng, vui lòng nhập lại số lượng"],
         toastr: "error",
       });
-    } else if (quantity <= 0) {
+    } else if (quantity + oldItemQuantity > left) {
       res.json({
         status: 400,
         mess: [
@@ -185,14 +194,8 @@ router.post("/addcart", checkLogin, async (req, res) => {
         ],
         toastr: "warning",
       });
-    } else if (oldItem) {
-      let oldItemQuantity = oldItem.listProduct;
-      oldItemQuantity = oldItemQuantity.filter(function (a, b) {
-        if (a.productID == productID) {
-          return true;
-        }
-      });
-      oldItemQuantity = oldItemQuantity[0].quantity;
+    }
+    if (oldItem) {
       if (oldItemQuantity + quantity <= left) {
         let data = await CartModel.updateOne(
           {
@@ -203,6 +206,7 @@ router.post("/addcart", checkLogin, async (req, res) => {
         );
         res.json({
           status: 200,
+          data: data,
           mess: ["Đã thêm vào giỏ hàng", "Đổi số lượng sản phẩm thành công"],
           toastr: "success",
         });
@@ -232,25 +236,28 @@ router.post("/addcart", checkLogin, async (req, res) => {
       });
     }
   } catch (err) {
+    console.log(err);
     res.json({
       status: 500,
       err: err,
-      mess: "loi server",
+      mess: [
+        "Đã xảy ra lỗi, vui lòng thử lại",
+        "Đã xảy ra lỗi, vui lòng thử lại",
+      ],
+      toastr: "error",
     });
   }
 });
 
 router.post("/cart", checkLogin, async function (req, res) {
   try {
-    let token = req.cookies.cookie;
-    let userID = jwt.verify(token, "thai").id;
-    let cart = await UserModel.findOne({ _id: userID }).populate("cartID");
-    cart = cart.cartID.listProduct;
+    let cart = await CartModel.findOne({ _id: req.login_info.cartID });
+    cart = cart.listProduct;
     let data = [];
     for (let i = 0; i < cart.length; i++) {
-      let push = await ProductModel.findOne({ _id: cart[i].productID });
-      push = push.toObject();
-      data.push(push);
+      let pushData = await ProductModel.findOne({ _id: cart[i].productID });
+      pushData = pushData.toObject();
+      data.push(pushData);
       let productCode = await ProductCodeModel.findOne({
         productID: { $all: [cart[i].productID] },
       });
@@ -270,7 +277,7 @@ router.post("/cart", checkLogin, async function (req, res) {
     res.json({
       status: 500,
       err: err,
-      mess: "loi server",
+      mess: "Đã xảy ra lỗi, vui lòng thử lại",
     });
   }
 });
@@ -296,33 +303,54 @@ router.delete("/cart/delete", checkLogin, async function (req, res) {
     res.json({
       status: 500,
       err: err,
-      mess: "Lỗi server",
+      mess: "Đã xảy ra lỗi, vui lòng thử lại",
       toastr: "error",
     });
   }
 });
 
-router.post("/addcheckout", getUserInfo, async (req, res) => {
-  console.log(req.body["addcheckout[]"]);
+router.post("/addcheckout", checkLogin, async (req, res) => {
   try {
-    for (let i = 0; i < req.body["addcheckout[]"].length; i++) {
+    await CartModel.updateOne(
+      {
+        _id: req.login_info.cartID,
+        "listProduct.selected": 1,
+      },
+      { "listProduct.$.selected": 0 }
+    );
+    if (typeof req.body["addcheckout[]"] == "string") {
       await CartModel.updateOne(
         {
           _id: req.login_info.cartID,
-          listProduct: {
-            $elemMatch: { productID: { $in: req.body["addcheckout[]"][i] } },
-          },
+          "listProduct.productID": req.body["addcheckout[]"],
+          // listProduct: {
+          //   $elemMatch: { productID: { $in: req.body["addcheckout[]"][i] } },
+          // },
         },
-        { "listProduct.$.selected": 1 }
+        { $set: { "listProduct.$.selected": 1 } }
       );
+    } else {
+      for (let i = 0; i < req.body["addcheckout[]"].length; i++) {
+        await CartModel.updateOne(
+          {
+            _id: req.login_info.cartID,
+            "listProduct.productID": req.body["addcheckout[]"][i],
+            // listProduct: {
+            //   $elemMatch: { productID: { $in: req.body["addcheckout[]"][i] } },
+            // },
+          },
+          { $set: { "listProduct.$.selected": 1 } }
+        );
+      }
     }
     res.json({
       message: "Redirecting",
       status: 200,
     });
   } catch (err) {
+    console.log(err);
     res.json({
-      mess: "Lỗi server",
+      mess: "Đã xảy ra lỗi, vui lòng thử lại",
       status: 500,
       err: err,
       toastr: "error",
@@ -330,32 +358,38 @@ router.post("/addcheckout", getUserInfo, async (req, res) => {
   }
 });
 
-router.post("/getcheckout", getUserInfo, async (req, res) => {
+router.post("/getcheckout", checkLogin, async (req, res) => {
   try {
-    let data = await CartModel.find({
+    let data = await CartModel.findOne({
       _id: req.login_info.cartID,
-      listProduct: {
-        $elemMatch: { selected: { $in: 1 } },
-      },
+      "listProduct.selected": 1,
     }).populate("listProduct.productID");
-    for (let i = 0; i < data[0].listProduct.length; i++) {
-      data[0].listProduct[i] = data[0].listProduct[i].toObject();
-      let productName = await ProductCodeModel.findOne({
-        productID: { $all: [data[0].listProduct[i].productID] },
+    if (data) {
+      for (let i = 0; i < data.listProduct.length; i++) {
+        data.listProduct[i] = data.listProduct[i].toObject();
+        let productName = await ProductCodeModel.findOne({
+          productID: { $all: [data.listProduct[i].productID] },
+        });
+        productName = productName.productName;
+        data.listProduct[i].productName = productName;
+      }
+      res.json({
+        status: 200,
+        data: data,
+        mess: "Lấy data thành công",
+        toastr: "success",
       });
-      productName = productName.productName;
-      data[0].listProduct[i].productName = productName;
+    } else if (data == null) {
+      res.json({
+        status: 400,
+        data: data,
+        mess: "Bạn chưa chọn sản phẩm gì, hãy chọn sản phẩm để mua hàng nhé",
+        toastr: "error",
+      });
     }
-    res.json({
-      status: 200,
-      data: data,
-      mess: "Lấy data thành công",
-      toastr: "success",
-    });
   } catch (err) {
-    console.log(err);
     res.json({
-      mess: "Lỗi server",
+      mess: "Đã xảy ra lỗi, vui lòng thử lại",
       status: 500,
       err: err,
       toastr: "error",
@@ -584,7 +618,7 @@ router.post("/logout", checkLogin, async (req, res) => {
     await BlackListModel.create({ token });
     res.json({ status: 200, mess: "dang xuat ok" });
   } catch (error) {
-    res.json({ status: 500, mess: "loi server", error });
+    res.json({ status: 500, mess: "Đã xảy ra lỗi, vui lòng thử lại", error });
   }
 });
 

@@ -153,10 +153,6 @@ button:hover {
   background-color: rgb(250, 250, 250);
 }
 
-.item-detail-decs .item-detail {
-  /* margin: 15px; */
-}
-
 .item-detail-container {
   display: flex;
   align-items: center;
@@ -348,7 +344,7 @@ button:hover {
     width: 100%;
   }
 
-  .item-action .item-add-to-cart{
+  .item-action .item-add-to-cart {
     margin-bottom: 1rem;
   }
 }

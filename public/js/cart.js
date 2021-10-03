@@ -16,7 +16,60 @@ toastr.options = {
   hideMethod: "fadeOut",
 };
 
-let oldQuantity;
+function totalAndQuantity() {
+  let total = 0;
+  let totalQuantity = 0;
+  for (let i = 0; i < $(".cart-item").length; i++) {
+    if (
+      $(".cart-item." + i)
+        .children(".cart-item-check")
+        .prop("checked") == true
+    ) {
+      totalQuantity++;
+      total =
+        total +
+        parseInt(
+          $(".cart-item." + i)
+            .children(".cart-item-total-price")
+            .text()
+            .replace(/[^0-9.-]+/g, "")
+            .replaceAll(".", "")
+        );
+    }
+    $(".cart-total-quantity").text(
+      "Tổng thanh toán (" + totalQuantity + " sản phẩm)"
+    );
+  }
+  $(".cart-total-price").text(
+    total.toLocaleString("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    })
+  );
+}
+
+function changeChecked() {
+  let data = [];
+  for (let i = 0; i < $(".cart-item").length; i++) {
+    if (
+      $(".cart-item." + i)
+        .children(".cart-checkbox")
+        .prop("checked") == true
+    ) {
+      data.push($(".cart-item." + i).attr("id"));
+    }
+  }
+  console.log(data);
+  $.ajax({
+    url: "/user/addcheckout",
+    type: "POST",
+    data: { addcheckout: data },
+  })
+    .then(function (data) {})
+    .catch(function (err) {
+      toastr[err.toastr](err.mess);
+    });
+}
 
 $(document).ready(function () {
   $.ajax({
@@ -34,46 +87,74 @@ $(document).ready(function () {
                 <div class="cart-item ${i}" id="${data.data[i]._id}">
                   <input type="checkbox" class="cart-checkbox cart-item-check"/>
                   <div class="cart-item-content">
-                    <a href="/product/${data.data[i].productCodeID}" class="cart-item-img">
+                    <a href="/product/${
+                      data.data[i].productCodeID
+                    }" class="cart-item-img">
                       <img src="${data.data[i].thumb}"/>
                     </a>
                     <div class="cart-item-detail">
                       <span class="cart-item-title">
-                        <a href="/product/${data.data[i].productCodeID}">${data.data[i].title}</a>
+                        <a href="/product/${data.data[i].productCodeID}">${
+            data.data[i].title
+          }</a>
                       </span>
                       <span class="cart-item-choose">
-                        Phân Loại Hàng: ${data.data[i].color} - ${data.data[i].size}
+                        Phân Loại Hàng: ${data.data[i].color} - ${
+            data.data[i].size
+          }
                       </span>
                     </div>
                   </div>
-                  <div class="cart-item-price">${(data.data[i].price).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'})}</div>
+                  <div class="cart-item-price">${data.data[
+                    i
+                  ].price.toLocaleString("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  })}</div>
                   <div class="cart-item-quantity">
-                    <input type="number" class="cart-item-quantity-input" value="${data.data[i].quantity}" old="${data.data[i].quantity}"/>
+                    <input type="number" class="cart-item-quantity-input" value="${
+                      data.data[i].quantity
+                    }" old="${data.data[i].quantity}"/>
                   </div>
                   <div class="cart-item-total-price">
-                    ${(data.data[i].price * data.data[i].quantity).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'})}
+                    ${(
+                      data.data[i].price * data.data[i].quantity
+                    ).toLocaleString("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    })}
                   </div>
                   <div class="cart-item-action">Xóa</div>
                 </div>    
                 `);
-          $(".cart-total-quantity").text(
-            "Tổng thanh toán (" + (i + 1) + " sản phẩm)"
-          );
-          console.log(total);
-          $(".cart-total-price").text("₫" + total);
+          if (data.data[i].selected == 1) {
+            $(".cart-item." + i)
+              .children(".cart-item-check")
+              .prop("checked", true);
+          }
+          $(".cart-select-all").text("Chọn tất cả (" + (i + 1) + " sản phẩm)");
         }
       }
+      totalAndQuantity();
     })
     .catch(function (err) {
       console.log(err);
     });
 });
 
+//change quantity
 $(document).on("change", ".cart-item-quantity-input", function () {
+  let oldQuantity;
   let productID = $(this).parent().parent().attr("id");
   let newQuantity = parseInt($(this).val());
   let price = parseInt(
-    $(this).parent().parent().children(".cart-item-price").text().replace(/[^0-9.-]+/g,"").replaceAll(".", "")
+    $(this)
+      .parent()
+      .parent()
+      .children(".cart-item-price")
+      .text()
+      .replace(/[^0-9.-]+/g, "")
+      .replaceAll(".", "")
   );
   let thisEle = $(this);
   oldQuantity = parseInt(thisEle.attr("old"));
@@ -81,7 +162,7 @@ $(document).on("change", ".cart-item-quantity-input", function () {
     .parent()
     .parent()
     .children(".cart-item-total-price");
-    console.log(newQuantity, oldQuantity);
+  console.log(newQuantity, oldQuantity);
   if (newQuantity - oldQuantity == 0) {
     $.ajax({
       url: "/user/cart/delete",
@@ -109,10 +190,16 @@ $(document).on("change", ".cart-item-quantity-input", function () {
     })
       .then(function (data) {
         toastr[data.toastr](data.mess[1]);
-        if(data.status == 200){
+        if (data.status == 200) {
           loadCart();
-          totalPriceEle.text((price * newQuantity).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'}));
-        }else if (data.status == 400) {
+          totalPriceEle.text(
+            (price * newQuantity).toLocaleString("vi-VN", {
+              style: "currency",
+              currency: "VND",
+            })
+          );
+          totalAndQuantity();
+        } else if (data.status == 400) {
           thisEle.val(oldQuantity);
         }
         thisEle.attr("old", parseInt(thisEle.val()));
@@ -124,6 +211,13 @@ $(document).on("change", ".cart-item-quantity-input", function () {
   }
 });
 
+//check one
+$(document).on("click", ".cart-checkbox", function () {
+  totalAndQuantity();
+  changeChecked();
+});
+
+//check all
 $(".cart-check-all").on("click", function () {
   if ($(this).prop("checked")) {
     $(".cart-checkbox").prop("checked", true);
@@ -132,6 +226,7 @@ $(".cart-check-all").on("click", function () {
   }
 });
 
+//delete
 $(document).on("click", ".cart-item-action", function () {
   let parentEle = $(this).parent();
   $.ajax({
@@ -173,26 +268,7 @@ $(document).on("click", ".cart-item-action", function () {
 // });
 
 //buy
-$(".cart-buy").on("click", function () {
-  let data = [];
-  for (let i = 0; i < $(".cart-item").length; i++) {
-    if (
-      $(".cart-item." + i)
-        .children(".cart-checkbox")
-        .prop("checked") == true
-    ) {
-      data.push($(".cart-item." + i).attr("id"));
-    }
-  }
-  $.ajax({
-    url: "/user/addcheckout",
-    type: "POST",
-    data: { addcheckout: data },
-  })
-    .then(function (data) {
-      window.location.href = "/user/checkout";
-    })
-    .catch(function (err) {
-      toastr[err.toastr](err.mess);
-    });
+$(".cart-buy").on("click", async function () {
+  changeChecked();
+  window.location.href = "/user/checkout";
 });
