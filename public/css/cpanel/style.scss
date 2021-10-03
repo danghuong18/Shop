@@ -148,6 +148,11 @@ body {
                     }
                 }
 
+                &__content {
+                    width: calc(100% - 4.5rem);
+                    line-height: 1.4;
+                }
+
                 &:hover {
                     background: $shadow_color;
                 }
@@ -200,7 +205,15 @@ body {
                         -webkit-box-orient: vertical;
                         -webkit-line-clamp: 2;
                         overflow: hidden;
-                        width: calc(100% - 4.5rem);
+                    }
+
+                    &__price {
+                        color: $primary_color;
+                        font-size: 1.3rem;
+                        display: -webkit-box;
+                        -webkit-box-orient: vertical;
+                        -webkit-line-clamp: 1;
+                        overflow: hidden;
                     }
                 }
             }
@@ -1722,7 +1735,7 @@ table {
 .recent-order {
     td,
     th {
-        text-align: left;
+        text-align: center;
         padding: 1rem 0.5rem;
     }
 
@@ -1738,6 +1751,7 @@ table {
         padding: 0;
         overflow: hidden;
         font-weight: 600;
+        text-align: left;
     }
 }
 

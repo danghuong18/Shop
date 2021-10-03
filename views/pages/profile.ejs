@@ -23,16 +23,20 @@
             </div>
             <ul class="sidebar__list">
                 <li class="sidebar__item  <%= (tab != 'address' && tab != 'password' && tab != 'order'? 'active':'') %>" id="profile">
-                    Hồ sơ
+                    <i class="fas fa-user"></i>
+                    <span class="sidebar__item__text">Hồ sơ</span>
                 </li>
                 <li class="sidebar__item <%= (tab == 'address'? 'active':'') %>" id="address">
-                    Địa chỉ
+                    <i class="fas fa-address-book"></i>
+                    <span class="sidebar__item__text">Địa chỉ</span>
                 </li>
                 <li class="sidebar__item <%= (tab == 'password'? 'active':'') %>" id="password">
-                    Đổi mật khẩu
+                    <i class="fas fa-asterisk"></i>
+                    <span class="sidebar__item__text">Đổi mật khẩu</span>
                 </li>
                 <li class="sidebar__item <%= (tab == 'order'? 'active':'') %>" id="order">
-                    Lịch sử mua hàng
+                    <i class="fas fa-history"></i>
+                    <span class="sidebar__item__text">Lịch sử mua hàng</span>
                 </li>
             </ul>
         </div>

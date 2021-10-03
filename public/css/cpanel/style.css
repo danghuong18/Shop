@@ -101,6 +101,10 @@ body {
 .header__item .dropdown-list .dropdown-item__image img {
   width: 100%;
 }
+.header__item .dropdown-list .dropdown-item__content {
+  width: calc(100% - 4.5rem);
+  line-height: 1.4;
+}
 .header__item .dropdown-list .dropdown-item:hover {
   background: #d8d8d8;
 }
@@ -146,7 +150,14 @@ body {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
-  width: calc(100% - 4.5rem);
+}
+.header__item-search .dropdown-list .dropdown-item__price {
+  color: #fe5e3a;
+  font-size: 1.3rem;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
 }
 .header__item-notification {
   cursor: pointer;
@@ -1581,7 +1592,7 @@ table {
 
 .recent-order td,
 .recent-order th {
-  text-align: left;
+  text-align: center;
   padding: 1rem 0.5rem;
 }
 .recent-order th {
@@ -1595,6 +1606,7 @@ table {
   padding: 0;
   overflow: hidden;
   font-weight: 600;
+  text-align: left;
 }
 
 .graph {

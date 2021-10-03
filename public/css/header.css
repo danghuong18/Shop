@@ -794,7 +794,7 @@ header {
 .header__search-history-item__body {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   flex-wrap: nowrap;
   flex-direction: row;
   cursor: pointer;
@@ -810,6 +810,10 @@ header {
   height: 3.5rem;
   overflow: hidden;
   margin-right: 1rem;
+}
+
+.header__search-history-item__detail {
+  width: calc(100% - 4.5rem);
 }
 
 .header__search-history-item__image img {

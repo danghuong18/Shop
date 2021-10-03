@@ -243,7 +243,7 @@ button:hover {
 
 .owl-two .carousel-price {
   color: rgb(238, 77, 45);
-  font-size: 17px;
+  font-size: 15px;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;

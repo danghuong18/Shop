@@ -749,6 +749,14 @@ ol, ul {
   border-bottom-left-radius: 1rem;
   transition: all 0.2s;
 }
+.container .sidebar__item__text {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.container .sidebar__item i {
+  margin-right: 0.5rem;
+}
 .container .sidebar__item:hover {
   color: #fff;
   background: #7b7b7b;
@@ -1289,9 +1297,13 @@ ol, ul {
 }
 
 @media screen and (max-width: 1219px) {
-  .container.profile {
+  .container {
     margin-left: 1rem;
     margin-right: 1rem;
+  }
+  .container.slider, .container.shop {
+    margin-left: 0;
+    margin-right: 0;
   }
 }
 @media screen and (max-width: 1199px) {
@@ -1360,11 +1372,21 @@ ol, ul {
     justify-content: center;
     flex-wrap: nowrap;
     flex-direction: row;
-    width: calc(100%/4 - 5px);
+    height: 4.5rem;
+    width: calc(100%/6 - 5px);
     margin-bottom: 0;
     border-top-left-radius: 1rem;
     border-top-right-radius: 1rem;
     border-bottom-left-radius: 0;
+  }
+  .container .sidebar__item__text {
+    display: none;
+  }
+  .container .sidebar__item.active {
+    width: calc(50% - 5px);
+  }
+  .container .sidebar__item.active .sidebar__item__text {
+    display: block;
   }
   .container .content {
     width: 100%;

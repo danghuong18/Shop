@@ -165,7 +165,7 @@ $(".header__input").on("input", function(){
     if(query.length >= 4){
         $(".header__item-search .dropdown-list").css({"display": "block"});
         $.ajax({
-            url: "/cpanel/search?q=" + query,
+            url: "/product/showProduct?limit=12&q=" + query,
             type: "GET"
         }).then((data)=>{
 
@@ -179,7 +179,10 @@ $(".header__input").on("input", function(){
                     }else{
                         thumb = `https://cdn1.vectorstock.com/i/thumb-large/46/50/missing-picture-page-for-website-design-or-mobile-vector-27814650.jpg`;
                     }
-                    search_droplist += `<li class="dropdown-item"><a href="/cpanel/product/${data.data[x]._id}"><span class="dropdown-item__body"><span class="dropdown-item__image"><img src="${thumb}"></span><label>${data.data[x].productName}</label></span></a></li>`
+
+                    let price = (data.data[x].min)? ((data.data[x].min != data.data[x].max)? `${(data.data[x].min).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'})} - ${(data.data[x].max).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'})}`: (data.data[x].min).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'})) : (0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'});
+
+                    search_droplist += `<li class="dropdown-item"><a href="/cpanel/product/${data.data[x]._id}"><span class="dropdown-item__body"><span class="dropdown-item__image"><img src="${thumb}"></span><span class="dropdown-item__content"><label>${data.data[x].productName}</label><span class="dropdown-item__price">${price}</span></span></span></a></li>`
                 }
 
                 $(".header__item-search .dropdown-list").html(search_droplist);
