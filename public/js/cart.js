@@ -151,6 +151,7 @@ $(document).on("click", ".cart-item-action", function () {
 //buy
 $(".cart-buy").on("click", function () {
   let data = [];
+  console.log( $(".cart-item").length);
   for (let i = 0; i < $(".cart-item").length; i++) {
     data.push($(".cart-item." + i).attr("id"));
   }
@@ -160,5 +161,5 @@ $(".cart-buy").on("click", function () {
     data: { addcheckout: data },
   }).then(function (data) {
     console.log(data);
-  });
+  }).catch(err=>{console.log(err);})
 });

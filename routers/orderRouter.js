@@ -1,10 +1,6 @@
 const router = require("express").Router();
 const OrderModel = require("../model/orderModel");
 const { checkLogin } = require("../middleWare/checkAuth");
-<<<<<<< HEAD
-=======
-
->>>>>>> 90ad567a1a4909f64caa35a657efae5b9d3f983e
 router.get("/", checkLogin, async (req, res) => {
   if (req.login_info.role === "admin") {
     try {

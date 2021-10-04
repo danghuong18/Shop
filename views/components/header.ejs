@@ -5,34 +5,20 @@
     <nav class="header__navbar hide-on-mobile-tablet">
       <!-- header navbar left -->
       <ul class="header__navbar-list">
-        <li
-          class="
+        <li class="
             header__navbar-item
             header__navbar-item-has-qr
             header__navbar-item--separate
-          "
-        >
+          ">
           Vào cửa hàng trên ứng dụng C-Shop
           <div class="header__qr">
-            <img
-              src="../../public/img/qrcode.png"
-              alt="QR code"
-              class="header__qr-img"
-            />
+            <img src="../../public/img/qrcode.png" alt="QR code" class="header__qr-img" />
             <div class="header__qr-apps">
               <a class="header__qr-link">
-                <img
-                  src="../../public/img/ch_play.png"
-                  alt="CH Play"
-                  class="header__qr-download-img"
-                />
+                <img src="../../public/img/ch_play.png" alt="CH Play" class="header__qr-download-img" />
               </a>
               <a class="header__qr-link">
-                <img
-                  src="../../public/img/apstore.png"
-                  alt="Apstore"
-                  class="header__qr-download-img"
-                />
+                <img src="../../public/img/apstore.png" alt="Apstore" class="header__qr-download-img" />
               </a>
             </div>
           </div>
@@ -66,45 +52,42 @@
 
         <!-- <li class="header__navbar-item header__navbar-item--strong header__navbar-item--separate">Đăng ký</li>
                         <li class="header__navbar-item header__navbar-item--strong">Đăng nhập</li> -->
-       <% if(login_info){ %>
-        <li class="header__navbar-item header__navbar-user">
-          <img
-            src="<%= (login_info.avatar)? login_info.avatar : '/public/upload/default-avatar.jpg' %>"
-            class="header__navbar-user-img"
-          />
-          <span class="header__navbar-user-name"><%= (login_info.username)%></span>
-
-          <ul class="header__navbar-user-menu">
-            <li class="header__navbar-user-item">
-              <a href="/user/profile">Tài khoản của tôi</a>
-            </li>
-            <li class="header__navbar-user-item">
-              <a href="/user/profile#address">Địa chỉ của tôi</a>
-            </li>
-            <li class="header__navbar-user-item">
-              <a href="#">Đơn mua</a>
-            </li>
-            <% if(login_info.role == "admin") { %>
-              <li class="header__navbar-user-item">
-                <a href="/cpanel">Admin Cpanel</a>
-              </li>
-            <% } %>
-            <li class="header__navbar-user-item header__navbar-user-item--separate">
-              <a href="#" id="logout">Đăng xuất</a>
-            </li>
-          </ul>
-        </li>
-        <% } else { %>
-        <a href="/user/login">
+        <% if(login_info){ %>
           <li class="header__navbar-item header__navbar-user">
-            <img
-            src="<%='/public/upload/default-avatar.jpg' %>"
-            class="header__navbar-user-img"
-            />
-            <span class="header__navbar-user-name">Đăng nhập</span>
+            <img src="<%= (login_info.avatar)? login_info.avatar : '/public/upload/default-avatar.jpg' %>"
+              class="header__navbar-user-img" />
+            <span class="header__navbar-user-name">
+              <%= (login_info.username)%>
+            </span>
+
+            <ul class="header__navbar-user-menu">
+              <li class="header__navbar-user-item">
+                <a href="/user/profile">Tài khoản của tôi</a>
+              </li>
+              <li class="header__navbar-user-item">
+                <a href="/user/profile#address">Địa chỉ của tôi</a>
+              </li>
+              <li class="header__navbar-user-item">
+                <a href="#">Đơn mua</a>
+              </li>
+              <% if(login_info.role=="admin" ) { %>
+                <li class="header__navbar-user-item">
+                  <a href="/cpanel">Admin Cpanel</a>
+                </li>
+                <% } %>
+                  <li class="header__navbar-user-item header__navbar-user-item--separate">
+                    <a href="#" id="logout">Đăng xuất</a>
+                  </li>
+            </ul>
           </li>
-        </a>
-        <% } %>
+          <% } else { %>
+            <a href="/user/login">
+              <li class="header__navbar-item header__navbar-user">
+                <img src="<%='/public/upload/default-avatar.jpg' %>" class="header__navbar-user-img" />
+                <span class="header__navbar-user-name">Đăng nhập</span>
+              </li>
+            </a>
+            <% } %>
       </ul>
       <!--end header navbar right -->
     </nav>
@@ -117,11 +100,7 @@
         <i class="fas fa-bars header__bars-icon"></i>
       </label>
 
-      <input
-        type="checkbox"
-        class="header__bars-input"
-        id="header-bars-input"
-      />
+      <input type="checkbox" class="header__bars-input" id="header-bars-input" />
       <div class="header__mobile">
         <div class="header__mobile-search-wrap">
           <div class="header__mobile-search">
@@ -141,34 +120,34 @@
             <li class="header__mobile-item">
               <a href="/user/cart" class="header__mobile-link">Giỏ hàng</a>
             </li>
-  
+
             <li class="header__mobile-item">
               <a href="/user/profile" class="header__mobile-link">Tài khoản của tôi</a>
             </li>
-  
+
             <li class="header__mobile-item">
               <a href="/user/profile#address" class="header__mobile-link">Địa chỉ của tôi</a>
             </li>
 
-            <% if(login_info.role == "admin") { %>
+            <% if(login_info.role=="admin" ) { %>
               <li class="header__mobile-item">
                 <a href="/cpanel" class="header__mobile-link">Admin Cpanel</a>
               </li>
-            <% } %>
+              <% } %>
 
-            <li class="header__mobile-item">
-              <a href="#" id="logout-mobile" class="header__mobile-link">Đăng xuất</a>
-            </li>
+                <li class="header__mobile-item">
+                  <a href="#" id="logout-mobile" class="header__mobile-link">Đăng xuất</a>
+                </li>
 
-          <% } else { %>
-            <li class="header__mobile-item">
-              <a href="/user/logon" class="header__mobile-link">Đăng ký</a>
-            </li>
-  
-            <li class="header__mobile-item">
-              <a href="/user/login" class="header__mobile-link">Đăng nhập</a>
-            </li>
-          <% } %>
+                <% } else { %>
+                  <li class="header__mobile-item">
+                    <a href="/user/logon" class="header__mobile-link">Đăng ký</a>
+                  </li>
+
+                  <li class="header__mobile-item">
+                    <a href="/user/login" class="header__mobile-link">Đăng nhập</a>
+                  </li>
+                  <% } %>
         </ul>
         <ul class="header__mobile-list header__mobile-list--search-result">
           <li class="header__mobile-item">
@@ -186,11 +165,7 @@
       <!-- logo -->
       <div class="header__logo">
         <a href="/" class="header__logo-link">
-          <img
-            class="header__logo-img"
-            src="../../public/img/logo.png"
-            alt=""
-          />
+          <img class="header__logo-img" src="../../public/img/logo.png" alt="" />
         </a>
       </div>
 
@@ -200,8 +175,8 @@
       <div class="header__search hide-on-mobile">
         <form action="#" id="search-form" method="post">
           <div class="header__search-input-wrap">
-            <input type="text" class="header__search-input" placeholder="Tìm kiếm sản phẩm tại đây"/>
-  
+            <input type="text" class="header__search-input" placeholder="Tìm kiếm sản phẩm tại đây" />
+
             <div class="header__search-history">
               <h3 class="header__search-history-heading">Kết quả tìm kiếm</h3>
               <ul class="header__search-history-list">
@@ -209,7 +184,7 @@
               </ul>
             </div>
           </div>
-  
+
           <button class="header__search-btn">
             <i class="fas fa-search header__search-btn-icon"></i>
           </button>
@@ -219,28 +194,17 @@
 
       <!-- cart -->
       <% if(login_info){ %>
-      <div class="header__cart">
-        <div class="header__cart-wrap">
-          <span class="header__cart-notice"> 0 </span>
-          <i class="fas fa-shopping-cart header__cart-icon"></i>
-          <div class="header__cart-list">
-<<<<<<< HEAD
-            <!-- no cart: header__cart-list--no-cart -->
-            <img src="../../public/img/no_cart.png" alt="" class="header__cart-no-cart-img"/>
-            <p class="header__cart-no-cart-msg">Chưa có sản phẩm</p>
-
-            <h4 class="header__cart-heading">Sản phẩm đã thêm</h4>
-            <ul class="header__cart-list-item">
-            </ul>
-            <a href="/user/cart"><button class="btn btn--primary header__cart-view-cart">Xem giỏ hàng</button></a>
-=======
-            <ul class="header__cart-list-item">
-            </ul>
->>>>>>> 90ad567a1a4909f64caa35a657efae5b9d3f983e
+        <div class="header__cart">
+          <div class="header__cart-wrap">
+            <span class="header__cart-notice"> 0 </span>
+            <i class="fas fa-shopping-cart header__cart-icon"></i>
+            <div class="header__cart-list">
+              <ul class="header__cart-list-item">
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
-      <!--end cart -->
+        <!--end cart -->
     </div>
     <% } else { %>
       <div class="header__cart">
@@ -250,8 +214,8 @@
           </div>
         </a>
       </div>
-    <% } %>
-    <!--end header-search -->
+      <% } %>
+        <!--end header-search -->
   </div>
   <!-- <ul class="header__sort-bar">
     <li class="header__sort-item">
