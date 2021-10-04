@@ -266,11 +266,12 @@ router.post("/cart", checkLogin, async function (req, res) {
       data[i].quantity = cart[i].quantity;
       data[i].title = title;
       data[i].productCodeID = productCodeID;
+      data[i].selected = cart[i].selected;
     }
     res.json({
       status: 200,
       data: data,
-      mess: "lay data thanh cong",
+      mess: "Lấy data thành công",
     });
   } catch (err) {
     console.log(err);
