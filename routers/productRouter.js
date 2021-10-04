@@ -1,4 +1,4 @@
-const mongoose = require('../model/dbConnect');
+const mongoose = require("../model/dbConnect");
 const router = require("express").Router();
 const ProductCodeModel = require("../model/productCodeModel");
 const ProductModel = require("../model/productModel");
@@ -68,8 +68,8 @@ router.get("/", checkLogin, async (req, res) => {
         sortby = { createDate: -1 };
       } else if (sort == "date-asc") {
         sortby = { createDate: 1 };
-      }else{
-        sortby = {createDate: -1};
+      } else {
+        sortby = { createDate: -1 };
       }
 
       let products = await ProductCodeModel.find({})
@@ -106,8 +106,8 @@ router.get("/", checkLogin, async (req, res) => {
 router.get("/showProduct", async (req, res) => {
   try {
     let sort = req.query.sort;
-    let limit = (req.query.limit? req.query.limit: 1) * 1;
-    let skip = ((req.query.page? req.query.page: 1) - 1) * limit;
+    let limit = (req.query.limit ? req.query.limit : 1) * 1;
+    let skip = ((req.query.page ? req.query.page : 1) - 1) * limit;
     let from_price = req.query.from * 1;
     let to_price = req.query.to * 1;
     let sortPrice = req.query.sortPrice;
@@ -128,7 +128,7 @@ router.get("/showProduct", async (req, res) => {
     if (sortPrice == "price-desc") {
       sortby.min = -1;
     } else if (sortPrice == "price-asc") {
-      sortby.min = 1 ;
+      sortby.min = 1;
     }
 
     if (sort == "date-asc") {
@@ -137,57 +137,62 @@ router.get("/showProduct", async (req, res) => {
       sortby.createDate = -1;
     }
 
-    if((from_price || from_price == 0)&& to_price && !isNaN(from_price) && !isNaN(to_price)){
-      if(to_price >= from_price){
-        price_range = 
-        {
+    if (
+      (from_price || from_price == 0) &&
+      to_price &&
+      !isNaN(from_price) &&
+      !isNaN(to_price)
+    ) {
+      if (to_price >= from_price) {
+        price_range = {
           $or: [
             {
               $and: [
-                { min: {$gte : from_price}},
-                { min: {$lte : to_price}}
-              ]
+                { min: { $gte: from_price } },
+                { min: { $lte: to_price } },
+              ],
             },
             {
               $and: [
-                { max: {$gte : from_price}},
-                { max: {$lte : to_price}}
-              ]
+                { max: { $gte: from_price } },
+                { max: { $lte: to_price } },
+              ],
             },
             {
-              $and: [
-                { min: {$lt : from_price}},
-                { max: {$gt : to_price}}
-              ]
-            }
-          ]
+              $and: [{ min: { $lt: from_price } }, { max: { $gt: to_price } }],
+            },
+          ],
         };
       }
     }
 
-    if(category) {
-      let category_array = (category.split(",")).map(s => mongoose.Types.ObjectId(s));
-      categories = {categoryID: {$in: category_array}};
+    if (category) {
+      let category_array = category
+        .split(",")
+        .map((s) => mongoose.Types.ObjectId(s));
+      categories = { categoryID: { $in: category_array } };
     }
 
-    if(brand) {
-      let brand_array = (brand.split(",")).map(s => mongoose.Types.ObjectId(s));
-      brands = {brand: {$in: brand_array}};
+    if (brand) {
+      let brand_array = brand.split(",").map((s) => mongoose.Types.ObjectId(s));
+      brands = { brand: { $in: brand_array } };
     }
 
-    if(similar_query){
-      let product = await ProductCodeModel.findOne({_id: similar_query});
-      if(product){
+    if (similar_query) {
+      let product = await ProductCodeModel.findOne({ _id: similar_query });
+      if (product) {
         q = product.productName;
-        similar = {$and: [
-          {_id: {$ne: mongoose.Types.ObjectId(similar_query)}},
-          {categoryID: {$in: product.categoryID}}
-        ]};
+        similar = {
+          $and: [
+            { _id: { $ne: mongoose.Types.ObjectId(similar_query) } },
+            { categoryID: { $in: product.categoryID } },
+          ],
+        };
       }
     }
 
-    if(q) {
-      query = {$text: {$search: q}};
+    if (q) {
+      query = { $text: { $search: q } };
     }
 
     let products = await ProductCodeModel.aggregate([
@@ -197,33 +202,31 @@ router.get("/showProduct", async (req, res) => {
       {
         $match: similar
       },
-      { $lookup: {
-        from: "product",
-        foreignField: "_id",
-        localField: "productID",
-        as: "productID"
-      }},
+      {
+        $lookup: {
+          from: "product",
+          foreignField: "_id",
+          localField: "productID",
+          as: "productID"
+        },
+      },
       {
         $project: {
           _id: 1,
           productName: 1,
           listImg: 1,
-          productID: 1, 
+          productID: 1,
           categoryID: 1,
           brand: 1,
-          min: {$min: "$productID.price"},
-          max: {$max: "$productID.price"},
-          createDate: 1,
-        }
+          min: { $min: "$productID.price" },
+          max: { $max: "$productID.price" },
+          createDate: 1
+        },
       },
       {
         $match: {
-          $and: [
-            categories,
-            brands,
-            price_range
-          ]
-        }
+          $and: [categories, brands, price_range]
+        },
       },
       {
         $sort: sortby
@@ -232,34 +235,36 @@ router.get("/showProduct", async (req, res) => {
         $group: {
           _id: null,
           total: {
-            $sum: 1,
+            $sum: 1
           },
           root: {
-            $push: "$$ROOT",
+            $push: "$$ROOT"
           },
         },
       },
       {
         $unwind: {
-          path: "$root",
+          path: "$root"
         },
       },
       { $skip: skip },
       { $limit: limit },
-      {$group: {
-        _id: null,
-        total: { $first: "$total" },
-        root: {$push: "$root"}
-      }}
+      {
+        $group: {
+          _id: null,
+          total: { $first: "$total" },
+          root: { $push: "$root" }
+        },
+      },
     ]);
 
     if (products.length > 0) {
-      if(products[0].root) {
+      if (products[0].root) {
         let all_products = products[0].total;
         if (all_products > 0) {
           pages = Math.ceil(all_products / limit);
         }
-  
+
         res.json({
           message: "Succcessed",
           status: 200,
@@ -267,16 +272,16 @@ router.get("/showProduct", async (req, res) => {
           pages: pages,
           total: products[0].total
         });
-      }else{
+      } else {
         res.json({
           message: "Không có sản phẩm nào để hiển thị cả.",
-          status: 400,
+          status: 400
         });
       }
     } else {
       res.json({
         message: "Không có sản phẩm nào để hiển thị cả.",
-        status: 400,
+        status: 400
       });
     }
   } catch (error) {
@@ -306,8 +311,8 @@ router.get("/item", checkLogin, async (req, res) => {
         sortby = { createDate: -1 };
       } else if (sort == "date-asc") {
         sortby = { createDate: 1 };
-      }else{
-        sortby = {createDate: -1};
+      } else {
+        sortby = { createDate: -1 };
       }
 
       let product = await ProductCodeModel.findOne({ _id: id }).populate(
@@ -328,12 +333,12 @@ router.get("/item", checkLogin, async (req, res) => {
             message: "Successed",
             status: 200,
             data: items,
-            pages: pages,
+            pages: pages
           });
         } else {
           res.json({
             message: "Không tìm thấy item sản phẩm nào cả.",
-            status: 400,
+            status: 400
           });
         }
       } else {
@@ -498,7 +503,7 @@ router.post("/create-product-item", checkLogin, async (req, res) => {
               let price = req.body.price;
               let quantity = req.body.quantity;
               let createDate = new Date();
-              
+
               let create = await ProductModel.create({
                 color: color,
                 size: size,
@@ -507,7 +512,7 @@ router.post("/create-product-item", checkLogin, async (req, res) => {
                 thumb: thumb,
                 productCode: product_id,
                 createDate: createDate,
-                updateDate: createDate,
+                updateDate: createDate
               });
 
               if (create) {
@@ -518,20 +523,20 @@ router.post("/create-product-item", checkLogin, async (req, res) => {
                 res.json({
                   message: "Đăng item sản phẩm thành công!",
                   status: 200,
-                  data: create._id,
+                  data: create._id
                 });
               } else {
                 DeleteFile([thumb]);
                 res.json({
                   message: "Không thể tạo item sản phẩm trên.",
-                  status: 400,
+                  status: 400
                 });
               }
             } else {
               DeleteFile([thumb]);
               res.json({
                 message: "Không tìm được sản phẩm để tạo item trên.",
-                status: 400,
+                status: 400
               });
             }
           } catch (error) {
@@ -539,13 +544,13 @@ router.post("/create-product-item", checkLogin, async (req, res) => {
             res.json({
               message: "Không tìm được sản phẩm để tạo item trên.",
               status: 400,
-              error,
+              error
             });
           }
         } else {
           res.json({
             message: "Lỗi upload hình, vui lòng thử lại.",
-            status: 400,
+            status: 400
           });
         }
       }
@@ -563,12 +568,12 @@ router.post("/edit", checkLogin, (req, res) => {
           res.json({
             message:
               "Hình tải lên không hỗ trợ, phải là file *.png, *.jpg, *.gif.",
-            status: 406,
+            status: 406
           });
         } else {
           res.json({
             message: "Lỗi trong quá trình upload hình ảnh.",
-            status: 400,
+            status: 400
           });
         }
       } else {
@@ -631,9 +636,9 @@ router.post("/edit", checkLogin, (req, res) => {
                 categoryID: list_category,
                 brand: brand,
                 description: description,
-                updateDate: updateDate,
+                updateDate: updateDate
               },
-              $push: { listImg: { $each: list_image } },
+              $push: { listImg: { $each: list_image } }
             },
             { returnOriginal: false }
           );
@@ -642,7 +647,7 @@ router.post("/edit", checkLogin, (req, res) => {
             res.json({
               message: "Update thông tin sản phẩm thành công!",
               status: 200,
-              data: edit,
+              data: edit
             });
           } else {
             if (req.files.length > 0) {
@@ -650,7 +655,7 @@ router.post("/edit", checkLogin, (req, res) => {
             }
             res.json({
               message: "Không thể update thông tin sản phẩm.",
-              status: 400,
+              status: 400
             });
           }
         } catch (error) {
@@ -674,12 +679,12 @@ router.post("/edit-product-item", checkLogin, async (req, res) => {
           res.json({
             message:
               "Hình ảnh tải lên không hỗ trợ, phải là file *.png, *.jpg, *.gif.",
-            status: 406,
+            status: 406
           });
         } else {
           res.json({
             message: "Lỗi trong quá trình upload hình ảnh.",
-            status: 400,
+            status: 400
           });
         }
       } else {
@@ -699,14 +704,14 @@ router.post("/edit-product-item", checkLogin, async (req, res) => {
               size: size,
               price: price,
               quantity: quantity,
-              thumb: thumb,
+              thumb: thumb
             };
           } else {
             set_data = {
               color: color,
               size: size,
               price: price,
-              quantity: quantity,
+              quantity: quantity
             };
           }
 
@@ -727,7 +732,7 @@ router.post("/edit-product-item", checkLogin, async (req, res) => {
             }
             res.json({
               message: "Sửa item sản phẩm không thành công.",
-              status: 400,
+              status: 400
             });
           }
         } catch (error) {
@@ -806,7 +811,7 @@ router.post("/delete-product-item", checkLogin, async (req, res) => {
       } else {
         res.json({
           message: "Quá trình xoá item sản phẩm xảy ra lỗi.",
-          status: 400,
+          status: 400
         });
       }
     } catch (error) {
@@ -830,12 +835,12 @@ router.post("/delete-image", checkLogin, async (req, res) => {
         DeleteFile([image_url]);
         res.json({
           message: "Xoá hình ảnh của sản phẩm thành công!",
-          status: 200,
+          status: 200
         });
       } else {
         res.json({
           message: "Không thể xoá hình ảnh của sản phẩm!",
-          status: 400,
+          status: 400
         });
       }
     } catch (error) {
@@ -850,13 +855,13 @@ router.get("/:id", getUserInfo, (req, res) => {
   try {
     res.render("pages/item-view", {
       id: req.params.id,
-      login_info: req.login_info,
+      login_info: req.login_info
     });
   } catch (err) {
     res.json({
-      mess: "loi server",
+      mess: "Đã xảy ra lỗi, vui lòng thử lại",
       status: 500,
-      err,
+      err
     });
   }
 });
@@ -872,11 +877,11 @@ router.post("/:productID", async (req, res) => {
     res.json({
       mess: "lay data thanh cong",
       data,
-      status: 200,
+      status: 200
     });
   } catch (err) {
     res.json({
-      mess: "loi server",
+      mess: "Đã xảy ra lỗi, vui lòng thử lại",
       data: err,
       status: 500,
     });
@@ -897,14 +902,14 @@ router.post("/related/:categoryID", async (req, res) => {
     res.json({
       mess: "lay data thanh cong",
       data: data,
-      status: 200,
+      status: 200
     });
   } catch (err) {
     console.log(err);
     res.json({
-      mess: "loi server",
+      mess: "Đã xảy ra lỗi, vui lòng thử lại",
       err: "err",
-      status: 500,
+      status: 500
     });
   }
 });

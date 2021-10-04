@@ -1,20 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Giỏ hàng</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
-  <link rel="stylesheet" href="/public/css/cart.css" />
-  <%- include('../components/head'); %>
-</head>
-
-<body>
-  <%- include('../components/header'); %>
-    <section class="cart-container">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Giỏ hàng</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
+    <link rel="stylesheet" href="/public/css/cart.css" />
+    <%- include('../components/head'); %>
+  </head>
+  <body>
+    <%- include('../components/header'); %>
+    <section class="container">
       <div class="cart-header">
         <input type="checkbox" class="cart-checkbox cart-check-all" />
         <div class="cart-header-1 cart-header-text">Sản Phẩm</div>
@@ -26,12 +24,16 @@
       <div class="cart-item-container"></div>
       <div class="cart-select-zone">
         <input type="checkbox" class="cart-checkbox cart-check-all">
-        <span class="cart-header-text cart-select-zone-1">Chọn tất cả (0)</span>
-        <span class="cart-header-text cart-select-zone-2">Xóa</span>
-        <span class="cart-header-text cart-select-zone-3">Bỏ sản phẩm hết hàng</span>
-        <span class="cart-header-text cart-select-zone-4">Tổng thanh toán (0 sản phẩm)</span>
-        <span class="cart-header-text cart-select-zone-5">0đ</span>
-        <button class="cart-header-text cart-select-zone-6 cart-buy">Mua hàng</button>
+        <div class="cart-select-list">
+          <div class="cart-list">
+            <span class="cart-header-text cart-select-zone-1 cart-select-all">Chọn tất cả (0)</span>
+            <span class="cart-header-text cart-select-zone-2">Xóa</span>
+            <span class="cart-header-text cart-select-zone-3">Bỏ sản phẩm hết hàng</span>
+            <span class="cart-header-text cart-select-zone-4 cart-total-quantity">Tổng thanh toán (0 sản phẩm)</span>
+            <span class="cart-header-text cart-select-zone-5 cart-total-price">0đ</span>
+          </div>
+          <button class="cart-header-text cart-select-zone-6 cart-buy">Mua hàng</button>
+        </div>
       </div>
     </section>
     <%- include('../components/footer'); %>

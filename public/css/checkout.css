@@ -1,3 +1,7 @@
+* {
+  font-size: 15px;
+}
+
 main {
   width: 70%;
   margin: 15px 15%;
@@ -133,4 +137,38 @@ button:hover {
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   padding: 20px;
   margin-bottom: 15px;
+}
+
+.checkout-line-1,
+.checkout-line-2 {
+  display: flex;
+  justify-content: space-between;
+}
+
+.checkout-line-2 {
+  align-items: center;
+}
+
+.checkout-block-total {
+  color: #ee4d2d;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.buy-btn {
+  font-size: 17px;
+  padding: 10px 28px;
+  margin-top: 15px;
+  background: rgb(238, 77, 45);
+  color: white;
+  border: none;
+}
+
+.buy-btn:hover {
+  background: rgb(228, 67, 35);
+  color: white;
+}
+
+.checkout-block-dieukhoan {
+  color: rgb(0, 85, 170);
 }

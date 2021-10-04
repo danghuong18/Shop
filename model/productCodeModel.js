@@ -34,12 +34,8 @@ const ProductCodeSchema = mongoose.Schema(
   { collection: "productCode" }
 );
 
-// ProductCodeSchema.index({'$**': 'text'});
-// console.log(ProductCodeSchema.index());
-ProductCodeSchema.set("autoIndex", false);
-// ProductCodeSchema.index({productName: 'text'});
+ProductCodeSchema.index({ productName: "text" });
 
 const ProductCodeModel = mongoose.model("productCode", ProductCodeSchema);
-ProductCodeModel.createIndexes({ productName: "text" });
 
 module.exports = ProductCodeModel;

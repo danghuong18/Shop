@@ -5,78 +5,61 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShopProject</title>
-    <link rel="stylesheet" href="/public/css/checkout.css" />
+    <title>Đặt hàng</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
+    <link rel="stylesheet" href="/public/css/checkout.css"/>
     <%- include('../components/head'); %>
 </head>
 
 <body>
     <%- include('../components/header'); %>
-        <main>
-            <div class="user-address-block">
-                <div class="user-address-title">Địa chỉ nhận hàng</div>
-                <div class="user-address-list">
-                    <div class="user-address-item">
-                        <input type="radio" name="address" class="user-address-item-checkbox">
-                        </input>
-                        <span class="user-address-span">45AB Pasteur, Phường Nguyễn Thái Bình, Quận 1, TP. Hồ Chí
-                            Minh</span>
-                    </div>
-                    <div class="user-address-item">
-                        <input type="radio" name="address" class="user-address-item-checkbox">
-                        </input>
-                        <span class="user-address-span">45AB Pasteur, Phường Nguyễn Thái Bình, Quận 1, TP. Hồ Chí
-                            Minh</span>
-                    </div>
-                    <div class="user-address-item">
-                        <input type="radio" name="address" class="user-address-item-checkbox">
-                        </input>
-                        <span class="user-address-span">45AB Pasteur, Phường Nguyễn Thái Bình, Quận 1, TP. Hồ Chí
-                            Minh</span>
-                    </div>
-                </div>
+    <main>
+        <div class="user-address-block">
+            <div class="user-address-title">Địa chỉ nhận hàng</div>
+            <div class="user-address-list">
+                <!-- <div class="user-address-item">
+                    <input type="radio" name="address" class="user-address-item-checkbox">
+                    </input>
+                    <span class="user-address-span">45AB Pasteur, Phường Nguyễn Thái Bình, Quận 1, TP. Hồ Chí Minh</span>
+                </div> -->
             </div>
-            <div class="checkout-item-block">
-                <div class="checkout-item-header">
-                    <span class="block-title">Sản phẩm</span>
-                    <span class="checkout-item-header-2">Đơn giá</span>
-                    <span class="checkout-item-header-3">Số lượng</span>
-                    <span class="checkout-item-header-4">Thành tiền</span>
-                </div>
-                <div class="checkout-item-list">
-                    <div class="checkout-item">
-                        <img src="../../public/img/carousel.jpg" alt="" class="checkout-item-thumb">
-                        <span class="checkout-item-name">ảo ma canada madagasca indonesia liên bang nga</span>
-                        <span class="checkout-item-choose">Phân loại: Đỏ - L</span>
-                        <span class="checkout-item-unitprice">đ5000</span>
-                        <span class="checkout-item-quantity">2000</span>
-                        <span class="checkout-item-totalprice">đ2000</span>
-                    </div>
-                    <div class="checkout-item">
-                        <img src="../../public/img/carousel.jpg" alt="" class="checkout-item-thumb">
-                        <span class="checkout-item-name">ảo ma canada madagasca indonesia liên bang nga</span>
-                        <span class="checkout-item-choose">Phân loại: Đỏ - L</span>
-                        <span class="checkout-item-unitprice">đ5000</span>
-                        <span class="checkout-item-quantity">2000</span>
-                        <span class="checkout-item-totalprice">đ2000</span>
-                    </div>
-                    <div class="checkout-item">
-                        <img src="../../public/img/carousel.jpg" alt="" class="checkout-item-thumb">
-                        <span class="checkout-item-name">ảo ma canada madagasca indonesia liên bang nga</span>
-                        <span class="checkout-item-choose">Phân loại: Đỏ - L</span>
-                        <span class="checkout-item-unitprice">đ5000</span>
-                        <span class="checkout-item-quantity">2000</span>
-                        <span class="checkout-item-totalprice">đ2000</span>
-                    </div>
-                </div>
+        </div>
+        <div class="checkout-item-block">
+            <div class="checkout-item-header">
+                <span class="block-title">Sản phẩm</span>
+                <span class="checkout-item-header-2">Đơn giá</span>
+                <span class="checkout-item-header-3">Số lượng</span>
+                <span class="checkout-item-header-4">Thành tiền</span>
             </div>
-            <div class="checkout-block">
-                <span class="block-title">Phương thức thanh toán</span>
-                <div class="border"></div>
+            <div class="checkout-item-list">
+                <!-- <div class="checkout-item">
+                    <img src="../../public/img/carousel.jpg" alt="" class="checkout-item-thumb">
+                    <span class="checkout-item-name">ảo ma canada madagasca indonesia liên bang nga</span>
+                    <span class="checkout-item-choose">Phân loại: Đỏ - L</span>
+                    <span class="checkout-item-unitprice">đ5000</span>
+                    <span class="checkout-item-quantity">2000</span>
+                    <span class="checkout-item-totalprice">đ2000</span>
+                </div> -->
             </div>
-        </main>
-        <%- include('../components/footer'); %>
+        </div>
+        <div class="checkout-block">
+            <div class="checkout-line-1">
+                <span class="block-title checkout-block-title">Tổng tiền</span>
+                <div class=""></div>
+                <span class="checkout-block-total">0đ</span>
+            </div>
+            <div class="checkout-line-2">
+                <span class="checkout-block-dieukhoan-span">Nhấn "Đặt hàng" đồng nghĩa với việc bạn đồng ý tuân theo <a class="checkout-block-dieukhoan" href="#">Điều khoản C-Shop</a></span>
+                <div class=""></div>
+                <button class="buy-btn">Mua hàng</button>
+            </div>
+        </div>
+        
+    </main>
+    <%- include('../components/footer'); %>
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="/public/js/checkout.js"></script>
 <%- include('../components/footer_js'); %>
 
 </html>

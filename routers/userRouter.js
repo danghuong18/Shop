@@ -112,59 +112,289 @@ router.get("/", checkLogin, async (req, res) => {
 
 router.get("/login", getUserInfo, (req, res) => {
   res.render("pages/login", {
-    login_info: req.login_info,
+    login_info: req.login_info
   });
 });
 
 router.get("/logon", getUserInfo, (req, res) => {
-  res.render("pages/logon", { login_info: req.login_info });
+  res.render("pages/logon", {
+    login_info: req.login_info
+  });
 });
 
 router.get("/profile", getUserInfo, (req, res) => {
   if (req.login_info) {
-    res.render("pages/profile", { login_info: req.login_info });
+    res.render("pages/profile", {
+      login_info: req.login_info,
+      tab: req.query.tab
+    });
   } else {
-    res.render("pages/login", { login_info: req.login_info });
+    res.render("pages/login", {
+      login_info: req.login_info
+    });
   }
 });
 
 router.get("/cart", getUserInfo, (req, res) => {
   res.render("pages/cart", {
-    login_info: req.login_info,
+    login_info: req.login_info
   });
 });
 
 router.get("/checkout", getUserInfo, (req, res) => {
   res.render("pages/checkout", {
-    login_info: req.login_info,
+    login_info: req.login_info
   });
 });
 
-router.post("/addcheckout", getUserInfo, async (req, res) => {
-  console.log(req.body["addcheckout[]"]);
+router.post("/getuserinfo", checkLogin, (req, res) => {
+  res.json({
+    status: 200,
+    UserInfo: req.login_info,
+    mess: "Lấy data thành công",
+    toastr: "success"
+  });
+});
+
+router.post("/addcart", checkLogin, async (req, res) => {
   try {
-    for (let i = 0; i < req.body.addcheckout.length; i++) {
-      let data = await CartModel.updateOne(
-        {
-          _id: req.login_info.cartID,
-          listProduct: { $elemMatch: { productID: req.body.addcheckout[i] } },
-        },
-        { selected: 1 }
-      );
-      console.log(data);
+    let oldItemQuantity;
+    let token = req.cookies.cookie;
+    let userID = jwt.verify(token, "thai").id;
+    let productID = req.body.productID;
+    let cartID = await UserModel.findOne({ _id: userID }).populate("cartID");
+    cartID = cartID.cartID._id;
+    let quantity = parseInt(req.body.quantity);
+    let data = await ProductModel.findOne({ _id: productID });
+    let left = data.quantity;
+    let oldItem = await CartModel.findOne({
+      _id: cartID,
+      listProduct: { $elemMatch: { productID: productID } },
+    });
+    if (oldItem) {
+      oldItemQuantity = oldItem.listProduct;
+      oldItemQuantity = oldItemQuantity.filter(function (a, b) {
+        if (a.productID == productID) {
+          return true;
+        }
+      });
+      oldItemQuantity = oldItemQuantity[0].quantity;
+    } else if (quantity > left) {
+      res.json({
+        status: 400,
+        mess: ["Không đủ hàng", "Không đủ hàng, vui lòng nhập lại số lượng"],
+        toastr: "error",
+      });
+    } else if (quantity + oldItemQuantity > left) {
+      res.json({
+        status: 400,
+        mess: [
+          "Số lượng không được bé hơn hoặc bằng 0",
+          "Số lượng không được bé hơn hoặc bằng 0",
+        ],
+        toastr: "warning",
+      });
     }
-    res.json(data);
+    if (oldItem) {
+      if (oldItemQuantity + quantity <= left) {
+        let data = await CartModel.updateOne(
+          {
+            _id: cartID,
+            listProduct: { $elemMatch: { productID: productID } },
+          },
+          { $inc: { "listProduct.$.quantity": quantity } }
+        );
+        res.json({
+          status: 200,
+          data: data,
+          mess: ["Đã thêm vào giỏ hàng", "Đổi số lượng sản phẩm thành công"],
+          toastr: "success",
+        });
+      } else {
+        res.json({
+          status: 400,
+          mess: ["Không đủ hàng", "Không đủ hàng, vui lòng nhập lại số lượng"],
+          toastr: "warning",
+        });
+      }
+    } else {
+      data = await CartModel.updateOne(
+        { _id: cartID },
+        {
+          $push: {
+            listProduct: {
+              productID: productID,
+              quantity: quantity,
+            },
+          },
+        }
+      );
+      res.json({
+        status: 200,
+        mess: ["Đã thêm vào giỏ hàng", "Đổi số lượng sản phẩm thành công"],
+        toastr: "success",
+      });
+    }
   } catch (err) {
     console.log(err);
-    res.json(err);
+    res.json({
+      status: 500,
+      err: err,
+      mess: [
+        "Đã xảy ra lỗi, vui lòng thử lại",
+        "Đã xảy ra lỗi, vui lòng thử lại",
+      ],
+      toastr: "error",
+    });
   }
 });
 
-router.post("/getcheckout", getUserInfo, async (req, res) => {
+router.post("/cart", checkLogin, async function (req, res) {
   try {
-    let data = await CartModel.findOne({ _id: req.login_info.cartID });
-    res.json(data);
-  } catch (err) {}
+    let cart = await CartModel.findOne({ _id: req.login_info.cartID });
+    cart = cart.listProduct;
+    let data = [];
+    for (let i = 0; i < cart.length; i++) {
+      let pushData = await ProductModel.findOne({ _id: cart[i].productID });
+      pushData = pushData.toObject();
+      data.push(pushData);
+      let productCode = await ProductCodeModel.findOne({
+        productID: { $all: [cart[i].productID] },
+      });
+      title = productCode.productName;
+      let productCodeID = productCode._id;
+      data[i].quantity = cart[i].quantity;
+      data[i].title = title;
+      data[i].productCodeID = productCodeID;
+    }
+    res.json({
+      status: 200,
+      data: data,
+      mess: "lay data thanh cong",
+    });
+  } catch (err) {
+    console.log(err);
+    res.json({
+      status: 500,
+      err: err,
+      mess: "Đã xảy ra lỗi, vui lòng thử lại",
+    });
+  }
+});
+
+router.delete("/cart/delete", checkLogin, async function (req, res) {
+  try {
+    let token = req.cookies.cookie;
+    let userID = jwt.verify(token, "thai").id;
+    let productID = req.body.productID;
+    let cartID = await UserModel.findOne({ _id: userID });
+    cartID = cartID.cartID;
+    let data = await CartModel.updateOne(
+      { _id: cartID },
+      { $pull: { listProduct: { productID: productID } } }
+    );
+    res.json({
+      status: 200,
+      data: data,
+      mess: "Xóa sản phẩm thành công",
+      toastr: "success",
+    });
+  } catch (err) {
+    res.json({
+      status: 500,
+      err: err,
+      mess: "Đã xảy ra lỗi, vui lòng thử lại",
+      toastr: "error",
+    });
+  }
+});
+
+router.post("/addcheckout", checkLogin, async (req, res) => {
+  try {
+    await CartModel.updateOne(
+      {
+        _id: req.login_info.cartID,
+        "listProduct.selected": 1,
+      },
+      { "listProduct.$.selected": 0 }
+    );
+    if (typeof req.body["addcheckout[]"] == "string") {
+      await CartModel.updateOne(
+        {
+          _id: req.login_info.cartID,
+          "listProduct.productID": req.body["addcheckout[]"],
+          // listProduct: {
+          //   $elemMatch: { productID: { $in: req.body["addcheckout[]"][i] } },
+          // },
+        },
+        { $set: { "listProduct.$.selected": 1 } }
+      );
+    } else {
+      for (let i = 0; i < req.body["addcheckout[]"].length; i++) {
+        await CartModel.updateOne(
+          {
+            _id: req.login_info.cartID,
+            "listProduct.productID": req.body["addcheckout[]"][i],
+            // listProduct: {
+            //   $elemMatch: { productID: { $in: req.body["addcheckout[]"][i] } },
+            // },
+          },
+          { $set: { "listProduct.$.selected": 1 } }
+        );
+      }
+    }
+    res.json({
+      message: "Redirecting",
+      status: 200,
+    });
+  } catch (err) {
+    console.log(err);
+    res.json({
+      mess: "Đã xảy ra lỗi, vui lòng thử lại",
+      status: 500,
+      err: err,
+      toastr: "error",
+    });
+  }
+});
+
+router.post("/getcheckout", checkLogin, async (req, res) => {
+  try {
+    let data = await CartModel.findOne({
+      _id: req.login_info.cartID,
+      "listProduct.selected": 1,
+    }).populate("listProduct.productID");
+    if (data) {
+      for (let i = 0; i < data.listProduct.length; i++) {
+        data.listProduct[i] = data.listProduct[i].toObject();
+        let productName = await ProductCodeModel.findOne({
+          productID: { $all: [data.listProduct[i].productID] },
+        });
+        productName = productName.productName;
+        data.listProduct[i].productName = productName;
+      }
+      res.json({
+        status: 200,
+        data: data,
+        mess: "Lấy data thành công",
+        toastr: "success",
+      });
+    } else if (data == null) {
+      res.json({
+        status: 400,
+        data: data,
+        mess: "Bạn chưa chọn sản phẩm gì, hãy chọn sản phẩm để mua hàng nhé",
+        toastr: "error",
+      });
+    }
+  } catch (err) {
+    res.json({
+      mess: "Đã xảy ra lỗi, vui lòng thử lại",
+      status: 500,
+      err: err,
+      toastr: "error",
+    });
+  }
 });
 
 router.post("/", async (req, res) => {
@@ -388,157 +618,12 @@ router.post("/logout", checkLogin, async (req, res) => {
     await BlackListModel.create({ token });
     res.json({ status: 200, mess: "dang xuat ok" });
   } catch (error) {
-    res.json({ status: 500, mess: "loi server", error });
+    res.json({ status: 500, mess: "Đã xảy ra lỗi, vui lòng thử lại", error });
   }
 });
 
 router.post("/checkLogin", checkLogin, (req, res) => {
   res.json({ status: 200, message: "Đã đăng nhập!" });
-});
-
-router.post("/addcart", checkLogin, async (req, res) => {
-  try {
-    let token = req.cookies.cookie;
-    let userID = jwt.verify(token, "thai").id;
-    let productID = req.body.productID;
-    let cartID = await UserModel.findOne({ _id: userID }).populate("cartID");
-    cartID = cartID.cartID._id;
-    let quantity = parseInt(req.body.quantity);
-    let data = await ProductModel.findOne({ _id: productID });
-    let left = data.quantity;
-    let oldItem = await CartModel.findOne({
-      _id: cartID,
-      listProduct: { $elemMatch: { productID: productID } },
-    });
-    if (quantity > left) {
-      res.json({
-        status: 400,
-        mess: ["Không đủ hàng", "Không đủ hàng, vui lòng nhập lại số lượng"],
-        toastr: "error",
-      });
-    } else if (quantity <= 0) {
-      res.json({
-        status: 400,
-        mess: [
-          "Số lượng không được bé hơn hoặc bằng 0",
-          "Số lượng không được bé hơn hoặc bằng 0",
-        ],
-        toastr: "warning",
-      });
-    } else if (oldItem) {
-      let oldItemQuantity = oldItem.listProduct;
-      oldItemQuantity = oldItemQuantity.filter(function (a, b) {
-        if (a.productID == productID) {
-          return true;
-        }
-      });
-      oldItemQuantity = oldItemQuantity[0].quantity;
-      if (oldItemQuantity + quantity <= left) {
-        let data = await CartModel.updateOne(
-          {
-            _id: cartID,
-            listProduct: { $elemMatch: { productID: productID } },
-          },
-          { $inc: { "listProduct.$.quantity": quantity } }
-        );
-        res.json({
-          status: 200,
-          mess: ["Đã thêm vào giỏ hàng", "Đổi số lượng sản phẩm thành công"],
-          toastr: "success",
-        });
-      } else {
-        res.json({
-          status: 400,
-          mess: ["Không đủ hàng", "Không đủ hàng, vui lòng nhập lại số lượng"],
-          toastr: "warning",
-        });
-      }
-    } else {
-      data = await CartModel.updateOne(
-        { _id: cartID },
-        {
-          $push: {
-            listProduct: {
-              productID: productID,
-              quantity: quantity,
-            },
-          },
-        }
-      );
-      res.json({
-        status: 200,
-        mess: ["Đã thêm vào giỏ hàng", "Đổi số lượng sản phẩm thành công"],
-        toastr: "success",
-      });
-    }
-  } catch (err) {
-    res.json({
-      status: 500,
-      err: err,
-      mess: "loi server",
-    });
-  }
-});
-
-router.post("/cart", checkLogin, async function (req, res) {
-  try {
-    let token = req.cookies.cookie;
-    let userID = jwt.verify(token, "thai").id;
-    let cart = await UserModel.findOne({ _id: userID }).populate("cartID");
-    cart = cart.cartID.listProduct;
-    let data = [];
-    for (let i = 0; i < cart.length; i++) {
-      let push = await ProductModel.findOne({ _id: cart[i].productID });
-      push = push.toObject();
-      data.push(push);
-      let productCode = await ProductCodeModel.findOne({
-        productID: { $all: [cart[i].productID] },
-      });
-      title = productCode.productName;
-      let productCodeID = productCode._id;
-      data[i].quantity = cart[i].quantity;
-      data[i].title = title;
-      data[i].productCodeID = productCodeID;
-    }
-    res.json({
-      status: 200,
-      data: data,
-      mess: "lay data thanh cong",
-    });
-  } catch (err) {
-    console.log(err);
-    res.json({
-      status: 500,
-      err: err,
-      mess: "loi server",
-    });
-  }
-});
-
-router.delete("/cart/delete", checkLogin, async function (req, res) {
-  try {
-    let token = req.cookies.cookie;
-    let userID = jwt.verify(token, "thai").id;
-    let productID = req.body.productID;
-    let cartID = await UserModel.findOne({ _id: userID });
-    cartID = cartID.cartID;
-    let data = await CartModel.updateOne(
-      { _id: cartID },
-      { $pull: { listProduct: { productID: productID } } }
-    );
-    res.json({
-      status: 200,
-      data: data,
-      mess: "Xóa sản phẩm thành công",
-      toastr: "success",
-    });
-  } catch (err) {
-    res.json({
-      status: 500,
-      err: err,
-      mess: "loi server",
-    });
-  }
 });
 
 router.post("/editProfile", checkLogin, async (req, res) => {

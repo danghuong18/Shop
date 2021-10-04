@@ -1,6 +1,6 @@
 // get item
 
-let id = $(".id").text();
+let id = $(".container").attr("id");
 let selected;
 let totalQuantity = 0;
 
@@ -70,14 +70,14 @@ $.ajax({
   var comparePrice = 1;
   var idColor = 0;
   var idSize = 0;
-  $(".lowestprice").text("₫" + data.data.productID[0].price);
+  $(".lowestprice").text((data.data.productID[0].price).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'}));
   for (let i = 0; i < data.data.productID.length; i++) {
     // Hiển thị giá
     if (comparePrice > data.data.productID[i].price) {
-      $(".lowestprice").text("₫" + data.data.productID[i].price);
+      $(".lowestprice").text((data.data.productID[i].price).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'}));
     }
     if (comparePrice <= data.data.productID[i].price) {
-      $(".highestprice").text("₫" + data.data.productID[i].price);
+      $(".highestprice").text((data.data.productID[i].price).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'}));
     }
     comparePrice = data.data.productID[i].price;
 
@@ -90,7 +90,7 @@ $.ajax({
       }
     }
     if (check == 1) {
-      $(".item-color").append(
+      $(".item-color .item-prop-element").append(
         `
           <button class="item-select-btn-color item-select-btn ${idColor}">${data.data.productID[i].color}</button>
         `
@@ -138,7 +138,7 @@ $.ajax({
       }
     }
     if (check == 1) {
-      $(".item-size").append(
+      $(".item-size .item-prop-element").append(
         `
           <button class="item-select-btn-size item-select-btn ${idSize}">${data.data.productID[i].size}</button>
           `
@@ -193,9 +193,7 @@ $.ajax({
       `
     <div class="item-detail-container">
       <span class="item-detail-title">Danh mục ${i + 1}</span>
-      <span class="item-detail-content">${
-        data.data.categoryID[i].categoryName
-      }</span>
+      <span class="item-detail-content">${data.data.categoryID[i].categoryName}</span>
     </div>
     `
     );
@@ -272,6 +270,7 @@ $.ajax({
           if (data.logged_in == false) {
             window.location.href = "/user/login";
           } else {
+            loadCart();
             toastr[data.toastr](data.mess[0]);
           }
         })
@@ -284,57 +283,50 @@ $.ajax({
     }
   });
 
-  //output related items
-  let category;
-  for (let i = 0; i < data.data.categoryID.length; i++) {
-    category = data.data.categoryID[i]._id + "-";
-  }
   $.ajax({
-    type: "POST",
-    url: "/product/related/" + category,
+    type: "GET",
+    url: "/product/showProduct?limit=12&similar=" + id,
   })
     .then(function (data) {
-      console.log(data);
-      for (let i = 0; i < data.data.length; i++) {
-        let append = `
-      <a href="/product/${data.data[i]._id}" class="owl-carousel-item">
-         <img
-           src="${data.data[i].listImg[0]}"
-           alt=""
-           class="carousel-item-img"
-         />
-         <div class="carousel-content-container">
-           <span class="carousel-title"
-             >${data.data[i].productName}</span
-           >
-           <div class="carousel-price">₫${data.data[i].productID[0].price}</div>
-         </div>
-      </a>
-      `;
-        $(".owl-two").append(append);
+      if(data.status == 200){
+        for (let i = 0; i < data.data.length; i++) {
+          let price = (data.data[i].min)? ((data.data[i].min != data.data[i].max)? `${(data.data[i].min).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'})} - ${(data.data[i].max).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'})}`: (data.data[i].min).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'})) : (0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND'});
+          let append = `
+        <a href="/product/${data.data[i]._id}" class="owl-carousel-item">
+          <div class="carousel-item-product">
+            <img src="${data.data[i].listImg[0]}" alt="" class="carousel-item-img"/>
+          </div>
+          <div class="carousel-content-container">
+            <span class="carousel-title">${data.data[i].productName}</span>
+            <div class="carousel-price">${price}</div>
+          </div>
+        </a>
+        `;
+          $(".owl-two").append(append);
+        }
+        $(".owl-two").owlCarousel({
+          loop: true,
+          margin: 10,
+          nav: true,
+          responsive: {
+            0: {
+              items: 1,
+            },
+            360: {
+              items: 2,
+            },
+            780: {
+              items: 3,
+            },
+            1024: {
+              items: 4,
+            },
+            1200: {
+              items: 6,
+            },
+          },
+        });
       }
-      $(".owl-two").owlCarousel({
-        loop: true,
-        margin: 10,
-        nav: true,
-        responsive: {
-          0: {
-            items: 1,
-          },
-          600: {
-            items: 3,
-          },
-          1000: {
-            items: 4,
-          },
-          1500: {
-            items: 5,
-          },
-          1800: {
-            items: 7,
-          },
-        },
-      });
     })
     .catch(function (err) {
       toastr["error"]("Đã xảy ra lỗi, vui lòng thử lại");

@@ -20,7 +20,7 @@ const OrderSchema = mongoose.Schema({
     status: {
         type: String,
         enum: STATUS,
-        default: STATUS[1],
+        default: STATUS[0],
     },
     createDate: Date
 }, {collection: 'order'});

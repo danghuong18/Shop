@@ -96,27 +96,6 @@ router.get("/order", checkAdminLogin, (req, res)=>{
     });
 });
 
-router.get("/search", checkLogin, async (req, res)=>{
-    if(req.login_info.role === "admin"){
-        try {
-            let result = {};
-            let query = req.query.q;
-
-            let search = await ProductCodeModel.find({$text: {$search: query}}).populate("brand", "brandName").limit(5);
-    
-            if(search.length > 0){
-                res.json({message: "Successed", status: 200, data: search});
-            }else{
-                res.json({message: "Không tìm thấy kết quả nào cả.", status: 400});
-            }
-        } catch (error) {
-            res.json({message: "Server error!", status: 500, error});
-        }
-    }else{
-        res.json({message: "Bạn không có quyền ở đây.", status: 400});
-    }
-});
-
 router.use((req, res)=>{
     res.render("pages/cpanel/not-found", {
         name: "Không tìm thấy trang",

@@ -148,7 +148,7 @@ function loadQueryProduct(page, isCategory = false, isBrand = false){
         category_query += `&sort=date-asc`;
     }
 
-    if($(".action-sort").val()){
+    if($(".action-sort").val() && $(".action-sort").val() != "initial"){
         query += `&sortPrice=${$(".action-sort").val()}`;
         category_query += `&sortPrice=${$(".action-sort").val()}`;
     }
@@ -161,7 +161,7 @@ function loadQueryProduct(page, isCategory = false, isBrand = false){
     if(page && !isNaN(page)){
         if(!isNaN(page)){
             query += `&page=` + page;
-            if(page > 1){
+            if(page > 1 || category_query.length <= 2){
                 category_query +=  `&page=` + page;
             }
         }
