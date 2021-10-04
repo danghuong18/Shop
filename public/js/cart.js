@@ -214,7 +214,7 @@ $(document).on("change", ".cart-item-quantity-input", function () {
 //check one
 $(document).on("click", ".cart-checkbox", function () {
   totalAndQuantity();
-  // changeChecked();
+  changeChecked();
 });
 
 //check all

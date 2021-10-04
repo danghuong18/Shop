@@ -330,7 +330,7 @@ router.post("/addcheckout", checkLogin, async (req, res) => {
         },
         { $set: { "listProduct.$.selected": 1 } }
       );
-    } else {
+    } else if (typeof req.body["addcheckout[]"] == "object") {
       for (let i = 0; i < req.body["addcheckout[]"].length; i++) {
         let data = await CartModel.updateOne(
           {
