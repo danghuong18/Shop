@@ -45,6 +45,7 @@ $(document).ready(function () {
     type: "POST",
   })
     .then(function (data) {
+      console.log(48, data);
       if (data.status == 400) {
         toastr[data.toastr](data.mess);
         setTimeout(function () {

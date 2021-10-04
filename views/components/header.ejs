@@ -80,22 +80,16 @@
           </ul>
         </li>
         <% } else { %>
-        <a href="/user/login">
-          <li class="header__navbar-item header__navbar-user">
-            <img src="<%='/public/upload/default-avatar.jpg' %>" class="header__navbar-user-img"/>
-            <span class="header__navbar-user-name">Đăng nhập</span>
-          </li>
-          <% } else { %>
-            <a href="/user/login">
-              <li class="header__navbar-item header__navbar-user">
-                <img src="<%='/public/upload/default-avatar.jpg' %>" class="header__navbar-user-img" />
-                <span class="header__navbar-user-name">Đăng nhập</span>
-              </li>
-            </a>
-            <% } %>
-      </ul>
-      <!--end header navbar right -->
-    </nav>
+          <a href="/user/login">
+            <li class="header__navbar-item header__navbar-user">
+              <img src="<%='/public/upload/default-avatar.jpg' %>" class="header__navbar-user-img"/>
+              <span class="header__navbar-user-name">Đăng nhập</span>
+            </li>
+          </a>
+          <% } %>
+        </ul>
+        <!--end header navbar right -->
+      </nav>
 
     <!-- end header-navbar -->
 
