@@ -1407,6 +1407,10 @@ ol, ul {
   .container .content__split-40 {
     margin-bottom: 1rem;
   }
+  .container .content__order .order__detail__footer .cancel-button,
+.container .content__order .order__detail__footer .reorder-button {
+    width: calc(100%/3 - 1rem);
+  }
   .container__product__sidebar, .container__product__main {
     width: 100%;
   }

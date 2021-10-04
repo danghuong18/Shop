@@ -92,7 +92,7 @@ router.get("/revenue", checkLogin, async (req, res)=>{
                 if(revenue > max){
                     max = revenue;
                 }
-                result.push({day: new Date(date).toLocaleDateString(), revenue: revenue});
+                result.push({day: new Date(date).toLocaleDateString("vi-VN"), revenue: revenue});
                 date.setDate(date.getDate() - 1);
             }
 
