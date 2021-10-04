@@ -311,12 +311,11 @@ router.delete("/cart/delete", checkLogin, async function (req, res) {
 
 router.post("/addcheckout", checkLogin, async (req, res) => {
   try {
-    await CartModel.updateOne(
+    await CartModel.updateMany(
       {
         _id: req.login_info.cartID,
-        "listProduct.selected": 1,
       },
-      { "listProduct.$.selected": 0 }
+      { $set: { "listProduct.$.selected": 0 } }
     );
     if (typeof req.body["addcheckout[]"] == "string") {
       await CartModel.updateOne(
@@ -329,7 +328,7 @@ router.post("/addcheckout", checkLogin, async (req, res) => {
         },
         { $set: { "listProduct.$.selected": 1 } }
       );
-    } else {
+    } else if (typeof req.body["addcheckout[]"] == "object") {
       for (let i = 0; i < req.body["addcheckout[]"].length; i++) {
         await CartModel.updateOne(
           {
@@ -362,8 +361,13 @@ router.post("/getcheckout", checkLogin, async (req, res) => {
   try {
     let data = await CartModel.findOne({
       _id: req.login_info.cartID,
-      "listProduct.selected": 1,
     }).populate("listProduct.productID");
+    for (let i = 0; i < data.listProduct.length; i++) {
+      if (data.listProduct[i].selected == 0) {
+        data.listProduct.splice(i, 1);
+      }
+    }
+    console.log(data);
     if (data) {
       for (let i = 0; i < data.listProduct.length; i++) {
         data.listProduct[i] = data.listProduct[i].toObject();
@@ -388,6 +392,7 @@ router.post("/getcheckout", checkLogin, async (req, res) => {
       });
     }
   } catch (err) {
+    console.log(err);
     res.json({
       mess: "Đã xảy ra lỗi, vui lòng thử lại",
       status: 500,
