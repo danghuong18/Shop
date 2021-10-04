@@ -312,9 +312,10 @@ router.delete("/cart/delete", checkLogin, async function (req, res) {
 
 router.post("/addcheckout", checkLogin, async (req, res) => {
   try {
-    await CartModel.updateMany(
+    await CartModel.updateOne(
       {
         _id: req.login_info.cartID,
+        "listProduct.selected": 1,
       },
       { $set: { "listProduct.$.selected": 0 } }
     );
@@ -329,9 +330,9 @@ router.post("/addcheckout", checkLogin, async (req, res) => {
         },
         { $set: { "listProduct.$.selected": 1 } }
       );
-    } else if (typeof req.body["addcheckout[]"] == "object") {
+    } else {
       for (let i = 0; i < req.body["addcheckout[]"].length; i++) {
-        await CartModel.updateOne(
+        let data = await CartModel.updateOne(
           {
             _id: req.login_info.cartID,
             "listProduct.productID": req.body["addcheckout[]"][i],
@@ -341,6 +342,7 @@ router.post("/addcheckout", checkLogin, async (req, res) => {
           },
           { $set: { "listProduct.$.selected": 1 } }
         );
+        console.log(data);
       }
     }
     res.json({
@@ -368,7 +370,6 @@ router.post("/getcheckout", checkLogin, async (req, res) => {
         data.listProduct.splice(i, 1);
       }
     }
-    console.log(data);
     if (data) {
       for (let i = 0; i < data.listProduct.length; i++) {
         data.listProduct[i] = data.listProduct[i].toObject();
