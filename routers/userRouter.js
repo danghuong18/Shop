@@ -312,10 +312,13 @@ router.delete("/cart/delete", checkLogin, async function (req, res) {
 
 router.post("/addcheckout", checkLogin, async (req, res) => {
   try {
-    await CartModel.updateOne(
+    let data = await CartModel.updateOne(
       {
         _id: req.login_info.cartID,
         "listProduct.selected": 1,
+        // listProduct: {
+        //   $elemMatch: { selected: { $in: 1 } },
+        // },
       },
       { $set: { "listProduct.$.selected": 0 } }
     );
@@ -342,7 +345,6 @@ router.post("/addcheckout", checkLogin, async (req, res) => {
           },
           { $set: { "listProduct.$.selected": 1 } }
         );
-        console.log(data);
       }
     }
     res.json({
@@ -367,9 +369,10 @@ router.post("/getcheckout", checkLogin, async (req, res) => {
     }).populate("listProduct.productID");
     for (let i = 0; i < data.listProduct.length; i++) {
       if (data.listProduct[i].selected == 0) {
-        data.listProduct.splice(i, 1);
+        data.listProduct.splice(i, 2);
       }
     }
+    console.log(data);
     if (data) {
       for (let i = 0; i < data.listProduct.length; i++) {
         data.listProduct[i] = data.listProduct[i].toObject();
