@@ -334,18 +334,19 @@ router.post("/addcheckout", checkLogin, async (req, res) => {
         { $set: { "listProduct.$.selected": 1 } }
       );
     } else if (typeof req.body["addcheckout[]"] == "object") {
-      for (let i = 0; i < req.body["addcheckout[]"].length; i++) {
-        let data = await CartModel.updateOne(
-          {
-            _id: req.login_info.cartID,
-            "listProduct.productID": req.body["addcheckout[]"][i],
-            // listProduct: {
-            //   $elemMatch: { productID: { $in: req.body["addcheckout[]"][i] } },
-            // },
-          },
-          { $set: { "listProduct.$.selected": 1 } }
-        );
-      }
+      console.log(337, req.body);
+      // for (let i = 0; i < req.body["addcheckout[]"].length; i++) {
+      let data = await CartModel.updateOne(
+        {
+          _id: req.login_info.cartID,
+        },
+        {
+          $set: { "listProduct.$[i].selected": 1 },
+        },
+        {
+          arrayFilters: [{ "i.productID": { $in: req.body["addcheckout[]"] } }],
+        }
+      );
     }
     res.json({
       message: "Redirecting",
@@ -369,10 +370,10 @@ router.post("/getcheckout", checkLogin, async (req, res) => {
     }).populate("listProduct.productID");
     for (let i = 0; i < data.listProduct.length; i++) {
       if (data.listProduct[i].selected == 0) {
-        data.listProduct.splice(i, 2);
+        data.listProduct.splice(i, 1);
       }
     }
-    console.log(data);
+    // console.log(data);
     if (data) {
       for (let i = 0; i < data.listProduct.length; i++) {
         data.listProduct[i] = data.listProduct[i].toObject();
