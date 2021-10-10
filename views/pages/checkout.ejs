@@ -11,15 +11,18 @@
 </head>
 <body>
     <%- include('../components/header'); %>
-    <main>
-        <div class="user-address-block">
-            <div class="user-address-title">Địa chỉ nhận hàng</div>
-            <div class="user-address-list">
-                <!-- <div class="user-address-item">
-                    <input type="radio" name="address" class="user-address-item-checkbox">
-                    </input>
-                    <span class="user-address-span">45AB Pasteur, Phường Nguyễn Thái Bình, Quận 1, TP. Hồ Chí Minh</span>
-                </div> -->
+    <section class="container">
+        <div class="user-address">
+            <div class="user-address-letter"></div>
+            <div class="user-address-block">
+                <div class="user-address-title"><i class="fas fa-address-book"></i>Địa chỉ nhận hàng</div>
+                <div class="user-address-list">
+                    <!-- <div class="user-address-item">
+                        <input type="radio" name="address" class="user-address-item-checkbox">
+                        </input>
+                        <span class="user-address-span">45AB Pasteur, Phường Nguyễn Thái Bình, Quận 1, TP. Hồ Chí Minh</span>
+                    </div> -->
+                </div>
             </div>
         </div>
         <div class="checkout-item-block">
@@ -42,18 +45,16 @@
         </div>
         <div class="checkout-block">
             <div class="checkout-line-1">
-                <span class="block-title checkout-block-title">Tổng tiền</span>
-                <div class=""></div>
-                <span class="checkout-block-total">0đ</span>
+                <span class="checkout-block-title">Tổng tiền</span>
+                <span class="checkout-block-total">0 ₫</span>
             </div>
             <div class="checkout-line-2">
-                <span class="checkout-block-dieukhoan-span">Nhấn "Đặt hàng" đồng nghĩa với việc bạn đồng ý tuân theo <a class="checkout-block-dieukhoan" href="#">Điều khoản C-Shop</a></span>
-                <div class=""></div>
+                <span class="checkout-block-term">Nhấn "Đặt hàng" đồng nghĩa với việc bạn đồng ý tuân theo <a class="checkout-block-dieukhoan" href="#">Điều khoản C-Shop</a></span>
                 <button class="buy-btn">Mua hàng</button>
             </div>
         </div>
         
-    </main>
+    </section>
     <%- include('../components/footer'); %>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>

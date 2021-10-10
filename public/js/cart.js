@@ -87,42 +87,24 @@ $(document).ready(function () {
                 <div class="cart-item ${i}" id="${data.data[i]._id}">
                   <input type="checkbox" class="cart-checkbox cart-item-check"/>
                   <div class="cart-item-content">
-                    <a href="/product/${
-                      data.data[i].productCodeID
-                    }" class="cart-item-img">
+                    <a href="/product/${data.data[i].productCodeID}" class="cart-item-img">
                       <img src="${data.data[i].thumb}"/>
                     </a>
                     <div class="cart-item-detail">
                       <span class="cart-item-title">
-                        <a href="/product/${data.data[i].productCodeID}">${
-            data.data[i].title
-          }</a>
+                        <a href="/product/${data.data[i].productCodeID}">${data.data[i].title}</a>
                       </span>
                       <span class="cart-item-choose">
-                        Phân Loại Hàng: ${data.data[i].color} - ${
-            data.data[i].size
-          }
+                        Phân Loại Hàng: ${data.data[i].color} - ${data.data[i].size}
                       </span>
                     </div>
                   </div>
-                  <div class="cart-item-price">${data.data[
-                    i
-                  ].price.toLocaleString("vi-VN", {
-                    style: "currency",
-                    currency: "VND",
-                  })}</div>
+                  <div class="cart-item-price">${data.data[i].price.toLocaleString("vi-VN", {style: "currency", currency: "VND"})}</div>
                   <div class="cart-item-quantity">
-                    <input type="number" class="cart-item-quantity-input" value="${
-                      data.data[i].quantity
-                    }" old="${data.data[i].quantity}"/>
+                    <input type="number" class="cart-item-quantity-input" value="${data.data[i].quantity}" old="${data.data[i].quantity}"/>
                   </div>
                   <div class="cart-item-total-price">
-                    ${(
-                      data.data[i].price * data.data[i].quantity
-                    ).toLocaleString("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                    })}
+                    ${(data.data[i].price * data.data[i].quantity).toLocaleString("vi-VN", {style: "currency", currency: "VND"})}
                   </div>
                   <div class="cart-item-action">Xóa</div>
                 </div>    
@@ -168,7 +150,7 @@ $(document).on("change", ".cart-item-quantity-input", function () {
       url: "/user/cart/delete",
       type: "DELETE",
       data: {
-        productID: productID,
+        productID: productID
       },
     })
       .then(function (data) {
@@ -192,12 +174,7 @@ $(document).on("change", ".cart-item-quantity-input", function () {
         toastr[data.toastr](data.mess[1]);
         if (data.status == 200) {
           loadCart();
-          totalPriceEle.text(
-            (price * newQuantity).toLocaleString("vi-VN", {
-              style: "currency",
-              currency: "VND",
-            })
-          );
+          totalPriceEle.text((price * newQuantity).toLocaleString("vi-VN", {style: "currency", currency: "VND"}));
           totalAndQuantity();
         } else if (data.status == 400) {
           thisEle.val(oldQuantity);
@@ -245,27 +222,6 @@ $(document).on("click", ".cart-item-action", function () {
       toastr[err.toastr](err.mess);
     });
 });
-
-// $(".cart-delete").on("click", function () {
-//   let delete = "";
-//   for (let i = 0; i <$(".cart-item").length; i++){
-//     delete = $(".cart-item."+i).attr("id");
-//     $.ajax({
-//       url: "/user/cart/delete",
-//       type: "DELETE",
-//       data: {
-//         productID: parentEle.attr("id"),
-//       },
-//     })
-//       .then(function (data) {
-//         toastr[data.toastr](data.mess);
-//         parentEle.remove();
-//       })
-//       .catch(function (err) {
-//         toastr[err.toastr](err.mess);
-//       });
-//   }
-// });
 
 //buy
 $(".cart-buy").on("click", async function () {

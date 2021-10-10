@@ -29,9 +29,8 @@ $(document).ready(function () {
         for (let i = 0; i < data.UserInfo.addressList.length; i++) {
           $(".user-address-list").append(`
             <div class="user-address-item ${i}">
-                <input type="radio" name="address" class="user-address-item-checkbox">
-                </input>
-                <span class="user-address-span">${data.UserInfo.addressList[i].address}</span>
+                <input type="radio" name="address" class="user-address-item-checkbox" id="address-${i}"/>
+                <label class="user-address-span" for="address-${i}">${data.UserInfo.addressList[i].address}</label>
             </div>
             `);
         }
@@ -53,45 +52,26 @@ $(document).ready(function () {
       } else {
         let total = 0;
         for (let i = 0; i < data.data.listProduct.length; i++) {
-          total =
-            total +
-            data.data.listProduct[i].quantity *
-              data.data.listProduct[i].productID.price;
+          total += data.data.listProduct[i].quantity * data.data.listProduct[i].productID.price;
           $(".checkout-item-list").append(`
                 <div class="checkout-item ${i}">
-                    <img src="${
-                      data.data.listProduct[i].productID.thumb
-                    }" alt="" class="checkout-item-thumb">
-                    <span class="checkout-item-name">${
-                      data.data.listProduct[i].productName
-                    }</span>
-                    <span class="checkout-item-choose">Phân loại: ${
-                      data.data.listProduct[i].productID.color
-                    } - ${data.data.listProduct[i].productID.size}</span>
-                    <span class="checkout-item-unitprice">đ${data.data.listProduct[
-                      i
-                    ].productID.price.toLocaleString("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                    })}</span>
-                    <span class="checkout-item-quantity">${
-                      data.data.listProduct[i].quantity
-                    }</span>
-                    <span class="checkout-item-totalprice">đ${(
-                      data.data.listProduct[i].quantity *
-                      data.data.listProduct[i].productID.price
-                    ).toLocaleString("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                    })}</span>
+                  <div class="checkout-item-content">
+                    <span class="checkout-item-thumb">
+                      <img src="${data.data.listProduct[i].productID.thumb}">
+                    </span>
+                    <div class="checkout-item-detail">
+                      <span class="checkout-item-name">${data.data.listProduct[i].productName}</span>
+                      <span class="checkout-item-choose">Phân loại: ${data.data.listProduct[i].productID.color} - ${data.data.listProduct[i].productID.size}</span>
+                    </div>
+                  </div>
+                  <div class="checkout-item-unitprice">${data.data.listProduct[i].productID.price.toLocaleString("vi-VN", {style: "currency", currency: "VND"})}</div>
+                  <div class="checkout-item-quantity">${data.data.listProduct[i].quantity}</div>
+                  <div class="checkout-item-totalprice">${(data.data.listProduct[i].quantity *data.data.listProduct[i].productID.price).toLocaleString("vi-VN", {style: "currency", currency: "VND"})}</div>
                 </div>
                 `);
         }
         $(".checkout-block-total").text(
-          total.toLocaleString("vi-VN", {
-            style: "currency",
-            currency: "VND",
-          })
+          total.toLocaleString("vi-VN", {style: "currency",currency: "VND"})
         );
       }
     })
