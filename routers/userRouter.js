@@ -112,13 +112,13 @@ router.get("/", checkLogin, async (req, res) => {
 
 router.get("/login", getUserInfo, (req, res) => {
   res.render("pages/login", {
-    login_info: req.login_info
+    login_info: req.login_info,
   });
 });
 
 router.get("/logon", getUserInfo, (req, res) => {
   res.render("pages/logon", {
-    login_info: req.login_info
+    login_info: req.login_info,
   });
 });
 
@@ -126,24 +126,24 @@ router.get("/profile", getUserInfo, (req, res) => {
   if (req.login_info) {
     res.render("pages/profile", {
       login_info: req.login_info,
-      tab: req.query.tab
+      tab: req.query.tab,
     });
   } else {
     res.render("pages/login", {
-      login_info: req.login_info
+      login_info: req.login_info,
     });
   }
 });
 
 router.get("/cart", getUserInfo, (req, res) => {
   res.render("pages/cart", {
-    login_info: req.login_info
+    login_info: req.login_info,
   });
 });
 
 router.get("/checkout", getUserInfo, (req, res) => {
   res.render("pages/checkout", {
-    login_info: req.login_info
+    login_info: req.login_info,
   });
 });
 
@@ -152,7 +152,7 @@ router.post("/getuserinfo", checkLogin, (req, res) => {
     status: 200,
     UserInfo: req.login_info,
     mess: "Lấy data thành công",
-    toastr: "success"
+    toastr: "success",
   });
 });
 
@@ -266,11 +266,12 @@ router.post("/cart", checkLogin, async function (req, res) {
       data[i].quantity = cart[i].quantity;
       data[i].title = title;
       data[i].productCodeID = productCodeID;
+      data[i].selected = cart[i].selected;
     }
     res.json({
       status: 200,
       data: data,
-      mess: "lay data thanh cong",
+      mess: "Lấy data thành công",
     });
   } catch (err) {
     console.log(err);
@@ -311,37 +312,49 @@ router.delete("/cart/delete", checkLogin, async function (req, res) {
 
 router.post("/addcheckout", checkLogin, async (req, res) => {
   try {
-    await CartModel.updateOne(
+    // let data = await CartModel.updateOne(
+    //   {
+    //     _id: req.login_info.cartID,
+    //     "listProduct.selected": 1,
+    //     // listProduct: {
+    //     //   $elemMatch: { selected: { $in: 1 } },
+    //     // },
+    //   },
+    //   { $set: { "listProduct.$.selected": 0 } }
+    // );
+    let data = await CartModel.updateOne(
       {
         _id: req.login_info.cartID,
-        "listProduct.selected": 1,
       },
-      { "listProduct.$.selected": 0 }
+      {
+        $set: { "listProduct.$[i].selected": 0 },
+      },
+      {
+        arrayFilters: [{ "i.selected": { $in: 1 } }],
+      }
     );
     if (typeof req.body["addcheckout[]"] == "string") {
       await CartModel.updateOne(
         {
           _id: req.login_info.cartID,
           "listProduct.productID": req.body["addcheckout[]"],
-          // listProduct: {
-          //   $elemMatch: { productID: { $in: req.body["addcheckout[]"][i] } },
-          // },
         },
         { $set: { "listProduct.$.selected": 1 } }
       );
     } else {
-      for (let i = 0; i < req.body["addcheckout[]"].length; i++) {
-        await CartModel.updateOne(
-          {
-            _id: req.login_info.cartID,
-            "listProduct.productID": req.body["addcheckout[]"][i],
-            // listProduct: {
-            //   $elemMatch: { productID: { $in: req.body["addcheckout[]"][i] } },
-            // },
-          },
-          { $set: { "listProduct.$.selected": 1 } }
-        );
-      }
+      console.log(337, req.body);
+      let data = await CartModel.updateOne(
+        {
+          _id: req.login_info.cartID,
+        },
+        {
+          $set: { "listProduct.$[i].selected": 1 },
+        },
+        {
+          arrayFilters: [{ "i.productID": { $in: req.body["addcheckout[]"] } }],
+        }
+      );
+      console.log(338, data);
     }
     res.json({
       message: "Redirecting",
@@ -362,8 +375,13 @@ router.post("/getcheckout", checkLogin, async (req, res) => {
   try {
     let data = await CartModel.findOne({
       _id: req.login_info.cartID,
-      "listProduct.selected": 1,
     }).populate("listProduct.productID");
+    for (let i = 0; i < data.listProduct.length; i++) {
+      if (data.listProduct[i].selected == 0) {
+        data.listProduct.splice(i, 1);
+      }
+    }
+    console.log(data);
     if (data) {
       for (let i = 0; i < data.listProduct.length; i++) {
         data.listProduct[i] = data.listProduct[i].toObject();
@@ -388,6 +406,7 @@ router.post("/getcheckout", checkLogin, async (req, res) => {
       });
     }
   } catch (err) {
+    console.log(err);
     res.json({
       mess: "Đã xảy ra lỗi, vui lòng thử lại",
       status: 500,
