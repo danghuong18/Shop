@@ -291,15 +291,17 @@ router.post("/create", checkLogin, async (req, res) => {
       },
     }).populate("listProduct.productID");
     for (let i = 0; i < orderProductInfo.listProduct.length; i++) {
-      totalPrice +=
+      if(orderProductInfo.listProduct[i].selected){
+        totalPrice +=
         orderProductInfo.listProduct[i].productID.price *
         orderProductInfo.listProduct[i].quantity;
-      listProduct.push({
-        productID: orderProductInfo.listProduct[i].productID._id,
-        quantity: orderProductInfo.listProduct[i].quantity,
-      });
+        listProduct.push({
+          productID: orderProductInfo.listProduct[i].productID._id,
+          quantity: orderProductInfo.listProduct[i].quantity,
+        });
 
-      await UpdateQuantityProduct(orderProductInfo.listProduct[i].productID._id, orderProductInfo.listProduct[i].quantity);
+        await UpdateQuantityProduct(orderProductInfo.listProduct[i].productID._id, orderProductInfo.listProduct[i].quantity);
+      }
     }
     if (req.body.address == false) {
       res.json({
