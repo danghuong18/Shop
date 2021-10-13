@@ -29,7 +29,7 @@ $(document).ready(function () {
         for (let i = 0; i < data.UserInfo.addressList.length; i++) {
           $(".user-address-list").append(`
             <div class="user-address-item ${i}">
-                <input type="radio" name="address" class="user-address-item-checkbox" id="address-${i}"/>
+                <input type="radio" name="address" class="user-address-item-checkbox" id="address-${i}" ${data.UserInfo.addressList[i].active? 'checked':''}/>
                 <label class="user-address-span" for="address-${i}">${data.UserInfo.addressList[i].address}</label>
             </div>
             `);
