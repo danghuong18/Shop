@@ -4,6 +4,14 @@ const { checkLogin } = require("../middleWare/checkAuth");
 const ProductModel = require("../model/productModel");
 const CartModel = require("../model/cartModel");
 
+async function UpdateQuantityProduct(id, amount, action="remove"){
+  let update = await ProductModel.findOneAndUpdate(
+    { _id: id },
+    { $inc: { quantity: (action == "remove"? (-1):1)*amount } },
+    { returnOriginal: false }
+  );
+}
+
 router.get("/", checkLogin, async (req, res) => {
   if (req.login_info.role === "admin") {
     try {
@@ -242,12 +250,25 @@ router.post("/cancelOrder", checkLogin, async (req, res) => {
   try {
     let id = req.body.id;
 
-    let confirm = await OrderModel.updateOne(
-      { _id: id, userID: req.login_info._id },
-      { $set: { status: "fail" } }
+    let confirm = await OrderModel.findOneAndUpdate(
+      { _id: id, userID: req.login_info._id, status: "pending" },
+      { $set: { status: "fail" } },
+      { returnOriginal: false }
     );
-    if (confirm.nModified) {
-      res.json({ message: "Huỷ đơn hàng thành công!", status: 200 });
+    if (confirm) {
+      if(confirm.status == "fail"){
+        res.json({ message: "Huỷ đơn hàng thành công!", status: 200 });
+        if(confirm.listProduct.length > 0){
+          for(i in confirm.listProduct){
+            await UpdateQuantityProduct(confirm.listProduct[i].productID, confirm.listProduct[i].quantity, "add");
+          }
+        }
+      }else{
+        res.json({
+          message: "Huỷ đơn hàng không thành công.",
+          status: 400,
+        });
+      }
     } else {
       res.json({
         message: "Huỷ đơn hàng không thành công.",
@@ -277,6 +298,8 @@ router.post("/create", checkLogin, async (req, res) => {
         productID: orderProductInfo.listProduct[i].productID._id,
         quantity: orderProductInfo.listProduct[i].quantity,
       });
+
+      await UpdateQuantityProduct(orderProductInfo.listProduct[i].productID._id, orderProductInfo.listProduct[i].quantity);
     }
     if (req.body.address == false) {
       res.json({

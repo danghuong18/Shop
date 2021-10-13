@@ -794,7 +794,7 @@ router.post("/delete-product-item", checkLogin, async (req, res) => {
     try {
       let product_id = req.body.product_id;
       let list_item = req.body["list_item[]"];
-      console.log(list_item);
+      //console.log(list_item);
       let list_file = await GetListFile(list_item);
       let update_product = await ProductCodeModel.updateOne(
         { _id: product_id },
