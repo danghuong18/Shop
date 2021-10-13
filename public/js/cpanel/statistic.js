@@ -5,7 +5,7 @@ function loadData(){
     }).then((data)=>{
         if(data.status == 200){
             let list = `
-            <li class="main-body__statistic__item">
+            <li class="main-body__statistic__item" title="Doanh thu: ${data.data.revenue.toLocaleString('vi-VN', { style: 'currency', currency: 'VND'})}">
                 <div class="icon"><i class="fas fa-money-bill-wave"></i></div>
                 <div class="info">
                     <div class="heading">${data.data.revenue.toLocaleString('vi-VN', { style: 'currency', currency: 'VND'})}</div>

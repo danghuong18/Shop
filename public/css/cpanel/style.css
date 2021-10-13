@@ -377,6 +377,9 @@ body {
 .main-body__statistic__item .info .heading {
   font-size: 2rem;
   font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .main-body__statistic__item--new .icon {
   background-color: #ff9501;
