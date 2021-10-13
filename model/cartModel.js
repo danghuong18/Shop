@@ -1,5 +1,7 @@
 const mongoose = require("./dbConnect");
 
+const SELECTED = [0, 1]
+
 const CartSchema = mongoose.Schema(
   {
     listProduct: [
@@ -9,7 +11,11 @@ const CartSchema = mongoose.Schema(
           ref: "product",
         },
         quantity: Number,
-        selected: Number,
+        selected: {
+          type: Number,
+          enum: SELECTED,
+          default: SELECTED[0],
+        }
       },
     ],
   },
