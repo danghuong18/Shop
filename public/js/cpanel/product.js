@@ -9,12 +9,21 @@ function getList(limit, page, isLoadPagination = false){
 
             for(x in data.data){
                 let category = ``
+                let brand = ``
                 let list_image = ``
 
                 if(data.data[x].categoryID){
                     for(i in data.data[x].categoryID){
-                        category += data.data[x].categoryID[i].categoryName + ((data.data[x].categoryID.length - i != 1)? ", ": "");
+                        if(data.data[x].categoryID[i] != undefined){
+                            category += data.data[x].categoryID[i].categoryName + ((data.data[x].categoryID.length - i != 1)? ", ": "");
+                        }
                     }
+                }
+
+                if(data.data[x].brand){
+                    brand = data.data[x].brand.brandName
+                }else{
+                    brand = `Không xác định`
                 }
 
                 if(data.data[x].listImg){
@@ -40,7 +49,7 @@ function getList(limit, page, isLoadPagination = false){
                                 </span>
                                 <span class="body-item__details-brand">
                                     <span class="title">Nhãn hiệu:</span>
-                                    <span class="desc">${data.data[x].brand.brandName}</span>
+                                    <span class="desc">${brand}</span>
                                 </span>
                             </span>
                             <span class="body-item__details body-item__details-image">
